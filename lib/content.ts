@@ -156,6 +156,19 @@ export type Study = {
   institution?: string;
 };
 
+const listedTechnologies = [
+  ...skillGroups.flatMap((group) => [...group.items]),
+  ...projects.flatMap((project) => [...project.stack]),
+];
+
+export const technologies = [...new Set(listedTechnologies)];
+
+export const stats = [
+  { value: projects.length, label: "Desarrollos" },
+  { value: roles.length, label: "Roles de desarrollo" },
+  { value: technologies.length, label: "Tecnologías" },
+] as const;
+
 export const studies: readonly Study[] = [
   {
     period: "2023 – 2026",

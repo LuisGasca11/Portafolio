@@ -1,20 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { MotionEffects } from "@/components/motion-effects";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { personJsonLd, site } from "@/lib/content";
-import { themeInitScript } from "@/lib/theme-script";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-source-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
-const fraunces = Fraunces({
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-bricolage",
   display: "swap",
 });
 
@@ -72,35 +73,29 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f1ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0f0c" },
-  ],
-  colorScheme: "dark light",
+  themeColor: "#07080a",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const jsonLd = JSON.stringify(personJsonLd).replace(/</g, "\\u003c");
 
   return (
-    <html
-      lang="es-MX"
-      data-theme="dark"
-      className={`${sourceSans.variable} ${fraunces.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
+    <html lang="es-MX" className={`${inter.variable} ${display.variable} h-full antialiased`}>
       <body className="min-h-full bg-canvas text-ink">
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
         <a
           href="#contenido"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-black"
         >
           Saltar al contenido
         </a>
-        <SiteHeader />
-        <main id="contenido">{children}</main>
-        <SiteFooter />
+        <SmoothScroll>
+          <SiteHeader />
+          <main id="contenido">{children}</main>
+          <SiteFooter />
+          <MotionEffects />
+        </SmoothScroll>
       </body>
     </html>
   );
