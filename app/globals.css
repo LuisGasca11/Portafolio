@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #0e0f0c;
+  --surface: #171814;
+  --ink: #f3f0e7;
+  --muted: #b7b1a4;
+  --line: rgba(243, 240, 231, 0.14);
+  --accent: #e6c27a;
+  --on-accent: #1c1408;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --canvas: #f4f1ea;
+  --surface: #fffcf7;
+  --ink: #1b1914;
+  --muted: #5c574e;
+  --line: rgba(27, 25, 20, 0.12);
+  --accent: #7a4f0d;
+  --on-accent: #fffaf3;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --font-sans: var(--font-source-sans);
+  --font-serif: var(--font-fraunces);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--canvas);
+  background-image: radial-gradient(
+    900px 420px at 0% -10%,
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    transparent 60%
+  );
+  color: var(--ink);
+  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.theme-to-dark {
+  display: none;
+}
+
+[data-theme="light"] .theme-to-light {
+  display: none;
+}
+
+[data-theme="light"] .theme-to-dark {
+  display: inline-flex;
+}
