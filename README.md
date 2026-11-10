@@ -30,7 +30,7 @@ En Netlify, `netlify.toml` fija el comando `npm run build` y el directorio de pu
 
 ## Currículum en línea
 
-El enlace «Currículum» apunta a `cvUrl` en `lib/content.ts`. El repositorio CV todavía no declara su subdominio de Netlify; cambia solo esa constante si la URL publicada es otra.
+El enlace «Currículum» apunta a `cvUrl` en `lib/content.ts` (`https://cvgasca.netlify.app`). Si esa dirección cambia, edita solo esa constante.
 
 ## Scripts
 
