@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Bricolage_Grotesque, Inter, Manrope } from "next/font/google";
 import { MotionEffects } from "@/components/motion-effects";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -16,6 +16,14 @@ const inter = Inter({
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
+  display: "swap",
+});
+
+/** Manrope: tipografía del chrome del scroll world (nav del vuelo, titulares
+ * del recorrido, botones). Es la única fuente del sistema visual del vuelo. */
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -55,11 +63,20 @@ export const metadata: Metadata = {
     siteName: site.brand,
     title: pageTitle,
     description: site.about,
+    images: [
+      {
+        url: "/images/hero-montana.jpg",
+        width: 1600,
+        height: 900,
+        alt: "Carretera de montaña a la hora dorada",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: pageTitle,
     description: site.about,
+    images: ["/images/hero-montana.jpg"],
   },
   robots: {
     index: true,
@@ -81,7 +98,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const jsonLd = JSON.stringify(personJsonLd).replace(/</g, "\\u003c");
 
   return (
-    <html lang="es-MX" className={`${inter.variable} ${display.variable} h-full antialiased`}>
+    <html lang="es-MX" className={`${inter.variable} ${display.variable} ${manrope.variable} h-full antialiased`}>
       <body className="min-h-full bg-canvas text-ink">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
         <a
