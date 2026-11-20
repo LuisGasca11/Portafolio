@@ -1,14 +1,9 @@
 "use client";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
 import type { PointerEvent } from "react";
 import { projects } from "@/lib/content";
 import type { Project } from "@/lib/content";
 import { ExternalLink } from "@/components/external-link";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function onPointerMove(event: PointerEvent<HTMLElement>) {
   if (
@@ -32,14 +27,10 @@ function onPointerLeave(event: PointerEvent<HTMLElement>) {
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <article
-      className="tilt-card relative flex w-full flex-col overflow-hidden rounded-3xl border border-line bg-white/[0.035] p-6 lg:h-[30rem] lg:w-[34rem] lg:shrink-0 lg:p-8"
+      className="tilt-card relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-line bg-white/[0.035] p-6 lg:p-8"
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
     >
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(143,212,255,0.14),transparent_46%)] opacity-70"
-        aria-hidden="true"
-      />
       <div className="relative flex items-start justify-between gap-4">
         <p className="text-sm text-accent">{project.context}</p>
         <p className="text-xs font-medium tracking-[0.14em] whitespace-nowrap text-white/50 uppercase">
@@ -47,7 +38,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </p>
       </div>
       <h3 className="mt-5 font-display text-3xl tracking-tight lg:text-4xl">{project.name}</h3>
-      <p className="mt-4 text-sm leading-relaxed text-white/70 lg:flex-1 lg:overflow-y-auto">{project.description}</p>
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-white/70">{project.description}</p>
       {project.stack.length > 0 || project.href !== undefined ? (
         <div className="mt-6">
           {project.stack.length > 0 ? (
@@ -76,77 +67,23 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 export function Projects() {
-  const rootRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    const track = trackRef.current;
-    if (!root || !track) {
-      return;
-    }
-
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      return;
-    }
-
-    const context = gsap.context(() => {
-      const media = gsap.matchMedia();
-      media.add("(min-width: 1024px)", () => {
-        const tween = gsap.to(track, {
-          x: () => -(track.scrollWidth - window.innerWidth + 48),
-          ease: "none",
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: () => `+=${Math.max(track.scrollWidth - window.innerWidth, 0)}`,
-            pin: true,
-            scrub: 0.7,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-            onUpdate: (self) => {
-              if (progressRef.current) {
-                progressRef.current.style.transform = `scaleX(${self.progress})`;
-              }
-            },
-          },
-        });
-        return () => {
-          tween.scrollTrigger?.kill();
-          tween.kill();
-        };
-      });
-    }, root);
-
-    return () => {
-      context.revert();
-    };
-  }, []);
-
   return (
-    <section id="desarrollos" ref={rootRef} className="scroll-mt-24 border-b border-line">
-      <div className="flex flex-col justify-center px-5 py-20 lg:h-screen lg:overflow-hidden lg:px-8 lg:py-16">
-        <div>
+    <section id="desarrollos" className="scroll-mt-24 border-b border-line px-5 py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl">
+        <div data-reveal>
           <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">02</p>
           <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-6xl">Desarrollos</h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/60">
             Cada proyecto es una parada del recorrido: avanza para visitarlas todas.
           </p>
-          <div className="mt-6 hidden h-px w-full bg-white/10 lg:block" aria-hidden="true">
-            <div
-              ref={progressRef}
-              className="h-full w-full origin-left bg-accent"
-              style={{ transform: "scaleX(0)" }}
-            />
-          </div>
         </div>
-        <div ref={trackRef} className="mt-8 flex flex-col gap-4 lg:mt-8 lg:w-max lg:flex-row lg:pr-16">
+        <ul className="mt-12 grid gap-4 md:grid-cols-2">
           {projects.map((project, index) => (
-            <ProjectCard key={project.name} project={project} index={index} />
+            <li key={project.name} data-reveal>
+              <ProjectCard project={project} index={index} />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

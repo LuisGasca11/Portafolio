@@ -43,7 +43,7 @@ export function Contact() {
 
   return (
     <section id="contacto" className="scroll-mt-24">
-      <div className="cta-band px-5 py-28 sm:py-36">
+      <div className="px-5 py-28 sm:py-36">
         <div className="mx-auto max-w-6xl" data-reveal>
           <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">06 · Destino final</p>
           <h2 className="mt-4 max-w-4xl font-display text-6xl tracking-[-0.04em] sm:text-8xl">Contacto</h2>

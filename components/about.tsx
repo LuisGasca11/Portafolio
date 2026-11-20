@@ -1,4 +1,5 @@
 import { site } from "@/lib/content";
+import { TaglineReveal } from "@/components/tagline-reveal";
 
 export function About() {
   return (
@@ -6,9 +7,10 @@ export function About() {
       <div className="mx-auto max-w-6xl" data-reveal>
         <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">01</p>
         <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-6xl">Sobre mí</h2>
-        <p className="mt-8 max-w-4xl font-display text-2xl leading-snug tracking-tight text-balance sm:text-4xl">
-          {site.about}
-        </p>
+        <TaglineReveal
+          text={site.about}
+          className="mt-8 max-w-4xl font-display text-2xl leading-snug tracking-tight text-balance sm:text-4xl"
+        />
       </div>
     </section>
   );
