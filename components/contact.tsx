@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cvUrl, site } from "@/lib/content";
 import { ExternalLink } from "@/components/external-link";
 
@@ -25,9 +26,9 @@ export function Contact() {
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={cvUrl} className="underline decoration-white/25 underline-offset-4 hover:decoration-accent">
+              <Link href={cvUrl} className="underline decoration-white/25 underline-offset-4 hover:decoration-accent">
                 Currículum
-              </ExternalLink>
+              </Link>
             </li>
           </ul>
           <p className="mt-8 text-sm text-muted">{site.location}</p>
