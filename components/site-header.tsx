@@ -50,9 +50,8 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <a href="#inicio" className="truncate font-display text-lg tracking-tight">
-          <span className="sm:hidden">{site.shortName}</span>
-          <span className="hidden sm:inline">{site.name}</span>
+        <a href={isCurriculum ? "/" : "#inicio"} className="truncate font-display text-lg tracking-tight">
+          {site.brand}
         </a>
         <nav aria-label="Secciones" className="hidden lg:block">
           <ul className="flex items-center gap-5 text-sm text-white/70">

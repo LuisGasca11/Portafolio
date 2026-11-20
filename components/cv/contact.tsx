@@ -6,6 +6,8 @@ import { profile } from "@/lib/cv";
 const linkClass = "underline decoration-white/25 underline-offset-4 hover:decoration-accent";
 
 export function Contact() {
+  const phoneHref = profile.phone.replace(/[^+\d]/g, "");
+  const whatsappHref = `https://wa.me/${phoneHref.replace("+", "")}`;
   return (
     <section id="contacto" aria-labelledby="contacto-titulo" className="scroll-mt-24">
       <div className="cta-band px-5 py-28 sm:py-36 print:px-0 print:py-6">
@@ -25,7 +27,17 @@ export function Contact() {
             </a>
             <PrintButton className="no-print inline-flex h-12 items-center rounded-full border border-white/20 px-5 text-sm font-semibold hover:border-accent" />
           </div>
-          <ul className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:gap-6">
+          <ul className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-6">
+            <li>
+              <a href={`tel:${phoneHref}`} className={linkClass}>
+                {profile.phone}
+              </a>
+            </li>
+            <li>
+              <ExternalLink href={whatsappHref} className={linkClass}>
+                WhatsApp
+              </ExternalLink>
+            </li>
             <li>
               <Link href={profile.portfolio.href} className={linkClass}>
                 {profile.portfolio.label}

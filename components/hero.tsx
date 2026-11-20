@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cvUrl, site } from "@/lib/content";
 import { ExternalLink } from "@/components/external-link";
 import { HeroCanvas } from "@/components/hero-canvas";
+import { HeroLandscape } from "@/components/parallax-layers";
 
 const words = site.name.split(" ");
 const firstLine = words.slice(0, 2).join(" ");
@@ -12,6 +13,7 @@ export function Hero() {
   return (
     <section id="inicio" className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-5 pt-24 pb-16">
       <HeroCanvas />
+      <HeroLandscape />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-canvas" />
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         <p className="inline-flex rounded-full border border-white/15 bg-black/25 px-3 py-1 text-[0.7rem] font-medium tracking-[0.22em] text-white/85 uppercase backdrop-blur-sm">
@@ -65,6 +67,12 @@ export function Hero() {
           </li>
         </ul>
       </div>
+      <p className="no-print absolute inset-x-0 bottom-5 z-10 flex flex-col items-center gap-1 text-[0.65rem] font-medium tracking-[0.24em] text-white/55 uppercase">
+        Desliza para recorrer el mundo
+        <span aria-hidden="true" className="inline-block animate-bounce text-base leading-none">
+          ↓
+        </span>
+      </p>
     </section>
   );
 }

@@ -8,6 +8,7 @@ export function JsonLd() {
     name: profile.name,
     jobTitle: profile.title,
     email: profile.email,
+    telephone: profile.phone,
     address: {
       "@type": "PostalAddress",
       addressLocality: profile.location,
