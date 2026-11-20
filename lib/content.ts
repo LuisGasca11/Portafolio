@@ -7,8 +7,8 @@
 /** Sitio de este portafolio en Netlify. */
 export const siteUrl = "https://portgasca.netlify.app";
 
-/** Currículum en línea (sitio Netlify del repositorio CV). */
-export const cvUrl = "https://cvgasca.netlify.app";
+/** Currículum en línea (ruta interna del portafolio). */
+export const cvUrl = "/curriculum";
 
 export const site = {
   url: siteUrl,

@@ -99,3 +99,182 @@ body {
     animation: none;
   }
 }
+
+/* Currículum (/curriculum): tema propio (naranja sobre oscuro) y clases que
+   solo usa esa ruta. Todo va bajo .curriculum para no tocar la portada. */
+.curriculum {
+  --canvas: #0a0908;
+  --ink: #f6f3ef;
+  --muted: #c4bbb3;
+  --line: rgba(246, 243, 239, 0.14);
+  --accent: #ff6b00;
+  --accent-hot: #ff7a1a;
+  --on-accent: #1a0d00;
+}
+
+.curriculum ::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.curriculum :focus-visible {
+  outline: 2px solid var(--accent-hot);
+  outline-offset: 3px;
+}
+
+.curriculum .hero-stage {
+  background:
+    radial-gradient(ellipse at 0% 85%, rgba(255, 107, 0, 0.62), transparent 42%),
+    radial-gradient(ellipse at 100% 8%, rgba(255, 122, 26, 0.48), transparent 40%),
+    #0a0908;
+}
+
+.curriculum .marquee-track-reverse {
+  animation-direction: reverse;
+  animation-duration: 56s;
+}
+
+.curriculum .cta-band {
+  background:
+    radial-gradient(ellipse at 12% 20%, rgba(255, 107, 0, 0.5), transparent 46%),
+    radial-gradient(ellipse at 86% 80%, rgba(255, 122, 26, 0.28), transparent 42%),
+    #0a0908;
+  background-size: 140% 140%;
+  animation: drift 16s ease-in-out infinite alternate;
+}
+
+.curriculum .btn-accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.curriculum .btn-accent:hover {
+  background: var(--accent-hot);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .curriculum .projects-viewport {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .curriculum .projects-track {
+    width: max-content;
+    flex-direction: row;
+    padding-right: 4rem;
+  }
+
+  .curriculum .project-card {
+    height: 30rem;
+    width: 34rem;
+    flex-shrink: 0;
+  }
+
+  .curriculum .project-copy {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curriculum .marquee-track-reverse {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: none;
+    transform: none;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 14mm;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #16120e !important;
+    scroll-behavior: auto !important;
+  }
+
+  html,
+  body {
+    transform: none !important;
+  }
+
+  body * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #16120e !important;
+  }
+
+  body .text-accent {
+    color: #a33b00 !important;
+  }
+
+  body .accent-dot {
+    background-color: #ff6b00 !important;
+    print-color-adjust: exact;
+  }
+
+  body .accent-line {
+    border-color: #ff6b00 !important;
+  }
+
+  body .sheet-card {
+    border-color: #ddd8d2 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .hero-canvas,
+  .no-print,
+  .marquee-duplicate {
+    display: none !important;
+  }
+
+  .pin-spacer,
+  .pin-spacer > * {
+    position: static !important;
+    transform: none !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .projects-viewport,
+  .projects-track,
+  .project-card,
+  .project-copy {
+    position: static !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    flex-direction: column !important;
+  }
+
+  .hero-stage,
+  .cta-band {
+    min-height: 0 !important;
+    background: #ffffff !important;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}

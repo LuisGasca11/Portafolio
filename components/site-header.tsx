@@ -1,12 +1,18 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
+import { PrintButton } from "@/components/cv/print-button";
+import { cvNavItems } from "@/lib/cv";
 import { navItems, site } from "@/lib/content";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuId = useId();
+  const pathname = usePathname();
+  const isCurriculum = pathname === "/curriculum";
+  const items = isCurriculum ? cvNavItems : navItems;
 
   useEffect(() => {
     function onScroll() {
@@ -50,7 +56,7 @@ export function SiteHeader() {
         </a>
         <nav aria-label="Secciones" className="hidden lg:block">
           <ul className="flex items-center gap-5 text-sm text-white/70">
-            {navItems.map((item) => (
+            {items.map((item) => (
               <li key={item.href}>
                 <a href={item.href} className="transition-colors hover:text-white">
                   {item.label}
@@ -60,12 +66,16 @@ export function SiteHeader() {
           </ul>
         </nav>
         <div className="flex items-center gap-2">
-          <a
-            href="#contacto"
-            className="hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex"
-          >
-            Contacto
-          </a>
+          {isCurriculum ? (
+            <PrintButton className="no-print hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex" />
+          ) : (
+            <a
+              href="#contacto"
+              className="hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex"
+            >
+              Contacto
+            </a>
+          )}
           <button
             type="button"
             className="inline-flex h-10 items-center rounded-full border border-line px-4 text-sm lg:hidden"
@@ -82,7 +92,7 @@ export function SiteHeader() {
       {open ? (
         <nav id={menuId} className="border-t border-line bg-canvas px-5 py-4 lg:hidden">
           <ul className="flex flex-col">
-            {navItems.map((item) => (
+            {items.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
@@ -96,6 +106,9 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
+          {isCurriculum ? (
+            <PrintButton className="no-print mt-3 inline-flex h-12 items-center rounded-full bg-white px-5 text-sm font-semibold text-black" />
+          ) : null}
         </nav>
       ) : null}
     </header>
