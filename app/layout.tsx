@@ -55,11 +55,20 @@ export const metadata: Metadata = {
     siteName: site.brand,
     title: pageTitle,
     description: site.about,
+    images: [
+      {
+        url: "/images/hero-montana.jpg",
+        width: 2048,
+        height: 1152,
+        alt: "Carretera de montaña a la hora dorada",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: pageTitle,
     description: site.about,
+    images: ["/images/hero-montana.jpg"],
   },
   robots: {
     index: true,

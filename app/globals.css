@@ -6,7 +6,8 @@
   --ink: #f3f5f8;
   --muted: #a3acb8;
   --line: rgba(243, 245, 248, 0.12);
-  --accent: #8fd4ff;
+  /* Ámbar de hora dorada: acento del paisaje fotográfico. */
+  --accent: #f0b45a;
 }
 
 @theme inline {

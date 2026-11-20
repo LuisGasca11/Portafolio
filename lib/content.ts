@@ -29,6 +29,21 @@ export const site = {
     "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y móvil. Aprendizaje rápido, trabajo en equipo y orientación a resultados.",
 } as const;
 
+/**
+ * Paisajes del recorrido (fotografía realista generada para el rediseño).
+ * Viven en public/images y public/video; se referencian con <img> y
+ * <video> planos porque el sitio es un export estático.
+ */
+export const landscapes = {
+  heroImage: "/images/hero-montana.jpg",
+  heroVideo: "/video/hero-carretera.mp4",
+  desert: "/images/desierto.jpg",
+  city: "/images/ciudad.jpg",
+  night: "/images/noche.jpg",
+  coastImage: "/images/costa.jpg",
+  coastVideo: "/video/costa-atardecer.mp4",
+} as const;
+
 export const navItems = [
   { href: "#sobre-mi", label: "Sobre mí" },
   { href: "#desarrollos", label: "Desarrollos" },
@@ -45,6 +60,11 @@ export type Project = {
   context: string;
   description: string;
   stack: readonly string[];
+  /** Foto del destino: vive en public/images y se muestra en la tarjeta. */
+  image: string;
+  imageAlt: string;
+  /** Posición del encuadre dentro de la tarjeta (object-position). */
+  imagePosition?: string;
   href?: string;
   linkLabel?: string;
 };
@@ -56,12 +76,18 @@ export const projects: readonly Project[] = [
     description:
       "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
     stack: [],
+    image: "/images/proyecto-web.jpg",
+    imageAlt: "Puesto de trabajo con monitores mostrando paneles de datos",
+    imagePosition: "center 30%",
   },
   {
     name: "PMS Multiempresa",
     context: "Grupo Fyttsa",
     description: "Sistema de gestión de proyectos centralizado para múltiples empresas.",
     stack: [],
+    image: "/images/proyecto-web.jpg",
+    imageAlt: "Puesto de trabajo con monitores mostrando paneles de datos",
+    imagePosition: "center 55%",
   },
   {
     name: "Facturador + Cotizador Microsip",
@@ -69,6 +95,9 @@ export const projects: readonly Project[] = [
     description:
       "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos.",
     stack: ["Microsip"],
+    image: "/images/proyecto-web.jpg",
+    imageAlt: "Puesto de trabajo con monitores mostrando paneles de datos",
+    imagePosition: "center 70%",
   },
   {
     name: "Apps Móviles con Expo",
@@ -76,12 +105,18 @@ export const projects: readonly Project[] = [
     description:
       "Aplicaciones móviles multiplataforma (iOS y Android) con Expo y React Native.",
     stack: ["Expo", "React Native"],
+    image: "/images/proyecto-movil.jpg",
+    imageAlt: "Manos sosteniendo un smartphone con una app",
+    imagePosition: "center",
   },
   {
     name: "Team Page & Sitio Web",
     context: "Grupo Fyttsa",
     description: "Sitio web institucional del equipo de trabajo de la empresa.",
     stack: [],
+    image: "/images/proyecto-web.jpg",
+    imageAlt: "Puesto de trabajo con monitores mostrando paneles de datos",
+    imagePosition: "center 45%",
   },
   {
     name: "Sistema de Inventarios 3D",
@@ -89,6 +124,9 @@ export const projects: readonly Project[] = [
     description:
       "Aplicación web con Laravel, Vue.js y MySQL. Visualización 3D del almacén con Three.js para localización de productos.",
     stack: ["Laravel", "Vue.js", "MySQL", "Three.js"],
+    image: "/images/proyecto-ruta.jpg",
+    imageAlt: "Vista aérea de un intercambio vial al atardecer",
+    imagePosition: "center 35%",
   },
   {
     name: "Vacantes de Empleo",
@@ -96,6 +134,9 @@ export const projects: readonly Project[] = [
     description:
       "Gestión y publicación de vacantes para distintas sucursales de la empresa.",
     stack: [],
+    image: "/images/proyecto-ruta.jpg",
+    imageAlt: "Vista aérea de un intercambio vial al atardecer",
+    imagePosition: "center 60%",
   },
   {
     name: "BLACK SHEEP NET",
@@ -103,6 +144,9 @@ export const projects: readonly Project[] = [
     description:
       "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
     stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
+    image: "/images/proyecto-ruta.jpg",
+    imageAlt: "Vista aérea de un intercambio vial al atardecer",
+    imagePosition: "center 20%",
     href: "https://voyager.b-mkt.com",
     linkLabel: "En producción: voyager.b-mkt.com",
   },

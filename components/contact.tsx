@@ -3,14 +3,49 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { cvUrl, site } from "@/lib/content";
+import { cvUrl, landscapes, site } from "@/lib/content";
 import { ExternalLink } from "@/components/external-link";
+import { usePrefersReducedMotion } from "@/components/use-prefers-reduced-motion";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 const inputClass =
   "mt-2 w-full rounded-2xl border border-line bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:border-accent focus:outline-none";
 const labelClass = "text-xs font-medium tracking-[0.18em] text-white/70 uppercase";
+
+/**
+ * Fondo de la sección: video en loop de la costa al atardecer.
+ * Con prefers-reduced-motion se muestra solo la foto fija de la costa.
+ */
+function ContactBackdrop() {
+  const reduce = usePrefersReducedMotion();
+
+  if (reduce) {
+    return (
+      <img
+        src={landscapes.coastImage}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    );
+  }
+
+  return (
+    <video
+      className="absolute inset-0 h-full w-full object-cover"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      poster={landscapes.coastImage}
+      aria-hidden="true"
+    >
+      <source src={landscapes.coastVideo} type="video/mp4" />
+    </video>
+  );
+}
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -42,8 +77,10 @@ export function Contact() {
   }
 
   return (
-    <section id="contacto" className="scroll-mt-24">
-      <div className="cta-band px-5 py-28 sm:py-36">
+    <section id="contacto" className="relative scroll-mt-24 overflow-hidden">
+      <ContactBackdrop />
+      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+      <div className="relative px-5 py-28 sm:py-36">
         <div className="mx-auto max-w-6xl" data-reveal>
           <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">06 · Destino final</p>
           <h2 className="mt-4 max-w-4xl font-display text-6xl tracking-[-0.04em] sm:text-8xl">Contacto</h2>

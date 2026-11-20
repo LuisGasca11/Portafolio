@@ -36,10 +36,19 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
     >
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(143,212,255,0.14),transparent_46%)] opacity-70"
-        aria-hidden="true"
-      />
+      <div className="relative -m-6 mb-6 h-44 overflow-hidden lg:-m-8 lg:mb-8 lg:h-52">
+        <img
+          src={project.image}
+          alt={project.imageAlt}
+          loading="lazy"
+          style={{ objectPosition: project.imagePosition ?? "center" }}
+          className="h-full w-full object-cover"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent"
+          aria-hidden="true"
+        />
+      </div>
       <div className="relative flex items-start justify-between gap-4">
         <p className="text-sm text-accent">{project.context}</p>
         <p className="text-xs font-medium tracking-[0.14em] whitespace-nowrap text-white/50 uppercase">

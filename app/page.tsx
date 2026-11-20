@@ -3,27 +3,29 @@ import { Contact } from "@/components/contact";
 import { Education } from "@/components/education";
 import { Experience } from "@/components/experience";
 import { Hero } from "@/components/hero";
+import { PhotoBand } from "@/components/journey-bands";
+import { JourneyProgress } from "@/components/journey-progress";
 import { Marquee } from "@/components/marquee";
-import { CityBand } from "@/components/parallax-layers";
 import { Projects } from "@/components/projects";
-import { ScrollPath } from "@/components/scroll-path";
 import { Skills } from "@/components/skills";
 import { Stats } from "@/components/stats";
+import { landscapes } from "@/lib/content";
 
 export default function HomePage() {
   return (
     <>
+      <JourneyProgress />
       <Hero />
       <Marquee />
       <div className="journey relative">
-        <ScrollPath />
         <About />
+        <PhotoBand src={landscapes.desert} alt="Carretera de desierto al atardecer" label="El camino empieza" />
         <Stats />
         <Projects />
+        <PhotoBand src={landscapes.city} alt="Ciudad al atardecer" label="La ciudad" />
         <Experience />
         <Skills />
         <Education />
-        <CityBand />
         <Contact />
       </div>
     </>

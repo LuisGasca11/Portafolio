@@ -4,7 +4,7 @@ Sitio personal en español (México), construido con Next.js (App Router), TypeS
 
 El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada es un «mundo con scroll»: el cielo del hero pasa de la mañana al atardecer y a la noche conforme se baja por la página, una ruta dibujada une las secciones, los proyectos son paradas de un mapa con scroll horizontal en escritorio y las habilidades se presentan como constelaciones. Todo respeta `prefers-reduced-motion` y tiene alternativa en móvil.
+La portada es un viaje fotográfico: el hero tiene video en loop de una carretera de montaña a la hora dorada, bandas de paisaje realista (desierto, ciudad al atardecer, cielo nocturno, costa) marcan las etapas del recorrido, cada proyecto es un destino con su foto y scroll horizontal en escritorio, y la sección de contacto cierra con video de la costa al atardecer. Las fotos y videos son material generado con estilo de fotografía realista y viven en `public/images` y `public/video` (las rutas están en `landscapes`, en `lib/content.ts`). Todo respeta `prefers-reduced-motion` (con movimiento reducido se muestran las fotos fijas, sin video ni parallax) y tiene alternativa en móvil.
 
 ## Requisitos
 
@@ -38,7 +38,7 @@ El currículum vive como ruta interna del portafolio: `/curriculum` (`app/curric
 
 La sección de contacto tiene un formulario (nombre, correo y mensaje) que usa [Netlify Forms](https://docs.netlify.com/forms/overview/): el formulario está en el HTML estático con `data-netlify="true"` y se envía con `fetch` sin salir de la página. Los mensajes llegan al panel de Netlify (Site → Forms).
 
-Para que los mensajes también lleguen por correo a luisgasca0245@hotmail.com hay que activar la notificación en Netlify, una sola vez: **Site settings → Forms → Form notifications → Add notification → Email notification** y poner ese correo. Sin ese paso los mensajes solo se ven en el panel de Netlify.
+Para que los mensajes también lleguen por correo a luisgasca0245@hotmail.com, la notificación por correo ya está activada en Netlify (Site settings → Forms → Form notifications → Email notification). Si alguna vez se desactiva, hay que volver a activarla ahí; sin ese paso los mensajes solo se ven en el panel de Netlify.
 
 ## Scripts
 
