@@ -42,7 +42,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       />
       <div className="relative flex items-start justify-between gap-4">
         <p className="text-sm text-accent">{project.context}</p>
-        <p className="text-xs tabular-nums text-white/40">{String(index + 1).padStart(2, "0")}</p>
+        <p className="text-xs font-medium tracking-[0.14em] whitespace-nowrap text-white/50 uppercase">
+          Parada {String(index + 1).padStart(2, "0")}
+        </p>
       </div>
       <h3 className="mt-5 font-display text-3xl tracking-tight lg:text-4xl">{project.name}</h3>
       <p className="mt-4 text-sm leading-relaxed text-white/70 lg:flex-1 lg:overflow-y-auto">{project.description}</p>
@@ -76,6 +78,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 export function Projects() {
   const rootRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -103,6 +106,11 @@ export function Projects() {
             scrub: 0.7,
             invalidateOnRefresh: true,
             anticipatePin: 1,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.transform = `scaleX(${self.progress})`;
+              }
+            },
           },
         });
         return () => {
@@ -123,6 +131,16 @@ export function Projects() {
         <div>
           <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">02</p>
           <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-6xl">Desarrollos</h2>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/60">
+            Cada proyecto es una parada del recorrido: avanza para visitarlas todas.
+          </p>
+          <div className="mt-6 hidden h-px w-full bg-white/10 lg:block" aria-hidden="true">
+            <div
+              ref={progressRef}
+              className="h-full w-full origin-left bg-accent"
+              style={{ transform: "scaleX(0)" }}
+            />
+          </div>
         </div>
         <div ref={trackRef} className="mt-8 flex flex-col gap-4 lg:mt-8 lg:w-max lg:flex-row lg:pr-16">
           {projects.map((project, index) => (

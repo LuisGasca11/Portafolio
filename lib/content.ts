@@ -4,8 +4,9 @@
  * No agregar datos que no estén en esas fuentes.
  */
 
-/** Sitio de este portafolio en Netlify. */
-export const siteUrl = "https://portgasca.netlify.app";
+/** Dominio del portafolio. lgasca.dev aún no está comprado; mientras tanto el
+ * sitio sigue publicado en Netlify como portgasca.netlify.app. */
+export const siteUrl = "https://lgasca.dev";
 
 /** Currículum en línea (ruta interna del portafolio). */
 export const cvUrl = "/curriculum";
@@ -14,11 +15,14 @@ export const site = {
   url: siteUrl,
   name: "Luis Alberto Aguilar Gasca",
   shortName: "Luis Gasca",
+  /** Marca del sitio: aparece en la pestaña del navegador y en el encabezado. */
+  brand: "lgasca",
   title: "Ingeniero en Tecnologías de la Información y la Comunicación",
   shortTitle: "Ingeniero en TIC",
   focus: "Desarrollo web full stack y móvil",
   location: "Ecatepec de Morelos, CDMX",
   email: "luisgasca0245@hotmail.com",
+  phone: "+52 26 10840382",
   githubUrl: "https://github.com/LuisGasca11",
   githubLabel: "github.com/LuisGasca11",
   about:
@@ -197,6 +201,7 @@ export const personJsonLd = {
       jobTitle: site.title,
       description: site.about,
       email: site.email,
+      telephone: site.phone,
       url: site.url,
       homeLocation: {
         "@type": "Place",

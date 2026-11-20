@@ -33,10 +33,11 @@ export const profile = {
   name: "Luis Alberto Aguilar Gasca",
   title: "Ingeniero en Tecnologías de la Información y la Comunicación",
   email: "luisgasca0245@hotmail.com",
+  phone: "+52 26 10840382",
   location: "Ecatepec de Morelos",
   portfolio: {
     href: "/",
-    label: "portgasca.netlify.app",
+    label: "lgasca.dev",
   },
   github: {
     href: "https://github.com/LuisGasca11",

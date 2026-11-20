@@ -24,11 +24,11 @@ const pageTitle = `${site.name} | ${site.shortTitle}`;
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: pageTitle,
-    template: `%s | ${site.name}`,
+    default: site.brand,
+    template: `%s | ${site.brand}`,
   },
   description: site.about,
-  applicationName: `Portafolio de ${site.name}`,
+  applicationName: site.brand,
   authors: [{ name: site.name, url: site.githubUrl }],
   creator: site.name,
   keywords: [
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_MX",
     url: site.url,
-    siteName: site.name,
+    siteName: site.brand,
     title: pageTitle,
     description: site.about,
   },
