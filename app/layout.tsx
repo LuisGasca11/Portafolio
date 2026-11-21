@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
-import { MotionEffects } from "@/components/motion-effects";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import { personJsonLd, site } from "@/lib/content";
 import "./globals.css";
 
@@ -90,12 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Saltar al contenido
         </a>
-        <SmoothScroll>
-          <SiteHeader />
-          <main id="contenido">{children}</main>
-          <SiteFooter />
-          <MotionEffects />
-        </SmoothScroll>
+        {children}
       </body>
     </html>
   );

@@ -4,7 +4,14 @@ Sitio personal en español (México), construido con Next.js (App Router), TypeS
 
 El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada es un «mundo con scroll»: el cielo del hero pasa de la mañana al atardecer y a la noche conforme se baja por la página, una ruta dibujada une las secciones, los proyectos son paradas de un mapa con scroll horizontal en escritorio y las habilidades se presentan como constelaciones. Todo respeta `prefers-reduced-motion` y tiene alternativa en móvil.
+La portada ofrece varias versiones de diseño y un menú fijo abajo para cambiar entre ellas (se recuerda la elección y también se puede enlazar con `?v=v1`…`?v=v4`):
+
+- **V1 Factura**: la página como cotización estilo factura, con conceptos, totales y «Solicitar cotización».
+- **V2 Metro**: un plano de metro donde cada línea es un área técnica y cada estación una tecnología; al tocar una estación se resaltan los desarrollos que la usan.
+- **V3 Ticket**: un ticket térmico con puntos guía, totales y código de barras decorativo.
+- **V4 Editor**: un editor de código con explorador de archivos y paleta de comandos (Ctrl/⌘ + K).
+
+Las versiones viven en `components/variants/` y comparten los datos de `lib/content.ts` y el formulario de contacto (`contact-form.tsx`). Para añadir una nueva, crea su componente y regístrala en `home-variants.tsx`.
 
 ## Requisitos
 
