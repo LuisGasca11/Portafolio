@@ -4,7 +4,7 @@ Sitio personal en español (México), construido con Next.js (App Router), TypeS
 
 El contenido sale del CV y de la descripción de BLACK SHEEP NET. Black Sheep Labs y Grupo Fyttsa son la misma empresa y se muestra como Black Sheep Labs “Grupo Fyttsa” (`company` en `lib/content.ts`); las apps de Google Play enlazan a la página de desarrollador de la empresa (`playStoreUrl`). El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js, contado como un recorrido continuo por capítulos (inspirado en el estilo «scroll world»). Cada sección abre con una portada de capítulo («02 / 07», profundidad, título grande, una línea y etiquetas) que queda fija mientras la cámara se lanza hacia el escenario 3D de ese capítulo y luego regresa a la columna de agua para seguir bajando:
+La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js, contado como un recorrido continuo por capítulos (inspirado en el estilo «scroll world»). Cada sección abre con una portada (profundidad, título grande, una línea y etiquetas) que queda fija mientras la cámara, siempre descendiendo, rodea en espiral el escenario 3D de ese capítulo y sigue hacia el siguiente. Una estela de plancton bioluminiscente une los escenarios y marca el camino; la sombra detrás del texto es una capa fija, así no hay bordes entre secciones. En móvil los desarrollos son un carrusel deslizable, los paneles no usan desenfoque de fondo y la escena baja su resolución si el equipo no alcanza a dibujarla con fluidez:
 
 | Capítulo | Profundidad | Escenario |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ components/
     abismo.tsx            composición de la página
     sections/             una sección por archivo (hero, about, projects, experience, skills, education, contact)
     ui/                   piezas compartidas (portada de capítulo, ruta y progreso, encabezado y menú, burbujas, formulario, video)
-    scene/                escena 3D: engine.ts arma el mundo y mueve la cámara; cada capa (snow, rays, fish, jellyfish, manta, turtle, shark, squid, seabed…) es un módulo y landmarks.ts tiene los escenarios de los capítulos
+    scene/                escena 3D: engine.ts arma el mundo y mueve la cámara; cada capa (snow, rays, fish, jellyfish, manta, turtle, shark, squid, seabed…) es un módulo y landmarks.ts tiene los escenarios de los capítulos y trail.ts la estela de plancton
     art/                  ilustraciones SVG (creatures.tsx, flora.tsx)
     hooks/                efectos de scroll (GSAP) y movimiento reducido
     data.ts               capítulos (profundidad y acento), zonas oceánicas y configuración de las burbujas

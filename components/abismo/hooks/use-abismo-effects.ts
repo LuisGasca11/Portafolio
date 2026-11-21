@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import type { RefObject } from "react";
 import { chapters, maxDepth, zoneOf } from "@/components/abismo/data";
-import { gsap, ScrollTrigger, setupCommonMotion } from "@/components/abismo/hooks/motion";
+import { gsap, richMotion, ScrollTrigger, setupCommonMotion } from "@/components/abismo/hooks/motion";
 
 /**
  * Efectos de scroll de la portada, todos ligados al avance de la página:
@@ -118,17 +118,19 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
         scrollTrigger: { trigger: "#inicio", start: "top top", end: "bottom 20%", scrub: 0.5 },
       });
 
-      // Capítulos: el texto entra mientras la cámara se lanza y sale al seguir bajando.
+      // Capítulos: el texto entra mientras la cámara se acerca al escenario y
+      // se disuelve en el agua al seguir bajando.
+      const rich = richMotion();
       gsap.utils.toArray<HTMLElement>("[data-chapter]", element).forEach((chapter) => {
         const copy = chapter.querySelector<HTMLElement>("[data-chapter-copy]");
         const lines = chapter.querySelectorAll<HTMLElement>("[data-chapter-line]");
         gsap.fromTo(
           lines,
-          { y: 70, opacity: 0, filter: "blur(10px)" },
+          { y: 70, opacity: 0, ...(rich ? { filter: "blur(10px)" } : {}) },
           {
             y: 0,
             opacity: 1,
-            filter: "blur(0px)",
+            ...(rich ? { filter: "blur(0px)" } : {}),
             stagger: 0.12,
             ease: "none",
             scrollTrigger: { trigger: chapter, start: "top 90%", end: "top 15%", scrub: 0.6 },
@@ -140,6 +142,7 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
           {
             y: -90,
             opacity: 0,
+            ...(rich ? { filter: "blur(6px)" } : {}),
             ease: "none",
             immediateRender: false,
             scrollTrigger: { trigger: chapter, start: "bottom 98%", end: "bottom 40%", scrub: 0.6 },

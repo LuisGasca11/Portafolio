@@ -6,7 +6,7 @@
 }
 
 .ab-root {
-  --ab-chapter-h: 175svh;
+  --ab-chapter-h: 165svh;
   --ab-cyan: #7ee8ff;
   --ab-green: #5dffc9;
   --ab-pink: #ff6bd6;
@@ -44,11 +44,24 @@
   pointer-events: none;
 }
 
+/* Paneles: como agua más densa, no como cajas. Borde apenas visible y un
+   brillo arriba a la izquierda que se pierde en el agua. */
 .ab-glass {
-  background: linear-gradient(160deg, rgba(10, 58, 92, 0.62), rgba(3, 24, 44, 0.66));
-  border: 1px solid rgba(126, 232, 255, 0.22);
-  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(6px);
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(126, 232, 255, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(6, 44, 72, 0.5), rgba(2, 18, 34, 0.42));
+  border: 1px solid rgba(126, 232, 255, 0.08);
+  box-shadow: inset 1px 1px 0 rgba(190, 245, 255, 0.14), 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px) saturate(1.15);
+}
+@media (max-width: 767px), (pointer: coarse) {
+  /* El desenfoque de fondo es caro en móviles: se compensa con más opacidad. */
+  .ab-glass {
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(126, 232, 255, 0.1), transparent 60%),
+      linear-gradient(160deg, rgba(6, 44, 72, 0.78), rgba(2, 18, 34, 0.74));
+    backdrop-filter: none;
+  }
 }
 
 .ab-depth {
@@ -347,13 +360,15 @@
   align-items: center;
   padding: 5rem clamp(1.25rem, 6vw, 5.5rem) 3rem;
 }
-.ab-chapter-pin::before {
-  content: "";
-  position: absolute;
+/* Sombra fija detrás del texto: no se desplaza con la sección, así no deja
+   un borde visible entre capítulos. Sigue la cercanía al escenario. */
+.ab-scrim {
+  position: fixed;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(1, 10, 20, 0.72) 0%, rgba(1, 10, 20, 0.42) 38%, transparent 66%);
-  opacity: calc(0.35 + var(--ab-dive, 0) * 0.65);
+  background: linear-gradient(90deg, rgba(1, 10, 20, 0.62) 0%, rgba(1, 10, 20, 0.3) 36%, transparent 62%);
+  opacity: calc(var(--ab-dive, 0) * 0.9);
 }
 .ab-chapter-copy {
   position: relative;
@@ -410,13 +425,13 @@
 }
 
 @media (max-width: 767px) {
-  .ab-root { --ab-chapter-h: 150svh; }
+  .ab-root { --ab-chapter-h: 140svh; }
   .ab-chapter-pin {
     align-items: flex-end;
     padding-bottom: max(3.5rem, 9svh);
   }
-  .ab-chapter-pin::before {
-    background: linear-gradient(0deg, rgba(1, 10, 20, 0.85) 0%, rgba(1, 10, 20, 0.5) 38%, transparent 62%);
+  .ab-scrim {
+    background: linear-gradient(0deg, rgba(1, 10, 20, 0.78) 0%, rgba(1, 10, 20, 0.4) 34%, transparent 58%);
   }
 }
 
@@ -606,4 +621,41 @@
   .ab-root.ab-root { --ab-chapter-h: 22rem; }
   .ab-chapter { height: auto; }
   .ab-chapter-pin { position: relative; height: auto; padding-block: 8rem 3rem; }
+}
+
+/* Desarrollos en móvil: carrusel que se desliza de lado. */
+@media (max-width: 767px) {
+  .ab-reel {
+    display: flex;
+    gap: 0.9rem;
+    margin-inline: -1.25rem;
+    padding: 0.5rem 1.25rem 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .ab-reel::-webkit-scrollbar { display: none; }
+  .ab-reel > li {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+  }
+  .ab-card { transform: none; }
+}
+.ab-reel-hint {
+  display: none;
+}
+@media (max-width: 767px) {
+  .ab-reel-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232, 251, 255, 0.65);
+  }
 }

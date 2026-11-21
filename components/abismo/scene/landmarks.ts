@@ -59,7 +59,7 @@ export function addLandmarks(ctx: SceneContext): Station[] {
   };
 
   const stations: Station[] = [];
-  const side = small ? 1.6 : 7.4;
+  const side = small ? 2.5 : 6.5;
 
   // 02 · Sobre mí: arco de arrecife con corales.
   {
@@ -153,7 +153,7 @@ export function addLandmarks(ctx: SceneContext): Station[] {
         screen.lookAt(0, 1, 0);
       });
     });
-    stations.push({ id: "desarrollos", group, x: side, z: -18, stand: 12.5 });
+    stations.push({ id: "desarrollos", group, x: -side, z: -18, stand: 12.5 });
   }
 
   // 04 · Experiencia: barco hundido con portillas encendidas.
@@ -232,7 +232,7 @@ export function addLandmarks(ctx: SceneContext): Station[] {
         pod.bulb.scale.setScalar(0.13 + pulse * 0.06);
       }
     });
-    stations.push({ id: "habilidades", group, x: side, z: -17, stand: 11.5 });
+    stations.push({ id: "habilidades", group, x: -side, z: -17, stand: 11.5 });
   }
 
   // 06 · Educación: chimeneas hidrotermales con gusanos de tubo.

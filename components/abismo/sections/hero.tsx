@@ -2,7 +2,7 @@ import { ExternalLink } from "@/components/shared/external-link";
 import { TechIcon } from "@/components/shared/tech-icon";
 import type { CSSProperties } from "react";
 import { Waves } from "@/components/abismo/art/flora";
-import { chapters, heroBubbles } from "@/components/abismo/data";
+import { heroBubbles } from "@/components/abismo/data";
 import { AmbientVideo } from "@/components/abismo/ui/ambient-video";
 import { site } from "@/lib/content";
 
@@ -27,7 +27,7 @@ export function Hero({ glOn }: { glOn: boolean }) {
       ))}
       <div data-hero-content className="relative z-10 mx-auto w-full max-w-5xl pt-20 text-center">
         <p className="ab-depth" style={{ color: "#e6fcff" }} data-hero-fade>
-          01 / {String(chapters.length).padStart(2, "0")} · 0 m · Superficie
+          0 m · Superficie
         </p>
         <h1 className="ab-display mt-5 text-[clamp(2.9rem,9vw,7.2rem)] leading-[0.98] font-light tracking-[-0.03em] text-balance">
           <span className="block overflow-hidden pb-[0.12em]">

@@ -42,7 +42,10 @@ export function Projects() {
         <Jellyfish color="#7ee8ff" />
       </div>
       <div className="relative mx-auto max-w-6xl">
-        <ul className="grid gap-6 md:grid-cols-2">
+        <p className="ab-reel-hint" aria-hidden="true">
+          Desliza para ver más <span>→</span>
+        </p>
+        <ul className="ab-reel md:grid md:grid-cols-2 md:gap-6">
           {projects.map((project, index) => (
             <li key={project.name} data-reveal className={project.featured === true ? "md:col-span-2" : undefined}>
               <article

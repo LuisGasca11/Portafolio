@@ -13,11 +13,10 @@ type ChapterProps = {
   tags?: readonly ReactNode[];
 };
 
-const pad = (value: number) => String(value).padStart(2, "0");
-
 /**
  * Portada de un capítulo: ocupa más de una pantalla y su texto queda fijo
- * mientras la cámara 3D se lanza hacia el escenario del capítulo. El motor
+ * mientras la cámara 3D rodea el escenario del capítulo. No marca un corte:
+ * solo la profundidad, como una lectura más del descenso. El motor
  * de la escena lee `data-chapter` para saber dónde está cada parada.
  */
 export function Chapter({ id, headingId, title, body, zone, tags }: ChapterProps) {
@@ -27,9 +26,6 @@ export function Chapter({ id, headingId, title, body, zone, tags }: ChapterProps
       <div className="ab-chapter-pin">
         <div className="ab-chapter-copy" data-chapter-copy>
           <p className="ab-chapter-meta" data-chapter-line>
-            <span className="tabular-nums">
-              {pad(chapter.index + 1)} / {pad(chapter.total)}
-            </span>
             <span aria-hidden="true" className="ab-chapter-rule" />
             <span>
               {chapter.meters.toLocaleString("es-MX")} m · {zone ?? zoneOf(chapter.meters)}

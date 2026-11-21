@@ -55,6 +55,7 @@ export function Abismo() {
       {reduced ? null : <AbismoScene onStatus={onStatus} />}
       {reduced ? null : <TechBubbles />}
       <div className="ab-vignette" aria-hidden="true" />
+      <div className="ab-scrim" aria-hidden="true" />
       <div className="ab-flash" aria-hidden="true" />
 
       <Route />
