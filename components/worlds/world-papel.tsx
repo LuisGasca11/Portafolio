@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { ExternalLink } from "@/components/external-link";
+import { TechIcon } from "@/components/tech-icon";
 import { AmbientVideo } from "@/components/worlds/ambient-video";
 import { ContactForm } from "@/components/worlds/contact-form";
 import type { ContactFormClasses } from "@/components/worlds/contact-form";
@@ -233,7 +234,8 @@ export function WorldPapel() {
                       {project.stack.length > 0 ? (
                         <ul className="mt-4 flex flex-wrap gap-2" aria-label={`Stack de ${project.name}`}>
                           {project.stack.map((tag) => (
-                            <li key={tag} className="rounded-md bg-[#3b1230] px-2.5 py-1 text-xs font-bold text-[#fff4df]">
+                            <li key={tag} className="inline-flex items-center gap-1.5 rounded-md bg-[#3b1230] py-1 pr-2.5 pl-1 text-xs font-bold text-[#fff4df]">
+                              <TechIcon name={tag} size={1.2} />
                               {tag}
                             </li>
                           ))}
@@ -305,7 +307,8 @@ export function WorldPapel() {
                 <h3 className="pp-display text-2xl" style={{ color: groupColors[index % groupColors.length] }}>{group.title}</h3>
                 <ul className="mt-4 flex flex-wrap gap-2.5">
                   {group.items.map((item) => (
-                    <li key={item} className="pp-chip" style={{ backgroundColor: groupColors[index % groupColors.length] }}>
+                    <li key={item} className="pp-chip inline-flex items-center gap-2 !pl-2" style={{ backgroundColor: groupColors[index % groupColors.length] }}>
+                      <TechIcon name={item} size={1.5} />
                       {item}
                     </li>
                   ))}

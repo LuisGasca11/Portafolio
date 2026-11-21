@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink } from "@/components/external-link";
+import { TechIcon } from "@/components/tech-icon";
 import { AmbientVideo } from "@/components/worlds/ambient-video";
 import { ContactForm } from "@/components/worlds/contact-form";
 import type { ContactFormClasses } from "@/components/worlds/contact-form";
@@ -254,7 +255,7 @@ export function WorldJardin() {
                   {project.stack.length > 0 ? (
                     <ul className="mt-5 flex flex-wrap gap-2" aria-label={`Stack de ${project.name}`}>
                       {project.stack.map((tag) => (
-                        <li key={tag} className="jd-leafchip">{tag}</li>
+                        <li key={tag} className="jd-leafchip"><TechIcon name={tag} size={1.3} />{tag}</li>
                       ))}
                     </ul>
                   ) : null}
@@ -305,7 +306,7 @@ export function WorldJardin() {
                 <h3 className="jd-display mt-1 text-2xl font-semibold italic">{group.title}</h3>
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {group.items.map((item) => (
-                    <li key={item} className="jd-leafchip">{item}</li>
+                    <li key={item} className="jd-leafchip"><TechIcon name={item} size={1.4} />{item}</li>
                   ))}
                 </ul>
               </article>
