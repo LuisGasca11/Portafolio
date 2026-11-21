@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducedMotion } from "@/components/abismo/motion";
+import { useReducedMotion } from "@/components/abismo/hooks/motion";
 
 type AmbientVideoProps = {
   /** Nombre base en `public/worlds/` (sin extensión). */

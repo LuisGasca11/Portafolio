@@ -58,6 +58,11 @@ export function Hero() {
               {profile.github.label}
             </ExternalLink>
           </li>
+          <li>
+            <ExternalLink href={profile.linkedin.href} className={linkClass}>
+              LinkedIn
+            </ExternalLink>
+          </li>
         </ul>
       </div>
     </section>

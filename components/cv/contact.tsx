@@ -48,6 +48,11 @@ export function Contact() {
                 {profile.github.label}
               </ExternalLink>
             </li>
+            <li>
+              <ExternalLink href={profile.linkedin.href} className={linkClass}>
+                LinkedIn
+              </ExternalLink>
+            </li>
           </ul>
         </div>
       </div>

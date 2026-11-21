@@ -15,7 +15,7 @@ export function JsonLd() {
       addressCountry: "MX",
     },
     url: `${siteUrl}/curriculum`,
-    sameAs: [profile.github.href, siteUrl],
+    sameAs: [profile.github.href, profile.linkedin.href, siteUrl],
     alumniOf: education.map((item) => ({
       "@type": "EducationalOrganization",
       name: item.institution,

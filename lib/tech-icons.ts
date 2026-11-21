@@ -133,6 +133,15 @@ export const techIcons: Readonly<Record<string, TechIcon>> = {
       "M11 16h6"
     ]
   },
+  "linkedin": {
+    "hex": "0A66C2",
+    "strokes": [
+      "M4 9v11",
+      "M4 4.5v.01",
+      "M9 20V9",
+      "M9 13a4 4 0 0 1 8 0v7"
+    ]
+  },
   "microsip": {
     "hex": "0E7C86",
     "strokes": [

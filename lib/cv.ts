@@ -44,6 +44,10 @@ export const profile = {
     href: "https://github.com/LuisGasca11",
     label: "github.com/LuisGasca11",
   },
+  linkedin: {
+    href: "https://www.linkedin.com/in/luis-gasca-54a68834b",
+    label: "linkedin.com/in/luis-gasca-54a68834b",
+  },
 } as const;
 
 /** Navegación por secciones del currículum (ruta /curriculum). */

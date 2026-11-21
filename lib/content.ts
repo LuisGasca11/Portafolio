@@ -25,6 +25,8 @@ export const site = {
   phone: "+52 26 10840382",
   githubUrl: "https://github.com/LuisGasca11",
   githubLabel: "github.com/LuisGasca11",
+  linkedinUrl: "https://www.linkedin.com/in/luis-gasca-54a68834b",
+  linkedinLabel: "linkedin.com/in/luis-gasca-54a68834b",
   about:
     "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y móvil. Aprendizaje rápido, trabajo en equipo y orientación a resultados.",
 } as const;
@@ -215,7 +217,7 @@ export const personJsonLd = {
         "@type": "Place",
         name: site.location,
       },
-      sameAs: [site.githubUrl],
+      sameAs: [site.githubUrl, site.linkedinUrl],
       alumniOf: [
         {
           "@type": "CollegeOrUniversity",

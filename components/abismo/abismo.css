@@ -16,14 +16,20 @@
 
 .ab-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100lvh;
   z-index: -2;
   background: linear-gradient(180deg, #1aa9cb 0%, #0b6a98 35%, #06395c 70%, #042a45 100%);
 }
 
 .ab-dark {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100lvh;
   z-index: -1;
   background: radial-gradient(ellipse at 50% 0%, #031a2e 0%, #01070f 75%);
   opacity: 0;
@@ -209,7 +215,7 @@
   }
 }
 
-.ab-gl .ab-bg, .ab-gl .ab-dark { display: none; }
+.ab-gl .ab-dark { display: none; }
 
 .ab-header {
   position: fixed;
@@ -279,7 +285,7 @@
   border: 1.5px solid rgba(255, 255, 255, 0.55);
   background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.08) 62%);
   box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.25), 0 8px 24px rgba(0, 40, 70, 0.35);
-  animation: ab-icon-rise linear infinite;
+  animation: ab-icon-rise linear infinite backwards;
   pointer-events: none;
 }
 @keyframes ab-icon-rise {
@@ -343,4 +349,20 @@
 @keyframes ab-flap {
   0%, 100% { transform: rotate(-14deg); }
   50% { transform: rotate(14deg); }
+}
+
+/* Capa fija de burbujas con iconos: nacen en el borde inferior de la pantalla. */
+.ab-techlayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100lvh;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .ab-iconbubble[data-compact="false"] { display: none; }
 }
