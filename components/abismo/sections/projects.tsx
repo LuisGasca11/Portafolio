@@ -23,15 +23,20 @@ function onCardLeave(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--rx", "0deg");
 }
 
-export function Projects() {
+export function Projects({ glOn }: { glOn: boolean }) {
   return (
     <section id="desarrollos" aria-labelledby="desarrollos-titulo" className="relative px-5 py-24">
-      <div data-parallax="2" aria-hidden="true" className="pointer-events-none absolute top-24 -left-4 hidden w-24 opacity-80 sm:block">
-        <Jellyfish color="#ff7ee0" />
-      </div>
-      <div data-parallax="-1.5" aria-hidden="true" className="pointer-events-none absolute top-[40%] -right-3 hidden w-32 opacity-70 sm:block">
-        <Jellyfish color="#7ee8ff" />
-      </div>
+      {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
+      {glOn ? null : (
+        <>
+          <div data-parallax="2" aria-hidden="true" className="pointer-events-none absolute top-24 -left-4 hidden w-24 opacity-80 sm:block">
+            <Jellyfish color="#ff7ee0" />
+          </div>
+          <div data-parallax="-1.5" aria-hidden="true" className="pointer-events-none absolute top-[40%] -right-3 hidden w-32 opacity-70 sm:block">
+            <Jellyfish color="#7ee8ff" />
+          </div>
+        </>
+      )}
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading id="desarrollos-titulo" meters={180} title="Desarrollos" />
         <p className="mt-4 max-w-xl text-cyan-50/80">Lo que he construido, cada pieza detrás de su propia escotilla.</p>

@@ -5,14 +5,17 @@ import { groupHues, zoneOf } from "@/components/abismo/data";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
 import { skillGroups } from "@/lib/content";
 
-export function Skills() {
+export function Skills({ glOn }: { glOn: boolean }) {
   return (
     <section id="habilidades" aria-labelledby="habilidades-titulo" className="relative px-5 py-28">
-      <div aria-hidden="true" data-angler className="pointer-events-none absolute right-0 bottom-10 w-40 sm:w-72">
-        <div data-parallax="1">
-          <Angler />
+      {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
+      {glOn ? null : (
+        <div aria-hidden="true" data-angler className="pointer-events-none absolute right-0 bottom-10 w-40 sm:w-72">
+          <div data-parallax="1">
+            <Angler />
+          </div>
         </div>
-      </div>
+      )}
       <div className="relative mx-auto max-w-5xl">
         <SectionHeading id="habilidades-titulo" meters={880} zone={`${zoneOf(880)} · bioluminiscencia`} title="Habilidades" />
         <div className="mt-12 grid gap-10 sm:grid-cols-2">
