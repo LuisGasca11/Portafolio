@@ -1,0 +1,117 @@
+/* Mundo 2 · Papel picado. Todas las clases llevan el prefijo pp- */
+.pp-root {
+  --pp-cream: #fff4df;
+  --pp-magenta: #e6007e;
+  --pp-teal: #00b8a9;
+  --pp-yellow: #ffc400;
+  --pp-orange: #ff6a00;
+  --pp-indigo: #2b1055;
+  position: relative;
+  isolation: isolate;
+  color: #3b1230;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.pp-display {
+  font-family: var(--font-rubik), "Rubik", sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.pp-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .25  0 0 0 0 .1  0 0 0 0 .05  0 0 0 .7 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+}
+
+.pp-paper {
+  background: var(--pp-cream);
+  box-shadow: 0 2px 0 rgba(120, 50, 30, 0.12), 0 18px 30px -14px rgba(60, 10, 30, 0.45);
+}
+
+.pp-text-shadow { text-shadow: 0 4px 0 rgba(150, 30, 60, 0.35), 0 14px 24px rgba(90, 10, 30, 0.2); }
+
+.pp-layer { filter: drop-shadow(0 -8px 10px rgba(30, 5, 60, 0.35)); will-change: transform; }
+
+.pp-swing { animation: pp-swing 4.2s ease-in-out infinite; }
+@keyframes pp-swing {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.pp-dangle { transform-origin: 50% 0; animation: pp-dangle 5s ease-in-out infinite; }
+@keyframes pp-dangle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.pp-awning {
+  display: flex;
+  height: 2.6rem;
+  filter: drop-shadow(0 6px 4px rgba(60, 10, 30, 0.3));
+}
+.pp-awning span {
+  flex: 1;
+  border-radius: 0 0 999px 999px / 0 0 100% 100%;
+}
+
+.pp-tape {
+  position: absolute;
+  top: -0.8rem;
+  left: 50%;
+  width: 5.5rem;
+  height: 1.7rem;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(255, 196, 0, 0.8);
+  box-shadow: 0 2px 4px rgba(60, 10, 30, 0.2);
+}
+
+.pp-tag {
+  clip-path: polygon(0 18px, 18px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.pp-chip {
+  display: inline-block;
+  border-radius: 0.7rem 1.4rem 0.7rem 1.4rem;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  box-shadow: 0 4px 0 rgba(60, 10, 30, 0.25);
+  transition: translate 200ms ease, rotate 200ms ease;
+}
+.pp-chip:hover { translate: 0 -3px; rotate: -2deg; }
+
+.pp-card { transition: translate 280ms ease; }
+.pp-card:hover { translate: 0 -8px; }
+
+.pp-twinkle { animation: pp-twinkle 3s ease-in-out infinite; }
+@keyframes pp-twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.1) rotate(20deg); }
+}
+
+.pp-flame {
+  width: 14px;
+  height: 26px;
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: radial-gradient(ellipse at 50% 75%, #fff6a0, #ffb300 55%, #ff6a00);
+  box-shadow: 0 0 22px 8px rgba(255, 180, 0, 0.55);
+  transform-origin: 50% 100%;
+  animation: pp-flame 0.9s ease-in-out infinite alternate;
+}
+@keyframes pp-flame {
+  from { transform: scale(1, 1) rotate(-3deg); }
+  to { transform: scale(0.92, 1.1) rotate(3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-root *, .pp-root *::before, .pp-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,5 +1,5 @@
-import { HomeVariants } from "@/components/variants/home-variants";
+import { HomeWorlds } from "@/components/worlds/home-worlds";
 
 export default function HomePage() {
-  return <HomeVariants />;
+  return <HomeWorlds />;
 }

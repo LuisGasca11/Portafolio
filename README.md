@@ -4,14 +4,23 @@ Sitio personal en español (México), construido con Next.js (App Router), TypeS
 
 El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada ofrece varias versiones de diseño y un menú fijo abajo para cambiar entre ellas (se recuerda la elección y también se puede enlazar con `?v=v1`…`?v=v4`):
+La portada es un «mundo con scroll» con tres mundos distintos y un menú fijo abajo para cambiar entre ellos (se recuerda la elección y también se puede enlazar con `?v=m1`, `?v=m2` o `?v=m3`):
 
-- **V1 Factura**: la página como cotización estilo factura, con conceptos, totales y «Solicitar cotización».
-- **V2 Metro**: un plano de metro donde cada línea es un área técnica y cada estación una tecnología; al tocar una estación se resaltan los desarrollos que la usan.
-- **V3 Ticket**: un ticket térmico con puntos guía, totales y código de barras decorativo.
-- **V4 Editor**: un editor de código con explorador de archivos y paleta de comandos (Ctrl/⌘ + K).
+- **M1 Abismo**: un descenso al océano. La profundidad es la barra de progreso: del agua clara de la superficie al fondo marino, con peces, medusas, una ballena, un pez abisal y un submarino; las habilidades son organismos bioluminiscentes.
+- **M2 Papel**: un mundo de papel picado mexicano. Capas de papel con parallax (volcanes y pueblo), los desarrollos como puestos de tianguis con toldo, etiquetas colgantes, un papalote que acompaña el scroll y una noche de ofrenda para el contacto.
+- **M3 Jardín**: una enredadera que crece conforme se baja por la página; cada desarrollo es una flor que se abre en su rama, las habilidades son un herbario y el contacto es un invernadero.
 
-Las versiones viven en `components/variants/` y comparten los datos de `lib/content.ts` y el formulario de contacto (`contact-form.tsx`). Para añadir una nueva, crea su componente y regístrala en `home-variants.tsx`.
+Los mundos viven en `components/worlds/` (uno por archivo `world-*.tsx`, con su ilustración en `*-art.tsx` y su CSS) y comparten los datos de `lib/content.ts`, el formulario de contacto (`contact-form.tsx`) y los efectos de scroll (`motion.ts`). Para añadir uno nuevo, crea su componente y regístralo en `home-worlds.tsx`. Todo respeta `prefers-reduced-motion`.
+
+### Imágenes y videos
+
+Los videos ambientales (`public/worlds/*.webm`, `*.mp4`) y sus pósters se generan por código, sin material externo: `tools/render-loops/` dibuja cada escena en un canvas como función del tiempo (todo se mueve con ciclos enteros, así el bucle es perfecto) y la convierte a video con ffmpeg. Para regenerarlos hace falta Playwright y ffmpeg:
+
+```bash
+node tools/render-loops/render.cjs all
+```
+
+Las ilustraciones (peces, medusas, volcanes, flores, enredadera…) son SVG escritos a mano dentro de los componentes `*-art.tsx`.
 
 ## Requisitos
 
