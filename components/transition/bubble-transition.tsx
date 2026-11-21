@@ -4,8 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Angler, Fish, Jellyfish, Manta, Octopus, Seahorse, Shark, Turtle, Whale } from "@/components/abismo/abismo-art";
-import { getLenis } from "@/components/smooth-scroll";
+import { Angler, Fish, Jellyfish, Manta, Octopus, Seahorse, Shark, Turtle, Whale } from "@/components/abismo/art/creatures";
+import { getLenis } from "@/components/shared/smooth-scroll";
 
 type Phase = "idle" | "in" | "out";
 

@@ -20,6 +20,7 @@ const custom = {
   "sql server": { hex: "CC2927", strokes: ["M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z", "M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6", "M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"] },
   firebird: { hex: "F40F02", strokes: ["M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 .3 1.5 1 2 2 2-1-3-.5-6 1-9z"] },
   iis: { hex: "5E9BD1", strokes: ["M3 5h18v6H3z", "M3 13h18v6H3z", "M7 8h.01", "M7 16h.01", "M11 8h6", "M11 16h6"] },
+  linkedin: { hex: "0A66C2", strokes: ["M4 9v11", "M4 4.5v.01", "M9 20V9", "M9 13a4 4 0 0 1 8 0v7"] },
   microsip: { hex: "0E7C86", strokes: ["M5 3.5h14v17H5z", "M9 8h6", "M9 12h6", "M9 16h3"] },
 };
 

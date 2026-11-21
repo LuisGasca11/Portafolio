@@ -6,7 +6,29 @@ El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publi
 
 La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js. La cámara baja con el scroll a través de nieve marina, cardúmenes, medusas, mantarrayas, tortugas, tiburones, calamares, algas, cangrejos y estrellas de mar hasta el fondo; el medidor de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Un robot submarino recorre la experiencia y las habilidades son organismos bioluminiscentes. En móvil hay encabezado con la profundidad y menú propio, y la escena usa menos criaturas y menor resolución.
 
-Si el dispositivo no tiene WebGL o se pide menos movimiento, se usa el fondo CSS con ilustraciones SVG. Todo vive en `components/abismo/`: `abismo.tsx` (página), `abismo-3d.tsx` (escena, cargada con `import()`), `abismo-art.tsx` (ilustraciones SVG a mano) y `abismo.css`. Los datos salen de `lib/content.ts` y el formulario de contacto (`contact-form.tsx`) conserva los campos de Netlify Forms.
+Si el dispositivo no tiene WebGL o se pide menos movimiento, se usa el fondo CSS con ilustraciones SVG. Orden de la página: Hero → Sobre mí → Desarrollos → Experiencia → Habilidades → Educación → Contacto.
+
+### Estructura del código
+
+```
+app/                      rutas (inicio y /curriculum) y layout raíz
+components/
+  abismo/                 la portada
+    abismo.tsx            composición de la página
+    sections/             una sección por archivo (hero, about, projects, experience, skills, education, contact)
+    ui/                   piezas compartidas (encabezado y menú, medidor, burbujas, divisores, formulario, video)
+    scene/                escena 3D: engine.ts arma el mundo y cada capa (snow, rays, fish, jellyfish, manta, turtle, shark, squid, seabed…) es un módulo
+    art/                  ilustraciones SVG (creatures.tsx, flora.tsx)
+    hooks/                efectos de scroll (GSAP) y movimiento reducido
+    data.ts               navegación, zonas oceánicas y configuración de las burbujas
+  transition/             transición de vista con burbujas y animales (Framer Motion)
+  cv/                     la ruta /curriculum (con su encabezado, pie y efectos)
+  shared/                 enlace externo, icono de tecnología, scroll suave
+lib/                      contenido (content.ts, cv.ts) y datos de iconos (tech-icons.ts)
+tools/                    generadores del video ambiental y de los iconos
+```
+
+Los datos de la portada salen de `lib/content.ts` y el formulario de contacto conserva los campos de Netlify Forms.
 
 ### Transición entre vistas
 
