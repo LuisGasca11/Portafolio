@@ -1,16 +1,18 @@
 import { addAngelfish } from "./angelfish";
+import { addBubbles } from "./bubbles";
 import { DEPTH } from "./context";
 import type { SceneContext, Three, Updater } from "./context";
 import { addFishSchools } from "./fish";
 import { addJellyfish } from "./jellyfish";
-import { addLandmarks } from "./landmarks";
-import { addTrail } from "./trail";
 import { addMantas } from "./manta";
+import { createWaterKit } from "./materials";
+import { createUnderwaterPass } from "./post";
 import { addRays } from "./rays";
 import { addSeabed } from "./seabed";
 import { addSharks } from "./shark";
 import { addSnow } from "./snow";
 import { addSquids } from "./squid";
+import { addSurface } from "./surface";
 import { addTurtles } from "./turtle";
 import { waterColors } from "./water";
 
@@ -22,7 +24,8 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
   const small = window.matchMedia("(max-width: 768px)").matches;
   const fine = window.matchMedia("(pointer: fine)").matches;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, powerPreference: "high-performance" });
+  // Sin antialias del lienzo: el pase bajo el agua dibuja en un búfer con MSAA.
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.5 : 2));
 
   const scene = new THREE.Scene();
@@ -38,6 +41,8 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
   };
   const updaters: Updater[] = [];
   const time = { value: 0 };
+  const kit = createWaterKit(THREE, time, track);
+  const post = createUnderwaterPass(THREE, renderer, small);
   const ctx: SceneContext = {
     THREE,
     scene,
@@ -47,7 +52,8 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     pixel: { value: renderer.getPixelRatio() },
     fog: { uFog: { value: new THREE.Color() }, uFogDensity: { value: sceneFog.density } },
     updaters,
-    flat: (color, emissive = 0x000000) => track(new THREE.MeshLambertMaterial({ color, flatShading: true, emissive, side: THREE.DoubleSide })),
+    creature: kit.creature,
+    caustic: kit.caustic,
     floorY: (wx, wz) => -DEPTH - 7 + Math.sin(wx * 0.25) * 0.8 + Math.cos((-22 - wz) * 0.3) * 0.7,
     pathAt: (cx, cz, radius, ang, out) => out.set(cx + Math.cos(ang) * radius, 0, cz + Math.sin(ang) * radius * 0.6),
   };
@@ -71,37 +77,36 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
   bg.renderOrder = -1000;
   scene.add(bg);
 
-  // Luces para las criaturas de relieve (el resto usa sombreado propio).
-  scene.add(new THREE.AmbientLight(0x9fd8ff, 1.05));
-  const sunLight = new THREE.DirectionalLight(0xe6f8ff, 1.5);
+  // Luz del agua: cielo cian arriba, rebote oscuro abajo y el sol filtrado.
+  // Al bajar, la luz del sol se apaga y se enciende el faro de la cámara.
+  const hemi = new THREE.HemisphereLight(0xb8f0ff, 0x0a2433, 1.6);
+  scene.add(hemi);
+  const ambient = new THREE.AmbientLight(0x8fd0f0, 0.35);
+  scene.add(ambient);
+  const sunLight = new THREE.DirectionalLight(0xe6f8ff, 2.2);
   sunLight.position.set(-6, 12, 8);
   scene.add(sunLight);
+  const headlamp = new THREE.PointLight(0xbff3ff, 0, 38, 1.1);
+  headlamp.position.set(0, 1.5, 1);
+  camera.add(headlamp);
+  scene.add(camera);
 
   // Capas de la escena, del fondo al frente.
   addSnow(ctx);
   addRays(ctx);
-  const fishMaterial = addFishSchools(ctx);
-  addAngelfish(ctx, fishMaterial);
+  addSurface(ctx);
+  addFishSchools(ctx);
+  addAngelfish(ctx);
   addJellyfish(ctx);
   addSeabed(ctx);
   addMantas(ctx);
   addTurtles(ctx);
   addSharks(ctx);
   addSquids(ctx);
-  const stations = addLandmarks(ctx);
-  const trail = addTrail(ctx);
+  addBubbles(ctx, camera);
 
   // Tamaño, scroll y puntero.
   let maxScroll = 1;
-  let baseFov = 60;
-  /** Parada de cada escenario: avance del scroll (0–1) y ancho del lanzamiento. */
-  const stops = stations.map((station) => ({
-    station,
-    at: -1,
-    width: 0.05,
-    /** Ángulo de la órbita: del lado de la columna de agua. */
-    angle: Math.atan2(-station.x, -station.z),
-  }));
   let smooth = 0;
   let lastY = window.scrollY;
   let velocity = 0;
@@ -111,53 +116,14 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     const w = canvas.clientWidth || window.innerWidth;
     const h = canvas.clientHeight || window.innerHeight;
     renderer.setSize(w, h, false);
+    post.setSize(w, h, renderer.getPixelRatio());
     const aspect = w / h;
     camera.aspect = aspect;
     const hfov = (78 * Math.PI) / 180;
     const vfov = (2 * Math.atan(Math.tan(hfov / 2) / aspect) * 180) / Math.PI;
-    baseFov = Math.min(100, Math.max(50, vfov));
-    camera.fov = baseFov;
+    camera.fov = Math.min(100, Math.max(50, vfov));
     camera.updateProjectionMatrix();
     maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    // El escenario de cada capítulo se coloca justo donde la cámara estará
-    // cuando el texto del capítulo quede fijo en pantalla.
-    for (const stop of stops) {
-      const element = document.querySelector<HTMLElement>(`[data-chapter="${stop.station.id}"]`);
-      if (!element) {
-        stop.at = -1;
-        stop.station.group.visible = false;
-        continue;
-      }
-      const rect = element.getBoundingClientRect();
-      const top = rect.top + window.scrollY;
-      const pinned = Math.max(0, rect.height - window.innerHeight);
-      stop.at = Math.min(1, (top + pinned * 0.55) / maxScroll);
-      const { station } = stop;
-      station.group.visible = true;
-      station.group.position.y = station.onFloor ? ctx.floorY(station.x, station.z) : -stop.at * DEPTH - 1.6;
-    }
-    // Cada órbita dura hasta la mitad del camino al escenario vecino: la
-    // cámara siempre va de uno al siguiente, sin tramos muertos.
-    const active = stops.filter((stop) => stop.at >= 0);
-    active.forEach((stop, index) => {
-      const previousAt = active[index - 1]?.at ?? 0;
-      const nextAt = active[index + 1]?.at;
-      const gap = Math.min(stop.at - previousAt, nextAt === undefined ? stop.at - previousAt : nextAt - stop.at);
-      stop.width = Math.max(0.02, gap * 0.49);
-    });
-    // Estela de plancton que une los escenarios: marca el camino del descenso.
-    trail.build([
-      new THREE.Vector3(0, 1, -5),
-      ...active.map((stop) => {
-        const { station } = stop;
-        const reach = station.stand * 0.5;
-        return new THREE.Vector3(
-          station.x + Math.sin(stop.angle) * reach,
-          station.group.position.y + (station.onFloor ? 3 : 0.5),
-          station.z + Math.cos(stop.angle) * reach,
-        );
-      }),
-    ]);
   };
   resize();
   const resizeObserver = new ResizeObserver(resize);
@@ -172,21 +138,17 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     window.addEventListener("pointermove", onPointer, { passive: true });
   }
 
-  let lastDive = -1;
-  const basePosition = new THREE.Vector3();
-  const baseEuler = new THREE.Euler();
-  const baseQuat = new THREE.Quaternion();
-  const orbit = new THREE.Vector3();
-  const look = new THREE.Vector3();
-  const lookMatrix = new THREE.Matrix4();
-  const lookQuat = new THREE.Quaternion();
-  const up = new THREE.Vector3(0, 1, 0);
-  const sway = new THREE.Vector3();
   // Resolución adaptable: si los cuadros tardan, baja la densidad de píxeles.
   const maxPixel = renderer.getPixelRatio();
   let pixel = maxPixel;
   let slowFrames = 0;
   let fastFrames = 0;
+  const setPixel = (value: number) => {
+    pixel = value;
+    renderer.setPixelRatio(pixel);
+    ctx.pixel.value = pixel;
+    resize();
+  };
   const start = performance.now();
   let previous = start;
   let raf = 0;
@@ -216,61 +178,15 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
 
     pointer.x += (pointer.tx - pointer.x) * 0.05;
     pointer.y += (pointer.ty - pointer.y) * 0.05;
-    // Recorrido continuo: la cámara siempre desciende; al pasar por cada
-    // escenario lo rodea en espiral mirándolo, y sigue hacia el siguiente.
-    let dive = 0;
-    let u = 0;
-    let target: (typeof stops)[number] | undefined;
-    for (const stop of stops) {
-      if (stop.at < 0) continue;
-      const local = (smooth - stop.at) / stop.width;
-      if (Math.abs(local) >= 1) continue;
-      const weight = (Math.cos(local * Math.PI) + 1) / 2;
-      if (weight > dive) {
-        dive = weight;
-        u = local;
-        target = stop;
-      }
-    }
-    const ease = dive * dive * (3 - 2 * dive);
-    sway.set(pointer.x * 1.2 + Math.sin(elapsed * 0.2) * 0.5, Math.sin(elapsed * 0.3) * 0.3 - pointer.y * 0.4, 0);
-    const finalPitch = -0.28 * Math.min(1, Math.max(0, (smooth - 0.86) / 0.14));
-    basePosition.set(0, -smooth * DEPTH, 0);
-    baseEuler.set(finalPitch - pointer.y * 0.03, -pointer.x * 0.05, Math.max(-0.08, Math.min(0.08, -velocity * 0.02)));
-    baseQuat.setFromEuler(baseEuler);
-    if (target) {
-      const { station } = target;
-      const center = station.group.position;
-      const theta = target.angle + u * (small ? 0.45 : 0.7);
-      const lift = station.onFloor ? 6 - u * 1.5 : 1.8 - u * 3.2;
-      orbit.set(center.x + Math.sin(theta) * station.stand, center.y + lift, center.z + Math.cos(theta) * station.stand);
-      camera.position.lerpVectors(basePosition, orbit, ease).add(sway);
-      // Encuadre: en escritorio el escenario queda a la derecha (el texto va a
-      // la izquierda); en móvil, arriba (el texto va abajo).
-      look.copy(center);
-      if (small) {
-        look.y -= 2.4;
-      } else {
-        look.x -= Math.cos(theta) * 3.6;
-        look.z += Math.sin(theta) * 3.6;
-        look.y -= station.onFloor ? 1 : 0.2;
-      }
-      lookMatrix.lookAt(camera.position, look, up);
-      lookQuat.setFromRotationMatrix(lookMatrix);
-      camera.quaternion.copy(baseQuat).slerp(lookQuat, ease);
-    } else {
-      camera.position.copy(basePosition).add(sway);
-      camera.quaternion.copy(baseQuat);
-    }
-    const fov = baseFov * (1 - 0.08 * ease);
-    if (Math.abs(camera.fov - fov) > 0.01) {
-      camera.fov = fov;
-      camera.updateProjectionMatrix();
-    }
-    if (Math.abs(ease - lastDive) > 0.004) {
-      lastDive = ease;
-      document.documentElement.style.setProperty("--ab-dive", ease.toFixed(3));
-    }
+    const pitch = -0.28 * Math.min(1, Math.max(0, (smooth - 0.86) / 0.14));
+    camera.position.set(pointer.x * 1.4 + Math.sin(elapsed * 0.2) * 0.5, -smooth * DEPTH + Math.sin(elapsed * 0.3) * 0.3 - pointer.y * 0.5, 0);
+    camera.rotation.set(pitch - pointer.y * 0.03, -pointer.x * 0.05, Math.max(-0.08, Math.min(0.08, -velocity * 0.02)));
+
+    // La luz cambia con la profundidad.
+    kit.caustic.value = Math.max(0, 1 - smooth * 2.4);
+    sunLight.intensity = 2.2 * Math.max(0.05, 1 - smooth * 1.6);
+    hemi.intensity = 0.5 + 1.1 * Math.max(0, 1 - smooth * 1.2);
+    headlamp.intensity = 40 * Math.min(1, Math.max(0, (smooth - 0.25) / 0.35));
 
     if (dt > 0.024) {
       slowFrames += 1;
@@ -280,23 +196,17 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
       slowFrames = Math.max(0, slowFrames - 1);
     }
     if (slowFrames > 45 && pixel > 1) {
-      pixel = Math.max(1, pixel - 0.25);
-      renderer.setPixelRatio(pixel);
-      ctx.pixel.value = pixel;
-      resize();
+      setPixel(Math.max(1, pixel - 0.25));
       slowFrames = 0;
     } else if (fastFrames > 240 && pixel < maxPixel) {
-      pixel = Math.min(maxPixel, pixel + 0.25);
-      renderer.setPixelRatio(pixel);
-      ctx.pixel.value = pixel;
-      resize();
+      setPixel(Math.min(maxPixel, pixel + 0.25));
       fastFrames = 0;
     }
 
     for (const update of updaters) {
       update(elapsed, dt, smooth);
     }
-    renderer.render(scene, camera);
+    post.render(scene, camera, elapsed, smooth);
   };
   raf = requestAnimationFrame(frame);
 
@@ -308,7 +218,7 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     for (const item of disposables) {
       item.dispose();
     }
-    document.documentElement.style.removeProperty("--ab-dive");
+    post.dispose();
     renderer.dispose();
     renderer.forceContextLoss();
   };

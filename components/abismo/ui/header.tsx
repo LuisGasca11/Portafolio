@@ -51,9 +51,8 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-3 md:hidden">
-          <span aria-hidden="true" className="ab-header-pill">
-            <span data-chapter-label>Superficie</span>
-            <span data-gauge-text className="tabular-nums">0 m</span>
+          <span aria-hidden="true" className="rounded-full border border-cyan-200/30 bg-black/30 px-3 py-1 text-xs font-semibold tabular-nums">
+            <span data-gauge-text>0 m</span>
           </span>
           <button
             type="button"

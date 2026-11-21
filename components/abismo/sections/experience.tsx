@@ -1,20 +1,12 @@
 import { ExternalLink } from "@/components/shared/external-link";
 import { Octopus, Rov, Whale } from "@/components/abismo/art/creatures";
-import { Chapter } from "@/components/abismo/ui/chapter";
-import { company, roles } from "@/lib/content";
+import { SectionHeading } from "@/components/abismo/ui/section-heading";
+import { roles } from "@/lib/content";
 
 export function Experience() {
-  const current = roles[0];
   return (
-    <section id="experiencia" aria-labelledby="experiencia-titulo" className="relative px-5 pb-28">
-      <Chapter
-        id="experiencia"
-        headingId="experiencia-titulo"
-        title="Experiencia"
-        body={`Desarrollador full stack en ${company}.`}
-        tags={[current?.period ?? "", "Web", "Móvil", "ERP Microsip"].filter(Boolean)}
-      />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-[calc(var(--ab-chapter-h)+4rem)] overflow-hidden">
+    <section id="experiencia" aria-labelledby="experiencia-titulo" className="relative px-5 py-28">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/3 overflow-hidden">
         <div data-whale className="w-[min(70vw,520px)] opacity-80">
           <Whale />
         </div>
@@ -23,7 +15,8 @@ export function Experience() {
         <Octopus className="ab-bob" />
       </div>
       <div className="relative mx-auto max-w-4xl">
-        <div data-rov-track className="relative">
+        <SectionHeading id="experiencia-titulo" meters={520} title="Experiencia" />
+        <div data-rov-track className="relative mt-12">
           <div aria-hidden="true" className="absolute top-0 bottom-0 left-[1.1rem] border-l border-dashed border-cyan-200/35 sm:left-[1.4rem]" />
           <div aria-hidden="true" data-rov className="absolute top-0 -left-[0.55rem] z-10 w-14 sm:left-0 sm:w-16">
             <Rov />
@@ -49,7 +42,7 @@ export function Experience() {
                   {role.highlights !== undefined ? (
                     <ul className="mt-6 grid gap-3 text-sm leading-relaxed text-cyan-50/85">
                       {role.highlights.map((item) => (
-                        <li key={item} className="ab-highlight" data-reveal>
+                        <li key={item} className="ab-highlight">
                           {item}
                         </li>
                       ))}

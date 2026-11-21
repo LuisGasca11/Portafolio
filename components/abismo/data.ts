@@ -1,29 +1,14 @@
 /** Profundidad total que recorre la página, en metros. */
 export const maxDepth = 1200;
 
-/**
- * Capítulos del descenso, al estilo de un recorrido continuo: cada uno tiene
- * su profundidad, su color de acento y un escenario 3D al que la cámara se
- * lanza mientras el texto del capítulo queda fijo en pantalla.
- */
-export const chapters = [
-  { id: "inicio", label: "Superficie", meters: 0, accent: "#bff6ff" },
-  { id: "sobre-mi", label: "Sobre mí", meters: 40, accent: "#ffb38a" },
-  { id: "desarrollos", label: "Desarrollos", meters: 180, accent: "#7ee8ff" },
-  { id: "experiencia", label: "Experiencia", meters: 520, accent: "#ffd27a" },
-  { id: "habilidades", label: "Habilidades", meters: 880, accent: "#d79bff" },
-  { id: "educacion", label: "Educación", meters: 1040, accent: "#5dffc9" },
-  { id: "contacto", label: "Contacto", meters: 1200, accent: "#ff7ed8" },
+export const navLinks = [
+  { href: "#sobre-mi", label: "Sobre mí" },
+  { href: "#desarrollos", label: "Desarrollos" },
+  { href: "#experiencia", label: "Experiencia" },
+  { href: "#habilidades", label: "Habilidades" },
+  { href: "#educacion", label: "Educación" },
+  { href: "#contacto", label: "Contacto" },
 ] as const;
-
-export type ChapterId = (typeof chapters)[number]["id"];
-
-export function chapterOf(id: ChapterId) {
-  const index = chapters.findIndex((chapter) => chapter.id === id);
-  return { ...chapters[index]!, index, total: chapters.length };
-}
-
-export const navLinks = chapters.slice(1).map((chapter) => ({ href: `#${chapter.id}`, label: chapter.label }));
 
 /** Zona oceánica real según la profundidad. */
 export function zoneOf(meters: number): string {

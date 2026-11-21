@@ -25,9 +25,9 @@ export function Hero({ glOn }: { glOn: boolean }) {
           style={{ left: bubble.left, width: bubble.size, height: bubble.size, animationDuration: `${bubble.duration}s`, animationDelay: `${bubble.delay}s`, "--dx": `${bubble.dx}px` } as CSSProperties}
         />
       ))}
-      <div data-hero-content className="relative z-10 mx-auto w-full max-w-5xl pt-20 text-center">
+      <div className="relative z-10 mx-auto w-full max-w-5xl pt-20 text-center">
         <p className="ab-depth" style={{ color: "#e6fcff" }} data-hero-fade>
-          0 m · Superficie
+          — 0 m · Superficie
         </p>
         <h1 className="ab-display mt-5 text-[clamp(2.9rem,9vw,7.2rem)] leading-[0.98] font-light tracking-[-0.03em] text-balance">
           <span className="block overflow-hidden pb-[0.12em]">
