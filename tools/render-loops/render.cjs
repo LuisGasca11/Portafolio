@@ -1,5 +1,5 @@
 /* Renderiza los bucles de video de la portada.
- * Uso: node tools/render-loops/render.cjs [ocean|petals|garden|all] [--test]
+ * Uso: node tools/render-loops/render.cjs [ocean|all] [--test]
  * Requiere Playwright (Chromium) y ffmpeg. Salida: public/worlds/ */
 const { chromium } = require("playwright");
 const { execFileSync } = require("node:child_process");
@@ -11,7 +11,7 @@ const outDir = path.join(root, "public/worlds");
 const tmp = fs.mkdtempSync(path.join(require("node:os").tmpdir(), "loops-"));
 const FPS = 24;
 const SECONDS = 5;
-const names = { ocean: "abismo", petals: "papel", garden: "jardin" };
+const names = { ocean: "abismo" };
 
 (async () => {
   const arg = process.argv[2] ?? "all";

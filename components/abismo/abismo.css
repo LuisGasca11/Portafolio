@@ -81,10 +81,10 @@
   50% { transform: skewX(6deg); }
 }
 
-.ab-sway { transform-origin: 20px 150px; animation: ab-sway 5s ease-in-out infinite; }
+.ab-sway { animation: ab-sway 5s ease-in-out infinite; }
 @keyframes ab-sway {
-  0%, 100% { transform: rotate(-4deg); }
-  50% { transform: rotate(5deg); }
+  0%, 100% { transform: rotate(-5deg) skewX(-3deg); }
+  50% { transform: rotate(6deg) skewX(3deg); }
 }
 
 .ab-lure { animation: ab-lure 2.4s ease-in-out infinite; transform-origin: 56px 26px; }
@@ -337,3 +337,10 @@
 }
 
 .ab-orb { gap: 0.55rem; padding: 0.4rem 1.05rem 0.4rem 0.4rem; }
+
+.ab-flap { animation: ab-flap 2.4s ease-in-out infinite; }
+.ab-flap2 { animation: ab-flap 2.4s ease-in-out infinite reverse; }
+@keyframes ab-flap {
+  0%, 100% { transform: rotate(-14deg); }
+  50% { transform: rotate(14deg); }
+}

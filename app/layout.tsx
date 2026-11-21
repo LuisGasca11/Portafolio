@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Fraunces, Inter, Rubik } from "next/font/google";
+import { Bricolage_Grotesque, Fraunces, Inter } from "next/font/google";
+import { BubbleTransition } from "@/components/transition/bubble-transition";
 import { personJsonLd, site } from "@/lib/content";
 import "./globals.css";
 
@@ -19,12 +20,6 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   style: ["normal", "italic"],
-  display: "swap",
-});
-
-const rubik = Rubik({
-  subsets: ["latin"],
-  variable: "--font-rubik",
   display: "swap",
 });
 
@@ -90,7 +85,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const jsonLd = JSON.stringify(personJsonLd).replace(/</g, "\\u003c");
 
   return (
-    <html lang="es-MX" className={`${inter.variable} ${display.variable} ${fraunces.variable} ${rubik.variable} h-full antialiased`}>
+    <html lang="es-MX" className={`${inter.variable} ${display.variable} ${fraunces.variable} h-full antialiased`}>
       <body className="min-h-full bg-canvas text-ink">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
         <a
@@ -99,7 +94,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Saltar al contenido
         </a>
-        {children}
+        <BubbleTransition>{children}</BubbleTransition>
       </body>
     </html>
   );

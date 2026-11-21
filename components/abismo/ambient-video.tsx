@@ -1,10 +1,10 @@
 "use client";
 
-import { useReducedMotion } from "@/components/worlds/motion";
+import { useReducedMotion } from "@/components/abismo/motion";
 
 type AmbientVideoProps = {
   /** Nombre base en `public/worlds/` (sin extensión). */
-  name: "abismo" | "papel" | "jardin";
+  name: "abismo";
   className?: string;
 };
 

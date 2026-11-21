@@ -13,6 +13,13 @@ type SmoothScrollProps = {
   children: ReactNode;
 };
 
+let current: Lenis | null = null;
+
+/** Instancia activa de Lenis (si la página usa scroll suave). */
+export function getLenis(): Lenis | null {
+  return current;
+}
+
 export function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
     const lenis = new Lenis({
@@ -22,6 +29,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       anchors: { offset: -84 },
     });
 
+    current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     function onTick(time: number) {
@@ -42,6 +50,9 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       window.removeEventListener("load", refresh);
       gsap.ticker.remove(onTick);
       lenis.destroy();
+      if (current === lenis) {
+        current = null;
+      }
     };
   }, []);
 

@@ -26,7 +26,8 @@ export type Project = {
   description: string;
   stack: readonly string[];
   detail?: string;
-  href?: string;
+  /** Sitios en línea del desarrollo. */
+  hrefs?: readonly string[];
 };
 
 export const profile = {
@@ -73,11 +74,11 @@ export const education: readonly EducationItem[] = [
 export const technicalSkills: readonly SkillGroup[] = [
   {
     label: "Front end",
-    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript"],
+    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   {
     label: "Back end",
-    items: ["PHP", "Laravel", "Java", "MySQL", "SQLServer"],
+    items: ["PHP", "Laravel", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
   },
   {
     label: "Mobile",
@@ -85,7 +86,7 @@ export const technicalSkills: readonly SkillGroup[] = [
   },
   {
     label: "DevOps",
-    items: ["Git", "GitHub", "Tailwind CSS"],
+    items: ["Git", "GitHub", "Vercel", "Netlify", "Cloudflare", "PM2", "IIS"],
   },
   {
     label: "ERP",
@@ -162,6 +163,7 @@ export const projects: readonly Project[] = [
     description:
       "Facturación electrónica y cotizaciones integradas al ERP Microsip con sincronización automática de datos.",
     stack: ["Microsip"],
+    hrefs: ["https://fyttsa.facturadorenlinea.mx", "https://casatorres.facturadorenlinea.mx"],
   },
   {
     name: "Apps Móviles con Expo",
@@ -197,6 +199,6 @@ export const projects: readonly Project[] = [
     description:
       "Monorepo web con Next.js y API en PHP sobre Firebird y Microsip. Incluye un Planeador de Ruta con Leaflet, OpenStreetMap y OSRM: Dijkstra exacto hasta 10 paradas y vecino cercano con 2-opt para más paradas. Geocodificación con Google, pedidos programados por cron y despliegue en IIS con PM2.",
     stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
-    href: "https://voyager.b-mkt.com",
+    hrefs: ["https://black-net.mx"],
   },
 ];

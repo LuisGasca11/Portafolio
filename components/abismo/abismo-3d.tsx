@@ -398,6 +398,387 @@ export function AbismoScene({ onStatus }: { onStatus: (status: SceneStatus) => v
         glow.frustumCulled = false;
         scene.add(glow);
 
+        // Luces para las criaturas de relieve (el resto usa sombreado propio).
+        scene.add(new THREE.AmbientLight(0x9fd8ff, 1.05));
+        const sunLight = new THREE.DirectionalLight(0xe6f8ff, 1.5);
+        sunLight.position.set(-6, 12, 8);
+        scene.add(sunLight);
+        const flat = (color: number, emissive = 0x000000) =>
+          track(new THREE.MeshLambertMaterial({ color, flatShading: true, emissive, side: THREE.DoubleSide }));
+        const floorY = (wx: number, wz: number) =>
+          -DEPTH - 7 + Math.sin(wx * 0.25) * 0.8 + Math.cos((-22 - wz) * 0.3) * 0.7;
+        const updaters: ((time: number, dt: number) => void)[] = [];
+        const pathAt = (cx: number, cz: number, radius: number, ang: number, out: import("three").Vector3) =>
+          out.set(cx + Math.cos(ang) * radius, 0, cz + Math.sin(ang) * radius * 0.6);
+
+        // Algas laminarias en el fondo (instanciadas, se mecen con el tiempo).
+        const kelpGeo = track(new THREE.PlaneGeometry(0.9, 1, 1, 9));
+        kelpGeo.translate(0, 0.5, 0);
+        const kelpCount = small ? 30 : 64;
+        const kelpPhase = new Float32Array(kelpCount);
+        const kelpHeight = new Float32Array(kelpCount);
+        const kelpMat = track(
+          new THREE.ShaderMaterial({
+            uniforms: { uTime: uniformsTime, uFog: fishUniforms.uFog, uFogDensity: fishUniforms.uFogDensity },
+            side: THREE.DoubleSide,
+            vertexShader: `
+              uniform float uTime; attribute float aPhase; attribute float aHeight; varying float vH; varying float vDist;
+              void main(){
+                vec3 p = position; float h = p.y; vH = h;
+                p.x *= mix(1.0, 0.2, h) * (1.0 + 0.3*sin(h*10.0 + aPhase*6.28));
+                p.y *= aHeight;
+                p.x += sin(uTime*1.1 + aPhase*6.28 + h*3.0) * 0.55 * h*h * aHeight * 0.4;
+                p.z += cos(uTime*0.9 + aPhase*5.0 + h*2.5) * 0.3 * h*h * aHeight * 0.3;
+                vec4 mv = modelViewMatrix * instanceMatrix * vec4(p, 1.0);
+                vDist = -mv.z; gl_Position = projectionMatrix * mv;
+              }`,
+            fragmentShader: `
+              uniform vec3 uFog; uniform float uFogDensity; varying float vH; varying float vDist;
+              void main(){
+                vec3 col = mix(vec3(0.03, 0.22, 0.16), vec3(0.42, 0.95, 0.52), vH);
+                col += vec3(0.1, 0.2, 0.1) * pow(vH, 3.0);
+                float f = 1.0 - exp(-uFogDensity*uFogDensity*vDist*vDist);
+                gl_FragColor = vec4(mix(col, uFog, clamp(f, 0.0, 0.9)), 1.0);
+              }`,
+          }),
+        );
+        const kelpGeoI = kelpGeo.clone();
+        track(kelpGeoI);
+        const kelp = new THREE.InstancedMesh(kelpGeoI, kelpMat, kelpCount);
+        kelp.frustumCulled = false;
+        {
+          const m = new THREE.Object3D();
+          for (let i = 0; i < kelpCount; i += 1) {
+            const wx = (Math.random() - 0.5) * 66;
+            const wz = -5 - Math.random() * 30;
+            m.position.set(wx, floorY(wx, wz) - 0.2, wz);
+            m.rotation.set(0, Math.random() * Math.PI, 0);
+            const w = 0.8 + Math.random() * 1.2;
+            m.scale.set(w, 1, w);
+            m.updateMatrix();
+            kelp.setMatrixAt(i, m.matrix);
+            kelpPhase[i] = Math.random();
+            kelpHeight[i] = 3 + Math.random() * 6;
+          }
+        }
+        kelpGeoI.setAttribute("aPhase", new THREE.InstancedBufferAttribute(kelpPhase, 1));
+        kelpGeoI.setAttribute("aHeight", new THREE.InstancedBufferAttribute(kelpHeight, 1));
+        scene.add(kelp);
+
+        // Pez ángel (cardumen pequeño de cuerpo alto).
+        {
+          const a = [0, 0, 0.9, 0, 1.15, -0.1, -0.2, 0, 0, 0, 0, 0.9, 0.2, 0, 0, 0, 1.15, -0.1,
+            0, 0, 0.9, -0.2, 0, 0, 0, -1.15, -0.1, 0, 0, 0.9, 0, -1.15, -0.1, 0.2, 0, 0,
+            0, 1.15, -0.1, 0, 0, -1, -0.2, 0, 0, 0, 1.15, -0.1, 0.2, 0, 0, 0, 0, -1,
+            0, -1.15, -0.1, -0.2, 0, 0, 0, 0, -1, 0, -1.15, -0.1, 0, 0, -1, 0.2, 0, 0];
+          const angelGeo = track(new THREE.BufferGeometry());
+          angelGeo.setAttribute("position", new THREE.Float32BufferAttribute(a, 3));
+          angelGeo.computeVertexNormals();
+          const count = small ? 7 : 14;
+          const mesh = new THREE.InstancedMesh(angelGeo, fishMat, count);
+          mesh.frustumCulled = false;
+          mesh.geometry = angelGeo.clone();
+          track(mesh.geometry);
+          const phase = new Float32Array(count);
+          const colors = new Float32Array(count * 3);
+          const offs = new Float32Array(count * 3);
+          for (let i = 0; i < count; i += 1) {
+            phase[i] = Math.random();
+            colors.set(i % 3 === 0 ? [1, 0.95, 0.85] : [1, 0.78, 0.3], i * 3);
+            offs.set([(Math.random() - 0.5) * 4, (Math.random() - 0.5) * 2.4, (Math.random() - 0.5) * 4], i * 3);
+          }
+          mesh.geometry.setAttribute("aPhase", new THREE.InstancedBufferAttribute(phase, 1));
+          mesh.geometry.setAttribute("aColor", new THREE.InstancedBufferAttribute(colors, 3));
+          scene.add(mesh);
+          const d = new THREE.Object3D();
+          const tgt = new THREE.Vector3();
+          const p = new THREE.Vector3();
+          updaters.push((time) => {
+            for (let i = 0; i < count; i += 1) {
+              const ang = time * 0.16 + i * 0.03;
+              pathAt(-4, -20, 8, ang, p);
+              p.x += offs[i * 3] ?? 0;
+              p.z += offs[i * 3 + 2] ?? 0;
+              p.y = -0.11 * DEPTH + (offs[i * 3 + 1] ?? 0) + Math.sin(time * 0.7 + i) * 0.3;
+              d.position.copy(p);
+              tgt.set(p.x - Math.sin(ang) * 3, p.y, p.z + Math.cos(ang) * 2);
+              d.lookAt(tgt);
+              d.scale.setScalar(0.3 + (i % 4) * 0.04);
+              d.updateMatrix();
+              mesh.setMatrixAt(i, d.matrix);
+            }
+            mesh.instanceMatrix.needsUpdate = true;
+          });
+        }
+
+        // Mantarrayas.
+        {
+          const wing = track(new THREE.BufferGeometry());
+          wing.setAttribute("position", new THREE.Float32BufferAttribute([0, 0, 1.2, 3, 0, -0.2, 0, 0, -1.1, 0, 0, 1.2, 1.4, 0.08, -0.6, 3, 0, -0.2], 3));
+          wing.computeVertexNormals();
+          const bodyGeo = track(new THREE.SphereGeometry(1, 8, 6));
+          const tailGeo = track(new THREE.ConeGeometry(0.08, 3.2, 5));
+          const mat = flat(0x1d3c5c);
+          const belly = flat(0xcfe6f2);
+          const mantas = small ? 2 : 3;
+          for (let i = 0; i < mantas; i += 1) {
+            const g = new THREE.Group();
+            const body = new THREE.Mesh(bodyGeo, mat);
+            body.scale.set(0.6, 0.22, 1.1);
+            const left = new THREE.Group();
+            const right = new THREE.Group();
+            left.add(new THREE.Mesh(wing, mat));
+            const r = new THREE.Mesh(wing, mat);
+            r.scale.x = -1;
+            right.add(r);
+            const tail = new THREE.Mesh(tailGeo, mat);
+            tail.rotation.x = -Math.PI / 2;
+            tail.position.z = -2.5;
+            const underside = new THREE.Mesh(bodyGeo, belly);
+            underside.scale.set(0.5, 0.1, 0.9);
+            underside.position.y = -0.12;
+            g.add(body, left, right, tail, underside);
+            g.scale.setScalar(1.5 + i * 0.25);
+            scene.add(g);
+            const cy = -(0.22 + i * 0.25) * DEPTH;
+            const speed = (i % 2 === 0 ? 1 : -1) * (0.1 + i * 0.015);
+            const tgt = new THREE.Vector3();
+            const p = new THREE.Vector3();
+            updaters.push((time) => {
+              const ang = time * speed + i * 2;
+              pathAt(i * 3 - 3, -22 - i * 2, 15, ang, p);
+              p.y = cy + Math.sin(time * 0.4 + i) * 1.2;
+              g.position.copy(p);
+              const dir = speed > 0 ? 1 : -1;
+              tgt.set(p.x - Math.sin(ang) * dir * 5, p.y, p.z + Math.cos(ang) * 3 * dir);
+              g.lookAt(tgt);
+              const flap = Math.sin(time * 1.5 + i) * 0.35;
+              left.rotation.z = flap;
+              right.rotation.z = -flap;
+            });
+          }
+        }
+
+        // Tortugas marinas.
+        {
+          const shellGeo = track(new THREE.SphereGeometry(1, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2));
+          const headGeo = track(new THREE.IcosahedronGeometry(0.4, 0));
+          const flipGeo = track(new THREE.SphereGeometry(1, 6, 4));
+          const shellMat = flat(0x6c8f4c);
+          const skinMat = flat(0xc2ad76);
+          const turtles = small ? 1 : 2;
+          for (let i = 0; i < turtles; i += 1) {
+            const g = new THREE.Group();
+            const shell = new THREE.Mesh(shellGeo, shellMat);
+            shell.scale.set(1.3, 0.6, 1.7);
+            const plastron = new THREE.Mesh(shellGeo, skinMat);
+            plastron.scale.set(1.2, -0.25, 1.6);
+            const head = new THREE.Mesh(headGeo, skinMat);
+            head.position.set(0, 0.05, 1.95);
+            head.scale.set(1, 0.85, 1.2);
+            g.add(shell, plastron, head);
+            const flips: import("three").Group[] = [];
+            for (const [x, z, s] of [[1.3, 0.8, 1], [-1.3, 0.8, 1], [0.9, -1.3, 0.6], [-0.9, -1.3, 0.6]] as const) {
+              const pivot = new THREE.Group();
+              pivot.position.set(x, -0.05, z);
+              const f = new THREE.Mesh(flipGeo, skinMat);
+              f.scale.set(0.9 * s, 0.1, 0.35 * s);
+              f.position.x = Math.sign(x) * 0.7 * s;
+              pivot.add(f);
+              g.add(pivot);
+              flips.push(pivot);
+            }
+            g.scale.setScalar(1.1);
+            scene.add(g);
+            const cy = -(0.12 + i * 0.2) * DEPTH;
+            const tgt = new THREE.Vector3();
+            const p = new THREE.Vector3();
+            updaters.push((time) => {
+              const ang = time * (0.1 + i * 0.02) + i * 3;
+              pathAt(i * 4 - 2, -17 - i * 3, 12, ang, p);
+              p.y = cy + Math.sin(time * 0.5 + i * 2) * 0.9;
+              g.position.copy(p);
+              tgt.set(p.x - Math.sin(ang) * 4, p.y, p.z + Math.cos(ang) * 2.4);
+              g.lookAt(tgt);
+              const t = Math.sin(time * 1.6 + i);
+              flips.forEach((pivot, index) => {
+                pivot.rotation.z = (index % 2 === 0 ? -1 : 1) * (0.3 + t * 0.35);
+              });
+            });
+          }
+        }
+
+        // Tiburones lejanos.
+        {
+          const prof = [[0, -3.2], [0.28, -2.8], [0.7, -1.6], [0.92, 0], [0.8, 1.6], [0.45, 2.7], [0.12, 3.2], [0, 3.3]].map(([r, y]) => new THREE.Vector2(r, y));
+          const bodyGeo = track(new THREE.LatheGeometry(prof, 12));
+          const finGeo = track(new THREE.ConeGeometry(0.5, 1.2, 4));
+          const mat = flat(0x56768d);
+          const lightMat = flat(0xb9d2df);
+          const sharks = small ? 1 : 2;
+          for (let i = 0; i < sharks; i += 1) {
+            const g = new THREE.Group();
+            const body = new THREE.Mesh(bodyGeo, mat);
+            body.rotation.x = Math.PI / 2;
+            body.scale.set(1, 1, 0.8);
+            const belly = new THREE.Mesh(bodyGeo, lightMat);
+            belly.rotation.x = Math.PI / 2;
+            belly.scale.set(0.92, 0.96, 0.6);
+            belly.position.y = -0.18;
+            const dorsal = new THREE.Mesh(finGeo, mat);
+            dorsal.scale.set(0.25, 1, 1);
+            dorsal.position.set(0, 1.05, 0.2);
+            dorsal.rotation.x = -0.3;
+            g.add(body, belly, dorsal);
+            for (const side of [-1, 1]) {
+              const fin = new THREE.Mesh(finGeo, mat);
+              fin.scale.set(0.9, 0.9, 0.22);
+              fin.position.set(side * 0.95, -0.4, 0.9);
+              fin.rotation.z = -side * 1.3;
+              g.add(fin);
+            }
+            const tail = new THREE.Group();
+            tail.position.z = -3.1;
+            const up = new THREE.Mesh(finGeo, mat);
+            up.scale.set(0.2, 1.4, 1);
+            up.position.set(0, 0.7, -0.4);
+            up.rotation.x = -0.7;
+            const low = new THREE.Mesh(finGeo, mat);
+            low.scale.set(0.2, 0.9, 0.8);
+            low.position.set(0, -0.45, -0.3);
+            low.rotation.x = Math.PI + 0.7;
+            tail.add(up, low);
+            g.add(tail);
+            g.scale.setScalar(2.1);
+            scene.add(g);
+            const cy = -(0.4 + i * 0.28) * DEPTH;
+            const speed = (i === 0 ? 1 : -1) * 0.055;
+            const tgt = new THREE.Vector3();
+            const p = new THREE.Vector3();
+            updaters.push((time) => {
+              const ang = time * speed + i * 2.4;
+              pathAt(i * 6 - 3, -30, 20, ang, p);
+              p.y = cy + Math.sin(time * 0.3 + i) * 1.5;
+              g.position.copy(p);
+              const dir = speed > 0 ? 1 : -1;
+              tgt.set(p.x - Math.sin(ang) * dir * 6, p.y, p.z + Math.cos(ang) * 3.6 * dir);
+              g.lookAt(tgt);
+              tail.rotation.y = Math.sin(time * 1.8 + i) * 0.3;
+            });
+          }
+        }
+
+        // Calamares con propulsión a chorros.
+        {
+          const mantleGeo = track(new THREE.ConeGeometry(0.45, 2.3, 8));
+          const headGeo = track(new THREE.SphereGeometry(0.4, 8, 6));
+          const finGeo = track(new THREE.ConeGeometry(0.5, 0.9, 3));
+          const lineGeo = track(new THREE.BufferGeometry());
+          {
+            const pts: number[] = [];
+            for (let a = 0; a < 8; a += 1) {
+              const ang = (a / 8) * Math.PI * 2;
+              const len = a % 4 === 0 ? 2.2 : 1.3;
+              pts.push(Math.cos(ang) * 0.22, Math.sin(ang) * 0.22, 0.3, Math.cos(ang) * 0.3, Math.sin(ang) * 0.3 - 0.1, 0.3 + len);
+            }
+            lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+          }
+          const mat = flat(0xff9ab4, 0x4a1a2a);
+          const lineMat = track(new THREE.LineBasicMaterial({ color: 0xffc2d2, transparent: true, opacity: 0.8 }));
+          const squids = small ? 2 : 3;
+          for (let i = 0; i < squids; i += 1) {
+            const g = new THREE.Group();
+            const mantle = new THREE.Mesh(mantleGeo, mat);
+            mantle.rotation.x = -Math.PI / 2;
+            mantle.position.z = -1.2;
+            const head = new THREE.Mesh(headGeo, mat);
+            const finA = new THREE.Mesh(finGeo, mat);
+            finA.scale.set(1.6, 0.25, 1);
+            finA.rotation.x = -Math.PI / 2;
+            finA.position.set(0, 0, -2.0);
+            g.add(mantle, head, finA, new THREE.LineSegments(lineGeo, lineMat));
+            g.scale.setScalar(0.9 + i * 0.2);
+            scene.add(g);
+            const cy = -(0.5 + i * 0.17) * DEPTH;
+            const tgt = new THREE.Vector3();
+            const p = new THREE.Vector3();
+            let ang = i * 2;
+            updaters.push((time, dt) => {
+              const pulse = Math.max(0, Math.sin(time * 1.9 + i * 1.3));
+              ang += (0.04 + pulse * 0.16) * dt * (i % 2 === 0 ? 1 : -1);
+              pathAt(i * 3 - 2, -13 - i * 2, 9, ang, p);
+              p.y = cy + Math.sin(time * 0.5 + i) * 1.4;
+              g.position.copy(p);
+              const dir = i % 2 === 0 ? 1 : -1;
+              tgt.set(p.x - Math.sin(ang) * dir * 4, p.y, p.z + Math.cos(ang) * 2.4 * dir);
+              g.lookAt(tgt);
+              g.scale.z = (0.9 + i * 0.2) * (1 - pulse * 0.12);
+            });
+          }
+        }
+
+        // Cangrejos y estrellas de mar en el fondo.
+        {
+          const bodyGeo = track(new THREE.SphereGeometry(1, 8, 6));
+          const legGeo = track(new THREE.BoxGeometry(0.9, 0.08, 0.08));
+          const crabMat = flat(0xff6a4a, 0x401408);
+          const crabs = small ? 3 : 6;
+          for (let i = 0; i < crabs; i += 1) {
+            const g = new THREE.Group();
+            const body = new THREE.Mesh(bodyGeo, crabMat);
+            body.scale.set(0.8, 0.35, 0.6);
+            g.add(body);
+            for (const side of [-1, 1]) {
+              const claw = new THREE.Mesh(bodyGeo, crabMat);
+              claw.scale.set(0.28, 0.2, 0.3);
+              claw.position.set(side * 0.8, 0.1, 0.65);
+              g.add(claw);
+              const eye = new THREE.Mesh(bodyGeo, flat(0xffffff));
+              eye.scale.setScalar(0.09);
+              eye.position.set(side * 0.28, 0.42, 0.4);
+              g.add(eye);
+              for (let l = 0; l < 3; l += 1) {
+                const leg = new THREE.Mesh(legGeo, crabMat);
+                leg.position.set(side * 0.9, -0.05, -0.25 + l * 0.25);
+                leg.rotation.z = side * 0.5;
+                g.add(leg);
+              }
+            }
+            g.scale.setScalar(0.9 + Math.random() * 0.6);
+            scene.add(g);
+            const bx = (Math.random() - 0.5) * 34;
+            const bz = -6 - Math.random() * 18;
+            const ph = Math.random() * 6;
+            updaters.push((time) => {
+              const x = bx + Math.sin(time * 0.35 + ph) * 3;
+              g.position.set(x, floorY(x, bz) + 0.35, bz);
+              g.rotation.y = Math.sin(time * 0.35 + ph) > 0 ? Math.PI / 2 : -Math.PI / 2;
+              g.rotation.z = Math.sin(time * 6 + ph) * 0.04;
+            });
+          }
+          const starShape = new THREE.Shape();
+          for (let i = 0; i < 10; i += 1) {
+            const angle = (Math.PI * 2 * i) / 10;
+            const r = i % 2 === 0 ? 0.95 : 0.36;
+            if (i === 0) starShape.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            else starShape.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+          }
+          starShape.closePath();
+          const starGeo = track(new THREE.ExtrudeGeometry(starShape, { depth: 0.14, bevelEnabled: false }));
+          starGeo.rotateX(-Math.PI / 2);
+          const starColors = [0xff8f5a, 0xff6bb0, 0xffc15a, 0xb28bff];
+          const stars = small ? 7 : 14;
+          for (let i = 0; i < stars; i += 1) {
+            const star = new THREE.Mesh(starGeo, flat(starColors[i % starColors.length] ?? 0xff8f5a));
+            const wx = (Math.random() - 0.5) * 38;
+            const wz = -5 - Math.random() * 22;
+            star.position.set(wx, floorY(wx, wz) + 0.12, wz);
+            star.rotation.y = Math.random() * Math.PI;
+            star.scale.setScalar(0.7 + Math.random() * 0.7);
+            scene.add(star);
+          }
+        }
+
         // Estado de scroll, puntero y tamaño.
         let maxScroll = 1;
         let progress = 0;
@@ -492,6 +873,9 @@ export function AbismoScene({ onStatus }: { onStatus: (status: SceneStatus) => v
               jelly.base[2],
             );
             jelly.group.rotation.y = time * 0.15 + jelly.phase;
+          }
+          for (const update of updaters) {
+            update(time, dt);
           }
           for (const ray of rays) {
             ray.rotation.z += Math.sin(time * 0.3 + ray.position.x) * 0.0002;
