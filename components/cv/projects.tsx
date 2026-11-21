@@ -50,7 +50,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       </div>
       <h3 className="relative mt-5 font-display text-3xl tracking-tight lg:text-4xl">{project.name}</h3>
       <p className="project-copy relative mt-4 text-sm leading-relaxed text-white/75">{project.description}</p>
-      {project.stack.length > 0 || project.href !== undefined ? (
+      {project.stack.length > 0 || project.hrefs !== undefined ? (
         <div className="relative mt-6">
           {project.stack.length > 0 ? (
             <ul className="flex flex-wrap gap-2" aria-label={`Tecnologías de ${project.name}`}>
@@ -61,16 +61,20 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               ))}
             </ul>
           ) : null}
-          {project.href !== undefined ? (
-            <p className={project.stack.length > 0 ? "mt-4 text-sm" : "text-sm"}>
-              <span className="text-white/60">En producción: </span>
-              <ExternalLink
-                href={project.href}
-                className="font-semibold text-accent underline decoration-white/20 underline-offset-4 hover:decoration-accent"
-              >
-                {project.href.replace(/^https:\/\//, "")}
-              </ExternalLink>
-            </p>
+          {project.hrefs !== undefined ? (
+            <ul className={project.stack.length > 0 ? "mt-4 grid gap-1 text-sm" : "grid gap-1 text-sm"} aria-label={`Sitios de ${project.name}`}>
+              {project.hrefs.map((href) => (
+                <li key={href}>
+                  <span className="text-white/60">En línea: </span>
+                  <ExternalLink
+                    href={href}
+                    className="font-semibold text-accent underline decoration-white/20 underline-offset-4 hover:decoration-accent"
+                  >
+                    {href.replace(/^https:\/\//, "")}
+                  </ExternalLink>
+                </li>
+              ))}
+            </ul>
           ) : null}
         </div>
       ) : null}

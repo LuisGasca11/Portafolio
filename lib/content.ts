@@ -45,8 +45,13 @@ export type Project = {
   context: string;
   description: string;
   stack: readonly string[];
-  href?: string;
-  linkLabel?: string;
+  /** Sitios en línea del desarrollo. */
+  links?: readonly ProjectLink[];
+};
+
+export type ProjectLink = {
+  href: string;
+  label: string;
 };
 
 export const projects: readonly Project[] = [
@@ -69,6 +74,10 @@ export const projects: readonly Project[] = [
     description:
       "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos.",
     stack: ["Microsip"],
+    links: [
+      { href: "https://fyttsa.facturadorenlinea.mx", label: "fyttsa.facturadorenlinea.mx" },
+      { href: "https://casatorres.facturadorenlinea.mx", label: "casatorres.facturadorenlinea.mx" },
+    ],
   },
   {
     name: "Apps Móviles con Expo",
@@ -103,8 +112,7 @@ export const projects: readonly Project[] = [
     description:
       "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
     stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
-    href: "https://voyager.b-mkt.com",
-    linkLabel: "En producción: voyager.b-mkt.com",
+    links: [{ href: "https://black-net.mx", label: "black-net.mx" }],
   },
 ];
 
@@ -134,11 +142,11 @@ export const roles: readonly Role[] = [
 export const skillGroups = [
   {
     title: "Front end",
-    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript"],
+    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   {
     title: "Back end",
-    items: ["PHP", "Laravel", "Java", "MySQL", "SQL Server"],
+    items: ["PHP", "Laravel", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
   },
   {
     title: "Móvil",
@@ -146,7 +154,7 @@ export const skillGroups = [
   },
   {
     title: "DevOps",
-    items: ["Git", "GitHub", "Tailwind CSS"],
+    items: ["Git", "GitHub", "Vercel", "Netlify", "Cloudflare", "PM2", "IIS"],
   },
   {
     title: "ERP",

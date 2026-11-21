@@ -4,27 +4,25 @@ Sitio personal en español (México), construido con Next.js (App Router), TypeS
 
 El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada es un «mundo con scroll» con tres mundos distintos y un menú fijo abajo para cambiar entre ellos (se recuerda la elección y también se puede enlazar con `?v=m1`, `?v=m2` o `?v=m3`):
+La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js. La cámara baja con el scroll a través de nieve marina, cardúmenes, medusas, mantarrayas, tortugas, tiburones, calamares, algas, cangrejos y estrellas de mar hasta el fondo; el medidor de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Un robot submarino recorre la experiencia y las habilidades son organismos bioluminiscentes. En móvil hay encabezado con la profundidad y menú propio, y la escena usa menos criaturas y menor resolución.
 
-- **M1 Abismo**: un descenso al océano en 3D (Three.js). La cámara baja con el scroll a través de nieve marina, cardúmenes, medusas y haces de luz hasta el fondo; la barra de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Hay un robot submarino que recorre la experiencia, y las habilidades son organismos bioluminiscentes. Tiene menú propio y medidor de profundidad en móvil, y si el dispositivo no tiene WebGL o se pide menos movimiento, usa el fondo CSS y las ilustraciones SVG.
-- **M2 Papel**: un mundo de papel picado mexicano. Capas de papel con parallax (volcanes y pueblo), los desarrollos como puestos de tianguis con toldo, etiquetas colgantes, un papalote que acompaña el scroll y una noche de ofrenda para el contacto.
-- **M3 Jardín**: una enredadera que crece conforme se baja por la página; cada desarrollo es una flor que se abre en su rama, las habilidades son un herbario y el contacto es un invernadero.
+Si el dispositivo no tiene WebGL o se pide menos movimiento, se usa el fondo CSS con ilustraciones SVG. Todo vive en `components/abismo/`: `abismo.tsx` (página), `abismo-3d.tsx` (escena, cargada con `import()`), `abismo-art.tsx` (ilustraciones SVG a mano) y `abismo.css`. Los datos salen de `lib/content.ts` y el formulario de contacto (`contact-form.tsx`) conserva los campos de Netlify Forms.
 
-Los mundos viven en `components/worlds/` (uno por archivo `world-*.tsx`, con su ilustración en `*-art.tsx` y su CSS) y comparten los datos de `lib/content.ts`, el formulario de contacto (`contact-form.tsx`) y los efectos de scroll (`motion.ts`). Para añadir uno nuevo, crea su componente y regístralo en `home-worlds.tsx`. Todo respeta `prefers-reduced-motion`.
+### Transición entre vistas
+
+`components/transition/bubble-transition.tsx` usa Framer Motion: al ir a otra página (por ejemplo `/curriculum`) o saltar a una sección lejana, una ola con burbujas y muchos animales marinos cubre la pantalla, cambia de vista y se retira. Intercepta los enlaces internos; con «reducir movimiento» se desactiva y los enlaces funcionan normal.
 
 ### Imágenes y videos
 
-Los videos ambientales (`public/worlds/*.webm`, `*.mp4`) y sus pósters se generan por código, sin material externo: `tools/render-loops/` dibuja cada escena en un canvas como función del tiempo (todo se mueve con ciclos enteros, así el bucle es perfecto) y la convierte a video con ffmpeg. Para regenerarlos hace falta Playwright y ffmpeg:
+El video ambiental (`public/worlds/abismo.webm`, `.mp4` y póster) se genera por código, sin material externo: `tools/render-loops/` dibuja la escena en un canvas como función del tiempo (todo se mueve con ciclos enteros, así el bucle es perfecto) y la convierte a video con ffmpeg. Para regenerarlo hace falta Playwright y ffmpeg:
 
 ```bash
 node tools/render-loops/render.cjs all
 ```
 
-Las ilustraciones (peces, medusas, volcanes, flores, enredadera…) son SVG escritos a mano dentro de los componentes `*-art.tsx`. La escena 3D de Abismo (`abismo-3d.tsx`) se carga con `import()` solo en ese mundo.
-
 ### Iconos de tecnologías
 
-Cada tecnología muestra su icono (`components/tech-icon.tsx`). Los datos salen de `lib/tech-icons.ts`, que se genera con `tools/gen-tech-icons.cjs` a partir de [simple-icons](https://simpleicons.org) (CC0); Java, SQL Server, Firebird y Microsip, que no están ahí, son glifos propios. Para añadir una tecnología, agrégala al script y vuelve a generarlo: `npm i --no-save simple-icons && node tools/gen-tech-icons.cjs`.
+Cada tecnología muestra su icono (`components/tech-icon.tsx`). Los datos salen de `lib/tech-icons.ts`, que se genera con `tools/gen-tech-icons.cjs` a partir de [simple-icons](https://simpleicons.org) (CC0); Java, SQL Server, Firebird, IIS y Microsip, que no están ahí, son glifos propios. Para añadir una tecnología, agrégala al script y vuelve a generarlo: `npm i --no-save simple-icons && node tools/gen-tech-icons.cjs`.
 
 ## Requisitos
 

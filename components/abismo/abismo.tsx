@@ -5,13 +5,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent } from "react";
 import { ExternalLink } from "@/components/external-link";
 import { TechIcon } from "@/components/tech-icon";
-import { AbismoScene } from "@/components/worlds/abismo-3d";
-import type { SceneStatus } from "@/components/worlds/abismo-3d";
-import { Angler, Coral, Fish, Jellyfish, Rov, Seaweed, Submarine, Waves, Whale } from "@/components/worlds/abismo-art";
-import { AmbientVideo } from "@/components/worlds/ambient-video";
-import { ContactForm } from "@/components/worlds/contact-form";
-import type { ContactFormClasses } from "@/components/worlds/contact-form";
-import { gsap, ScrollTrigger, setupCommonMotion, useReducedMotion } from "@/components/worlds/motion";
+import { AbismoScene } from "@/components/abismo/abismo-3d";
+import type { SceneStatus } from "@/components/abismo/abismo-3d";
+import { Angler, Coral, Crab, Fish, Jellyfish, Octopus, Rov, Seahorse, Seaweed, Starfish, Submarine, Turtle, Waves, Whale } from "@/components/abismo/abismo-art";
+import { AmbientVideo } from "@/components/abismo/ambient-video";
+import { ContactForm } from "@/components/abismo/contact-form";
+import type { ContactFormClasses } from "@/components/abismo/contact-form";
+import { gsap, ScrollTrigger, setupCommonMotion, useReducedMotion } from "@/components/abismo/motion";
 import { cvUrl, projects, roles, site, skillGroups, stats, studies } from "@/lib/content";
 import "./abismo.css";
 
@@ -51,14 +51,14 @@ const bubbles = Array.from({ length: 14 }, (_, index) => ({
 
 /** Burbujas con el icono de una tecnología que suben por el hero. */
 const iconBubbles = [
-  { name: "React.js", left: "3%", size: 4.2, duration: 19, delay: -2, dx: 22 },
-  { name: "Next.js", left: "11%", size: 3.4, duration: 23, delay: -11, dx: -18 },
-  { name: "TypeScript", left: "19%", size: 3.8, duration: 21, delay: -6, dx: 16 },
-  { name: "Laravel", left: "74%", size: 3.2, duration: 25, delay: -15, dx: -20 },
-  { name: "Expo", left: "81%", size: 4.0, duration: 20, delay: -9, dx: 18 },
-  { name: "PHP", left: "88%", size: 3.4, duration: 24, delay: -1, dx: -16 },
-  { name: "Vue.js", left: "93%", size: 4.2, duration: 22, delay: -13, dx: -12 },
-  { name: "MySQL", left: "27%", size: 3.2, duration: 26, delay: -7, dx: 14 },
+  { name: "React.js", left: "3%", size: 4.2, duration: 15, delay: 0.4, dx: 22 },
+  { name: "Next.js", left: "11%", size: 3.4, duration: 17, delay: 2.6, dx: -18 },
+  { name: "TypeScript", left: "19%", size: 3.8, duration: 16, delay: 5.2, dx: 16 },
+  { name: "Node.js", left: "27%", size: 3.4, duration: 18, delay: 7.4, dx: 14 },
+  { name: "Laravel", left: "72%", size: 3.2, duration: 18, delay: 1.4, dx: -20 },
+  { name: "Expo", left: "80%", size: 4.0, duration: 15, delay: 3.8, dx: 18 },
+  { name: "Supabase", left: "87%", size: 3.4, duration: 17, delay: 6.2, dx: -16 },
+  { name: "Vue.js", left: "93%", size: 4.2, duration: 16, delay: 8.4, dx: -12 },
 ];
 
 const school = [
@@ -141,10 +141,15 @@ export function WorldAbismo() {
         setMenuOpen(false);
       }
     };
+    const close = () => {
+      setMenuOpen(false);
+    };
     window.addEventListener("keydown", onKey);
+    window.addEventListener("lgasca:close-menu", close);
     return () => {
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("lgasca:close-menu", close);
     };
   }, [menuOpen]);
 
@@ -347,7 +352,7 @@ export function WorldAbismo() {
         {iconBubbles.map((bubble, index) => (
           <span
             key={bubble.name}
-            className={`ab-iconbubble ${index > 1 && index < 6 ? "max-sm:hidden" : ""} ${index >= 6 ? "max-sm:hidden" : ""}`}
+            className={`ab-iconbubble ${index === 1 || index === 2 || index === 3 || index === 5 || index === 6 ? "max-sm:hidden" : ""}`}
             style={{ left: bubble.left, width: `${bubble.size}rem`, height: `${bubble.size}rem`, animationDuration: `${bubble.duration}s`, animationDelay: `${bubble.delay}s`, "--dx": `${bubble.dx}px` } as CSSProperties}
           >
             <TechIcon name={bubble.name} size={bubble.size * 0.62} />
@@ -390,6 +395,9 @@ export function WorldAbismo() {
       <section id="sobre-mi" className="relative px-5 py-28 sm:py-36">
         {glOn ? null : (
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div data-school="0.7" className="absolute left-0" style={{ top: "80%" }}>
+              <Turtle className="ab-bob w-28 opacity-90" />
+            </div>
             {school.map((fish) => (
               <div key={fish.top} data-school={fish.speed} className="absolute left-0" style={{ top: fish.top }}>
                 <Fish from={fish.from} to={fish.to} className="ab-bob opacity-90" style={{ width: fish.w }} />
@@ -453,13 +461,17 @@ export function WorldAbismo() {
                       ))}
                     </ul>
                   ) : null}
-                  {project.href !== undefined ? (
-                    <p className="mt-5 flex items-center gap-2.5 text-sm">
-                      <span className="ab-ping" aria-hidden="true" />
-                      <ExternalLink href={project.href} className="font-semibold text-emerald-200 underline underline-offset-4">
-                        {project.linkLabel ?? project.href}
-                      </ExternalLink>
-                    </p>
+                  {project.links !== undefined ? (
+                    <ul className="mt-5 grid gap-2 text-sm" aria-label={`Sitios en línea de ${project.name}`}>
+                      {project.links.map((link) => (
+                        <li key={link.href} className="flex items-center gap-2.5">
+                          <span className="ab-ping" aria-hidden="true" />
+                          <ExternalLink href={link.href} className="font-semibold break-all text-emerald-200 underline underline-offset-4">
+                            {link.label}
+                          </ExternalLink>
+                        </li>
+                      ))}
+                    </ul>
                   ) : null}
                 </article>
               </li>
@@ -475,6 +487,9 @@ export function WorldAbismo() {
           <div data-whale className="w-[min(70vw,520px)] opacity-80">
             <Whale />
           </div>
+        </div>
+        <div data-parallax="-1.2" aria-hidden="true" className="pointer-events-none absolute right-2 bottom-16 w-24 opacity-90 sm:right-[6%] sm:w-32">
+          <Octopus className="ab-bob" />
         </div>
         <div className="relative mx-auto max-w-4xl">
           <Depth meters={520} zone={zoneOf(520)} />
@@ -538,6 +553,9 @@ export function WorldAbismo() {
       </section>
 
       <section id="educacion" className="relative px-5 py-24">
+        <div data-parallax="1.6" aria-hidden="true" className="pointer-events-none absolute top-16 right-3 w-16 opacity-90 sm:right-[8%] sm:w-24">
+          <Seahorse className="ab-bob" />
+        </div>
         <div className="mx-auto max-w-4xl">
           <Depth meters={1040} zone={zoneOf(1040)} />
           <h2 className="ab-display mt-4 text-4xl font-light tracking-tight sm:text-6xl">Educación</h2>
@@ -608,13 +626,17 @@ export function WorldAbismo() {
               <path d="M0 120 C200 80 380 150 600 110 C820 70 1050 140 1250 100 C1340 84 1400 96 1440 110 L1440 220 L0 220Z" fill="url(#ab-sand)" />
             </svg>
           )}
-          <Coral color="#ff6bd6" className="absolute bottom-10 left-[6%] w-16 sm:w-24" />
-          <Coral color="#ff9d5c" className="absolute bottom-6 left-[20%] w-12 sm:w-16" />
-          <Seaweed className="absolute bottom-8 left-[34%] w-8 sm:w-10" />
-          <Seaweed className="absolute bottom-10 left-[38%] w-6 sm:w-8" />
-          <Coral color="#5dffc9" className="absolute right-[24%] bottom-8 w-14 sm:w-20" />
-          <Seaweed className="absolute right-[14%] bottom-10 w-8 sm:w-10" />
-          <Coral color="#c18bff" className="absolute right-[5%] bottom-6 w-16 sm:w-24" />
+          <Seaweed hue={155} className="absolute bottom-6 left-[1%] w-14 sm:w-20" />
+          <Coral color="#ff6bd6" className="absolute bottom-10 left-[11%] w-16 sm:w-24" />
+          <Starfish className="ab-bob absolute bottom-4 left-[22%] w-9 sm:w-12" color="#ff8f5a" />
+          <Seaweed hue={140} className="absolute bottom-8 left-[27%] w-12 sm:w-16" />
+          <Crab className="absolute bottom-3 left-[40%] w-14 sm:w-20" />
+          <Coral color="#ff9d5c" className="absolute bottom-6 left-[52%] w-12 sm:w-16" />
+          <Starfish className="ab-bob absolute right-[34%] bottom-3 w-8 sm:w-11" color="#ff6bb0" />
+          <Seaweed hue={165} className="absolute right-[24%] bottom-8 w-14 sm:w-20" />
+          <Coral color="#5dffc9" className="absolute right-[16%] bottom-8 w-14 sm:w-20" />
+          <Seaweed hue={150} className="absolute right-[7%] bottom-6 w-12 sm:w-16" />
+          <Coral color="#c18bff" className="absolute right-[0%] bottom-6 w-16 sm:w-24" />
         </div>
       </section>
 
