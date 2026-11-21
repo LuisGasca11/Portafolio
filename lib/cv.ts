@@ -154,12 +154,14 @@ export const projects: readonly Project[] = [
     description:
       "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
     stack: [],
+    hrefs: ["https://skool.com.mx"],
   },
   {
     name: "PMS Multiempresa",
     organization: "Grupo Fyttsa",
     description: "Sistema de gestión de proyectos centralizado para múltiples empresas.",
     stack: [],
+    hrefs: ["https://stick.mx"],
   },
   {
     name: "Facturador + Cotizador Microsip",
@@ -178,9 +180,10 @@ export const projects: readonly Project[] = [
   },
   {
     name: "Team Page & Sitio Web",
-    organization: "Grupo Fyttsa",
+    organization: "Black Sheep Labs",
     description: "Sitio web institucional del equipo de trabajo de la empresa.",
     stack: [],
+    hrefs: ["https://blck-sheep.com"],
   },
   {
     name: "Sistema de Inventarios 3D",
