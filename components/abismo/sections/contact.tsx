@@ -45,12 +45,17 @@ export function Contact({ glOn }: { glOn: boolean }) {
               </a>
             </li>
             <li>
+              <ExternalLink href={site.whatsappUrl} className="underline decoration-cyan-200/40 underline-offset-4">
+                WhatsApp
+              </ExternalLink>
+            </li>
+            <li>
               <ExternalLink href={site.githubUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="GitHub" size={1.4} />
                 {site.githubLabel}
               </ExternalLink>
             </li>
-              <li>
+            <li>
               <ExternalLink href={site.linkedinUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="LinkedIn" size={1.4} />
                 {site.linkedinLabel}
@@ -85,17 +90,22 @@ export function Contact({ glOn }: { glOn: boolean }) {
             <path d="M0 120 C200 80 380 150 600 110 C820 70 1050 140 1250 100 C1340 84 1400 96 1440 110 L1440 220 L0 220Z" fill="url(#ab-sand)" />
           </svg>
         )}
-        <Seaweed hue={155} className="absolute bottom-6 left-[1%] w-14 sm:w-20" />
-        <Coral color="#ff6bd6" className="absolute bottom-10 left-[11%] w-16 sm:w-24" />
-        <Starfish className="ab-bob absolute bottom-4 left-[22%] w-9 sm:w-12" color="#ff8f5a" />
-        <Seaweed hue={140} className="absolute bottom-8 left-[27%] w-12 sm:w-16" />
-        <Crab className="absolute bottom-3 left-[40%] w-14 sm:w-20" />
-        <Coral color="#ff9d5c" className="absolute bottom-6 left-[52%] w-12 sm:w-16" />
-        <Starfish className="ab-bob absolute right-[34%] bottom-3 w-8 sm:w-11" color="#ff6bb0" />
-        <Seaweed hue={165} className="absolute right-[24%] bottom-8 w-14 sm:w-20" />
-        <Coral color="#5dffc9" className="absolute right-[16%] bottom-8 w-14 sm:w-20" />
-        <Seaweed hue={150} className="absolute right-[7%] bottom-6 w-12 sm:w-16" />
-        <Coral color="#c18bff" className="absolute right-[0%] bottom-6 w-16 sm:w-24" />
+        {/* Fondo dibujado: solo sin WebGL; con la escena 3D, el fondo es el real. */}
+        {glOn ? null : (
+          <>
+            <Seaweed hue={155} className="absolute bottom-6 left-[1%] w-14 sm:w-20" />
+            <Coral color="#ff6bd6" className="absolute bottom-10 left-[11%] w-16 sm:w-24" />
+            <Starfish className="ab-bob absolute bottom-4 left-[22%] w-9 sm:w-12" color="#ff8f5a" />
+            <Seaweed hue={140} className="absolute bottom-8 left-[27%] w-12 sm:w-16" />
+            <Crab className="absolute bottom-3 left-[40%] w-14 sm:w-20" />
+            <Coral color="#ff9d5c" className="absolute bottom-6 left-[52%] w-12 sm:w-16" />
+            <Starfish className="ab-bob absolute right-[34%] bottom-3 w-8 sm:w-11" color="#ff6bb0" />
+            <Seaweed hue={165} className="absolute right-[24%] bottom-8 w-14 sm:w-20" />
+            <Coral color="#5dffc9" className="absolute right-[16%] bottom-8 w-14 sm:w-20" />
+            <Seaweed hue={150} className="absolute right-[7%] bottom-6 w-12 sm:w-16" />
+            <Coral color="#c18bff" className="absolute right-[0%] bottom-6 w-16 sm:w-24" />
+          </>
+        )}
       </div>
     </section>
   );

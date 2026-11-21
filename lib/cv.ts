@@ -82,11 +82,11 @@ export const technicalSkills: readonly SkillGroup[] = [
   },
   {
     label: "Back end",
-    items: ["PHP", "Laravel", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
+    items: ["PHP", "Laravel", "Python", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
   },
   {
     label: "Mobile",
-    items: ["Expo", "React Native"],
+    items: ["Expo", "React Native", "Flutter"],
   },
   {
     label: "DevOps",
@@ -111,14 +111,10 @@ export const softSkills: readonly string[] = [
 export const experience: readonly ExperienceItem[] = [
   {
     role: "Desarrollador Full Stack",
-    organization: "Grupo Fyttsa",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     period: "Nov 2025 – Jun 2026",
     description:
-      "Desarrollo de sistemas web y móviles multiempresa: LMS, PMS, facturador y cotizador integrados con ERP Microsip, aplicaciones móviles con Expo y sitio web institucional.",
-  },
-  {
-    role: "Desarrollador Full Stack",
-    organization: "Black Sheep Labs",
+      "Desarrollo de sistemas web y móviles multiempresa: BLACK SHEEP NET, LMS y PMS (en colaboración con compañeros de Black Sheep Labs), facturador y cotizador integrados con ERP Microsip, apps móviles con Expo publicadas en Google Play (Black Net, FyttsaNet y BlackLink) y sitio web institucional.",
     website: {
       href: "https://blck-sheep.com",
       label: "blck-sheep.com",
@@ -150,48 +146,49 @@ export const experience: readonly ExperienceItem[] = [
 export const projects: readonly Project[] = [
   {
     name: "LMS Multiempresa",
-    organization: "Grupo Fyttsa",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     description:
-      "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
+      "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones. En colaboración con otros compañeros de Black Sheep Labs.",
     stack: [],
     hrefs: ["https://skool.com.mx"],
   },
   {
     name: "PMS Multiempresa",
-    organization: "Grupo Fyttsa",
-    description: "Sistema de gestión de proyectos centralizado para múltiples empresas.",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
+    description: "Sistema de gestión de proyectos centralizado para múltiples empresas. En colaboración con otros compañeros de Black Sheep Labs.",
     stack: [],
     hrefs: ["https://stick.mx"],
   },
   {
     name: "Facturador + Cotizador Microsip",
-    organization: "Grupo Fyttsa",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     description:
       "Facturación electrónica y cotizaciones integradas al ERP Microsip con sincronización automática de datos.",
     stack: ["Microsip"],
     hrefs: ["https://fyttsa.facturadorenlinea.mx", "https://casatorres.facturadorenlinea.mx"],
   },
   {
-    name: "Apps Móviles con Expo",
-    organization: "Grupo Fyttsa",
+    name: "Apps móviles en Google Play",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     description:
-      "Desarrollo de aplicaciones móviles multiplataforma (iOS/Android) con Expo y React Native.",
+      "Aplicaciones móviles multiplataforma (iOS/Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
     stack: ["Expo", "React Native"],
+    hrefs: ["https://play.google.com/store/apps/dev?id=9017111634471517533"],
   },
   {
     name: "Team Page & Sitio Web",
-    organization: "Black Sheep Labs",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     description: "Sitio web institucional del equipo de trabajo de la empresa.",
     stack: [],
     hrefs: ["https://blck-sheep.com"],
   },
   {
-    name: "Sistema de Inventarios 3D",
+    name: "Aerial Depot WMS",
     organization: "AERIAL DEPOT",
     detail: "Edu. Dual 2025",
     description:
-      "App web con Laravel, Vue.js y MySQL. Visualización 3D del almacén con Three.js para localización de productos.",
-    stack: ["Laravel", "Vue.js", "MySQL", "Three.js"],
+      "Sistema de gestión de almacenes (WMS): API en Laravel 12 con autenticación JWT, MySQL con migraciones y seeders, imágenes procesadas con GD y front end en Vue 3 con visualización 3D del almacén en Three.js.",
+    stack: ["Laravel", "PHP", "Vue.js", "MySQL", "Three.js"],
   },
   {
     name: "Vacantes de Empleo",
@@ -202,7 +199,7 @@ export const projects: readonly Project[] = [
   },
   {
     name: "BLACK SHEEP NET",
-    organization: "Black Sheep Labs",
+    organization: "Black Sheep Labs “Grupo Fyttsa”",
     description:
       "Monorepo web con Next.js y API en PHP sobre Firebird y Microsip. Incluye un Planeador de Ruta con Leaflet, OpenStreetMap y OSRM: Dijkstra exacto hasta 10 paradas y vecino cercano con 2-opt para más paradas. Geocodificación con Google, pedidos programados por cron y despliegue en IIS con PM2.",
     stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],

@@ -36,11 +36,24 @@
   pointer-events: none;
 }
 
+/* Paneles: como agua más densa, no como cajas. Borde apenas visible y un
+   brillo arriba a la izquierda que se pierde en el agua. */
 .ab-glass {
-  background: linear-gradient(160deg, rgba(10, 58, 92, 0.62), rgba(3, 24, 44, 0.66));
-  border: 1px solid rgba(126, 232, 255, 0.22);
-  box-shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(6px);
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(126, 232, 255, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(6, 44, 72, 0.5), rgba(2, 18, 34, 0.42));
+  border: 1px solid rgba(126, 232, 255, 0.1);
+  box-shadow: inset 1px 1px 0 rgba(190, 245, 255, 0.14), 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px) saturate(1.15);
+}
+@media (max-width: 767px), (pointer: coarse) {
+  /* El desenfoque de fondo es caro en móviles: se compensa con más opacidad. */
+  .ab-glass {
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(126, 232, 255, 0.1), transparent 60%),
+      linear-gradient(160deg, rgba(6, 44, 72, 0.8), rgba(2, 18, 34, 0.76));
+    backdrop-filter: none;
+  }
 }
 
 .ab-depth {
@@ -215,7 +228,9 @@
   }
 }
 
-.ab-gl .ab-dark { display: none; }
+/* Con WebGL la escena dibuja su propio fondo: el degradado CSS la taparía. */
+.ab-gl .ab-dark,
+.ab-gl .ab-bg { display: none; }
 
 .ab-header {
   position: fixed;
@@ -365,4 +380,85 @@
 
 @media (max-width: 639px) {
   .ab-iconbubble[data-compact="false"] { display: none; }
+}
+
+/* ——— Tarjetas de desarrollos ——— */
+.ab-card-featured {
+  background:
+    radial-gradient(600px circle at var(--mx, 80%) var(--my, 0%), rgba(126, 232, 255, 0.14), transparent 60%),
+    linear-gradient(160deg, rgba(6, 44, 72, 0.6), rgba(2, 18, 34, 0.5));
+}
+.ab-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 210, 122, 0.35);
+  background: rgba(255, 210, 122, 0.08);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffe2a8;
+}
+.ab-store {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(232, 251, 255, 0.25);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.45rem 0.95rem 0.45rem 0.55rem;
+  font-weight: 700;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+.ab-store span { display: flex; flex-direction: column; line-height: 1.1; }
+.ab-store small { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+.ab-store:hover { border-color: var(--ab-cyan); transform: translateY(-2px); }
+.ab-highlight {
+  position: relative;
+  padding-left: 1.4rem;
+}
+.ab-highlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 999px;
+  background: #ffd27a;
+  box-shadow: 0 0 10px #ffd27a;
+}
+
+/* Desarrollos en móvil: carrusel que se desliza de lado. */
+.ab-reel-hint { display: none; }
+@media (max-width: 767px) {
+  .ab-reel {
+    display: flex;
+    gap: 0.9rem;
+    margin-inline: -1.25rem;
+    padding: 0.5rem 1.25rem 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .ab-reel::-webkit-scrollbar { display: none; }
+  .ab-reel > li {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+  }
+  .ab-card { transform: none; }
+  .ab-reel-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232, 251, 255, 0.65);
+  }
 }

@@ -16,6 +16,11 @@ function subscribe(onChange: () => void) {
   };
 }
 
+/** Efectos caros (desenfoques animados) solo en escritorio con ratón. */
+export function richMotion(): boolean {
+  return window.matchMedia("(min-width: 768px) and (pointer: fine)").matches;
+}
+
 /** `true` cuando la persona pidió menos movimiento. En el servidor devuelve `false`. */
 export function useReducedMotion(): boolean {
   return useSyncExternalStore(
@@ -31,13 +36,17 @@ export function useReducedMotion(): boolean {
  * - `[data-parallax="n"]`: se desplaza `n * 60px` en vertical mientras cruza la pantalla.
  */
 export function setupCommonMotion(root: HTMLElement) {
+  const rich = richMotion();
   gsap.utils.toArray<HTMLElement>("[data-reveal]", root).forEach((element) => {
+    // Emergen desde el fondo del agua: más lejos, más pequeños y difusos.
     gsap.from(element, {
-      y: 44,
+      y: 56,
+      scale: 0.96,
       opacity: 0,
-      duration: 0.95,
+      ...(rich ? { filter: "blur(6px)", clearProps: "filter" } : {}),
+      duration: 1.1,
       ease: "power3.out",
-      scrollTrigger: { trigger: element, start: "top 90%", once: true },
+      scrollTrigger: { trigger: element, start: "top 92%", once: true },
     });
   });
 

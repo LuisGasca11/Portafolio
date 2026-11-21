@@ -34,8 +34,10 @@ export function Abismo() {
     setGl(status);
   }, []);
   const glOn = gl === "on";
+  /** Dibujos planos (respaldo): solo si no hay escena 3D, nunca mientras carga. */
+  const drawn = reduced || gl === "off";
 
-  useAbismoEffects(root, reduced);
+  useAbismoEffects(root, reduced, drawn);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -61,14 +63,14 @@ export function Abismo() {
       <Header />
 
       <Hero glOn={glOn} />
-      <About glOn={glOn} />
+      <About glOn={!drawn} />
       <Thermocline label="200 m · límite de la luz solar" />
-      <Projects />
+      <Projects glOn={!drawn} />
       <Thermocline label="1,000 m · fin de la zona crepuscular" />
-      <Experience />
-      <Skills />
-      <Education />
-      <Contact glOn={glOn} />
+      <Experience glOn={!drawn} />
+      <Skills glOn={!drawn} />
+      <Education glOn={!drawn} />
+      <Contact glOn={!drawn} />
 
       <p className="relative pb-24 text-center text-xs text-cyan-100/60">© 2026 {site.name}</p>
     </div>

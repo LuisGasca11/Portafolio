@@ -44,6 +44,8 @@ export const techBubbles = [
   { name: "Cloudflare", left: "85%", size: 3.4, duration: 22, delay: 12, dx: -16, compact: false },
   { name: "Vue.js", left: "92%", size: 4.2, duration: 20, delay: 7, dx: -12, compact: true },
   { name: "Netlify", left: "57%", size: 3.2, duration: 26, delay: 15.5, dx: 12, compact: false },
+  { name: "Flutter", left: "27%", size: 3.6, duration: 21, delay: 17, dx: -14, compact: true },
+  { name: "Python", left: "46%", size: 3.4, duration: 23, delay: 19.5, dx: 16, compact: false },
 ] as const;
 
 /** Cardumen SVG del respaldo sin WebGL. */

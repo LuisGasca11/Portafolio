@@ -2,12 +2,15 @@ import { Seahorse } from "@/components/abismo/art/creatures";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
 import { studies } from "@/lib/content";
 
-export function Education() {
+export function Education({ glOn }: { glOn: boolean }) {
   return (
     <section id="educacion" aria-labelledby="educacion-titulo" className="relative px-5 py-24">
-      <div data-parallax="1.6" aria-hidden="true" className="pointer-events-none absolute top-16 right-3 w-16 opacity-90 sm:right-[8%] sm:w-24">
-        <Seahorse className="ab-bob" />
-      </div>
+      {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
+      {glOn ? null : (
+        <div data-parallax="1.6" aria-hidden="true" className="pointer-events-none absolute top-16 right-3 w-16 opacity-90 sm:right-[8%] sm:w-24">
+          <Seahorse className="ab-bob" />
+        </div>
+      )}
       <div className="mx-auto max-w-4xl">
         <SectionHeading id="educacion-titulo" meters={1040} title="Educación" />
         <ul className="mt-10 grid gap-5 sm:grid-cols-2">

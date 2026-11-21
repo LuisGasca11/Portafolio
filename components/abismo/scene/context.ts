@@ -1,4 +1,5 @@
 import type * as ThreeNamespace from "three";
+import type { CreatureOptions } from "./materials";
 
 export type Three = typeof ThreeNamespace;
 
@@ -22,7 +23,10 @@ export type SceneContext = {
   /** Niebla manual de los shaders propios. */
   fog: { uFog: { value: ThreeNamespace.Color }; uFogDensity: { value: number } };
   updaters: Updater[];
-  flat: (color: number, emissive?: number) => ThreeNamespace.MeshLambertMaterial;
+  /** Material de criaturas y objetos (cáusticas, contorno y vientre claro). */
+  creature: (options: CreatureOptions) => ThreeNamespace.MeshStandardMaterial;
+  /** Intensidad compartida de las cáusticas. */
+  caustic: { value: number };
   /** Altura del fondo marino en un punto (x, z). */
   floorY: (wx: number, wz: number) => number;
   /** Posición sobre una trayectoria elíptica alrededor de (cx, cz). */

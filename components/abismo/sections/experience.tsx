@@ -3,17 +3,22 @@ import { Octopus, Rov, Whale } from "@/components/abismo/art/creatures";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
 import { roles } from "@/lib/content";
 
-export function Experience() {
+export function Experience({ glOn }: { glOn: boolean }) {
   return (
     <section id="experiencia" aria-labelledby="experiencia-titulo" className="relative px-5 py-28">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/3 overflow-hidden">
-        <div data-whale className="w-[min(70vw,520px)] opacity-80">
-          <Whale />
-        </div>
-      </div>
-      <div data-parallax="-1.2" aria-hidden="true" className="pointer-events-none absolute right-2 bottom-16 w-24 opacity-90 sm:right-[6%] sm:w-32">
-        <Octopus className="ab-bob" />
-      </div>
+      {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
+      {glOn ? null : (
+        <>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/3 overflow-hidden">
+            <div data-whale className="w-[min(70vw,520px)] opacity-80">
+              <Whale />
+            </div>
+          </div>
+          <div data-parallax="-1.2" aria-hidden="true" className="pointer-events-none absolute right-2 bottom-16 w-24 opacity-90 sm:right-[6%] sm:w-32">
+            <Octopus className="ab-bob" />
+          </div>
+        </>
+      )}
       <div className="relative mx-auto max-w-4xl">
         <SectionHeading id="experiencia-titulo" meters={520} title="Experiencia" />
         <div data-rov-track className="relative mt-12">
@@ -39,6 +44,15 @@ export function Experience() {
                     )}
                   </p>
                   {role.summary !== undefined ? <p className="mt-4 text-sm leading-relaxed text-cyan-50/80">{role.summary}</p> : null}
+                  {role.highlights !== undefined ? (
+                    <ul className="mt-6 grid gap-3 text-sm leading-relaxed text-cyan-50/85">
+                      {role.highlights.map((item) => (
+                        <li key={item} className="ab-highlight">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </article>
               </li>
             ))}

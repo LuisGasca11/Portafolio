@@ -11,7 +11,7 @@ import { gsap, ScrollTrigger, setupCommonMotion } from "@/components/abismo/hook
  * contadores, robot submarino y criaturas que cruzan. Con `reduced` solo
  * se mantienen el medidor y el fondo (no son movimiento).
  */
-export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: boolean) {
+export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: boolean, drawn: boolean) {
   useEffect(() => {
     const element = root.current;
     if (!element) {
@@ -89,7 +89,9 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
         });
       });
 
-      gsap.fromTo(
+      // Las criaturas dibujadas solo existen sin WebGL: se animan si están.
+      const present = (selector: string) => element.querySelector(selector) !== null;
+      if (present("[data-whale]")) gsap.fromTo(
         "[data-whale]",
         { x: "-60vw" },
         { x: "120vw", ease: "none", scrollTrigger: { trigger: "#experiencia", start: "top bottom", end: "bottom top", scrub: 1 } },
@@ -103,7 +105,7 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
           scrollTrigger: { trigger: "[data-rov-track]", start: "top 65%", end: "bottom 65%", scrub: 0.6, invalidateOnRefresh: true },
         },
       );
-      gsap.fromTo(
+      if (present("[data-angler]")) gsap.fromTo(
         "[data-angler]",
         { x: "40vw", opacity: 0 },
         { x: "0vw", opacity: 1, ease: "power2.out", scrollTrigger: { trigger: "#habilidades", start: "top 60%", end: "center center", scrub: 1 } },
@@ -115,13 +117,27 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
       );
     }, element);
 
-    const refresh = requestAnimationFrame(() => {
+    // Recalcula los disparadores cuando cambia la altura de la página
+    // (carga de fuentes, imágenes o el formulario enviado).
+    let refresh = requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });
+    let lastHeight = document.body.scrollHeight;
+    const heightObserver = new ResizeObserver(() => {
+      const height = document.body.scrollHeight;
+      if (Math.abs(height - lastHeight) < 2) return;
+      lastHeight = height;
+      cancelAnimationFrame(refresh);
+      refresh = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    });
+    heightObserver.observe(document.body);
     return () => {
       cancelAnimationFrame(refresh);
+      heightObserver.disconnect();
       window.removeEventListener("pointermove", onPointer);
       context.revert();
     };
-  }, [root, reduced]);
+  }, [root, reduced, drawn]);
 }

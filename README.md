@@ -2,9 +2,16 @@
 
 Sitio personal en español (México), construido con Next.js (App Router), TypeScript y Tailwind CSS. Se publica en Netlify y vivirá en [lgasca.dev](https://lgasca.dev). El dominio aún no está comprado: mientras tanto el sitio sigue en [portgasca.netlify.app](https://portgasca.netlify.app). `npm run build` genera un export estático en `out/`.
 
-El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
+El contenido sale del CV y de la descripción de BLACK SHEEP NET. Black Sheep Labs y Grupo Fyttsa son la misma empresa y se muestra como Black Sheep Labs “Grupo Fyttsa” (`company` en `lib/content.ts`); las apps de Google Play enlazan a la página de desarrollador de la empresa (`playStoreUrl`). El sitio publica desarrollos, una presentación breve, habilidades técnicas, educación y contacto. El teléfono se publica en la sección de contacto. No incluye empleos ajenos al desarrollo: esos están en la ruta `/curriculum`.
 
-La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js. La cámara baja con el scroll a través de nieve marina, cardúmenes, medusas, mantarrayas, tortugas, tiburones, calamares, algas, cangrejos y estrellas de mar hasta el fondo; el medidor de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Un robot submarino recorre la experiencia y las habilidades son organismos bioluminiscentes. En móvil hay encabezado con la profundidad y menú propio, y la escena usa menos criaturas y menor resolución.
+La portada es un descenso al océano con scroll («Abismo»), en 3D con Three.js. La cámara baja con el scroll a través de nieve marina, burbujas, cardúmenes, peces ángel, medusas, mantarrayas, tortugas, tiburones, calamares, algas, corales, anémonas, cangrejos y estrellas de mar hasta el fondo; el medidor de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Un robot submarino recorre la experiencia y las habilidades son organismos bioluminiscentes. En móvil hay encabezado con la profundidad y menú propio, los desarrollos son un carrusel deslizable y la escena usa menos criaturas y baja su resolución si el equipo no alcanza a dibujarla con fluidez.
+
+Para que todo se vea como agua:
+
+- La escena se dibuja en un búfer y pasa por un filtro bajo el agua (`scene/post.ts`): refracción ondulante, haces de luz desde la superficie, absorción del rojo con la profundidad, viñeta y grano fino.
+- Animales y objetos usan un material común (`scene/materials.ts`): cáusticas que se mueven sobre el lomo, brillo de contorno del color del agua y vientre claro (contrasombreado). Al bajar, las cáusticas y el sol se apagan y se enciende un faro en la cámara.
+- La superficie se ve desde abajo (ventana de Snell) en los primeros metros, y las burbujas suben alrededor de la cámara durante todo el descenso.
+- Los modelos se arman por código: peces con aletas, ojos y línea lateral; tiburones con nado ondulante; mantarrayas con aleteo en onda; tortugas con caparazón de escudos; calamares con brazos; medusas con costillas y brazos orales.
 
 Si el dispositivo no tiene WebGL o se pide menos movimiento, se usa el fondo CSS con ilustraciones SVG. Orden de la página: Hero → Sobre mí → Desarrollos → Experiencia → Habilidades → Educación → Contacto.
 
@@ -17,7 +24,7 @@ components/
     abismo.tsx            composición de la página
     sections/             una sección por archivo (hero, about, projects, experience, skills, education, contact)
     ui/                   piezas compartidas (encabezado y menú, medidor, burbujas, divisores, formulario, video)
-    scene/                escena 3D: engine.ts arma el mundo y cada capa (snow, rays, fish, jellyfish, manta, turtle, shark, squid, seabed…) es un módulo
+    scene/                escena 3D: engine.ts arma el mundo; cada capa (surface, snow, bubbles, rays, fish, jellyfish, manta, turtle, shark, squid, seabed…) es un módulo; materials.ts, shapes.ts y post.ts dan el aspecto de agua
     art/                  ilustraciones SVG (creatures.tsx, flora.tsx)
     hooks/                efectos de scroll (GSAP) y movimiento reducido
     data.ts               navegación, zonas oceánicas y configuración de las burbujas
@@ -44,7 +51,7 @@ node tools/render-loops/render.cjs all
 
 ### Iconos de tecnologías
 
-Cada tecnología muestra su icono (`components/tech-icon.tsx`). Los datos salen de `lib/tech-icons.ts`, que se genera con `tools/gen-tech-icons.cjs` a partir de [simple-icons](https://simpleicons.org) (CC0); Java, SQL Server, Firebird, IIS y Microsip, que no están ahí, son glifos propios. Para añadir una tecnología, agrégala al script y vuelve a generarlo: `npm i --no-save simple-icons && node tools/gen-tech-icons.cjs`.
+Cada tecnología muestra su icono (`components/shared/tech-icon.tsx`). Los datos salen de `lib/tech-icons.ts`, que se genera con `tools/gen-tech-icons.cjs` a partir de [simple-icons](https://simpleicons.org) (CC0); Java, SQL Server, Firebird, IIS y Microsip, que no están ahí, son glifos propios. Para añadir una tecnología, agrégala al script y vuelve a generarlo: `npm i --no-save simple-icons && node tools/gen-tech-icons.cjs`.
 
 ## Requisitos
 
