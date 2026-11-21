@@ -3,7 +3,7 @@ import { ExternalLink } from "@/components/shared/external-link";
 import { TechIcon } from "@/components/shared/tech-icon";
 import { Crab, Starfish, Submarine } from "@/components/abismo/art/creatures";
 import { Coral, Seaweed } from "@/components/abismo/art/flora";
-import { SectionHeading } from "@/components/abismo/ui/section-heading";
+import { Chapter } from "@/components/abismo/ui/chapter";
 import { ContactForm } from "@/components/abismo/ui/contact-form";
 import type { ContactFormClasses } from "@/components/abismo/ui/contact-form";
 import { cvUrl, site } from "@/lib/content";
@@ -25,14 +25,20 @@ const formClasses: ContactFormClasses = {
 
 export function Contact({ glOn }: { glOn: boolean }) {
   return (
-    <section id="contacto" aria-labelledby="contacto-titulo" className="relative overflow-hidden px-5 pt-28 pb-64 sm:pb-72">
-      <div aria-hidden="true" data-sub className="pointer-events-none absolute top-24 left-0 hidden w-[min(34vw,330px)] lg:block">
+    <section id="contacto" aria-labelledby="contacto-titulo" className="relative overflow-x-clip px-5 pb-64 sm:pb-72">
+      <Chapter
+        id="contacto"
+        headingId="contacto-titulo"
+        zone="Fondo marino"
+        title="Llegaste al fondo"
+        body="Aquí abajo hay silencio y buenas ideas. Si tienes un proyecto, escríbeme."
+        tags={["Correo", "Teléfono", "WhatsApp"]}
+      />
+      <div aria-hidden="true" data-sub className="pointer-events-none absolute top-[calc(var(--ab-chapter-h)+2rem)] left-0 hidden w-[min(34vw,330px)] lg:block">
         <Submarine className="ab-bob" />
       </div>
       <div className="relative mx-auto max-w-5xl">
-        <SectionHeading id="contacto-titulo" meters={1200} zone="Fondo marino" title="Llegaste al fondo" size="xl" />
-        <p className="mt-4 max-w-xl text-cyan-50/85">Aquí abajo hay silencio y buenas ideas. Si tienes un proyecto, escríbeme.</p>
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:pl-[22%]">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:pl-[22%]">
           <ul className="grid content-start gap-3 text-sm">
             <li>
               <a href={`mailto:${site.email}`} className="text-lg font-semibold break-all underline decoration-cyan-200/50 underline-offset-4">
@@ -45,12 +51,17 @@ export function Contact({ glOn }: { glOn: boolean }) {
               </a>
             </li>
             <li>
+              <ExternalLink href={site.whatsappUrl} className="underline decoration-cyan-200/40 underline-offset-4">
+                WhatsApp
+              </ExternalLink>
+            </li>
+            <li>
               <ExternalLink href={site.githubUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="GitHub" size={1.4} />
                 {site.githubLabel}
               </ExternalLink>
             </li>
-              <li>
+            <li>
               <ExternalLink href={site.linkedinUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="LinkedIn" size={1.4} />
                 {site.linkedinLabel}

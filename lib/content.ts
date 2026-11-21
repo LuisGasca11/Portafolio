@@ -23,6 +23,7 @@ export const site = {
   location: "Ecatepec de Morelos, CDMX",
   email: "luisgasca0245@hotmail.com",
   phone: "+52 26 10840382",
+  whatsappUrl: "https://wa.me/522610840382",
   githubUrl: "https://github.com/LuisGasca11",
   githubLabel: "github.com/LuisGasca11",
   linkedinUrl: "https://www.linkedin.com/in/luis-gasca-54a68834b",
@@ -42,13 +43,25 @@ export const navItems = [
 
 export type NavItem = (typeof navItems)[number];
 
+/** Black Sheep Labs y Grupo Fyttsa son la misma empresa: se muestra así. */
+export const company = "Black Sheep Labs “Grupo Fyttsa”";
+
+/** Página de desarrollador de la empresa en Google Play. */
+export const playStoreUrl = "https://play.google.com/store/apps/dev?id=9017111634471517533";
+
 export type Project = {
   name: string;
   context: string;
   description: string;
   stack: readonly string[];
+  /** Nota de trabajo en equipo, si el desarrollo fue colaborativo. */
+  team?: string;
   /** Sitios en línea del desarrollo. */
   links?: readonly ProjectLink[];
+  /** Aplicaciones publicadas en tiendas. */
+  apps?: readonly ProjectLink[];
+  /** Destacado: ocupa más espacio en la cuadrícula. */
+  featured?: boolean;
 };
 
 export type ProjectLink = {
@@ -56,25 +69,58 @@ export type ProjectLink = {
   label: string;
 };
 
+const teamNote = "En colaboración con otros compañeros de Black Sheep Labs.";
+
 export const projects: readonly Project[] = [
   {
+    name: "BLACK SHEEP NET",
+    context: company,
+    description:
+      "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
+    stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
+    links: [{ href: "https://black-net.mx", label: "black-net.mx" }],
+    featured: true,
+  },
+  {
+    name: "Aerial Depot WMS",
+    context: "AERIAL DEPOT · Educación Dual 2025",
+    description:
+      "Sistema de gestión de almacenes (WMS) con back end y front end separados: API en Laravel 12 con autenticación JWT, base de datos MySQL con migraciones y datos precargados, imágenes de productos procesadas con GD y una interfaz en Vue 3 que muestra el almacén en 3D con Three.js para localizar productos.",
+    stack: ["Laravel", "PHP", "Vue.js", "MySQL", "Three.js"],
+    featured: true,
+  },
+  {
     name: "LMS Multiempresa",
-    context: "Grupo Fyttsa",
+    context: company,
     description:
       "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
     stack: [],
+    team: teamNote,
     links: [{ href: "https://skool.com.mx", label: "skool.com.mx" }],
   },
   {
     name: "PMS Multiempresa",
-    context: "Grupo Fyttsa",
+    context: company,
     description: "Sistema de gestión de proyectos centralizado para múltiples empresas.",
     stack: [],
+    team: teamNote,
     links: [{ href: "https://stick.mx", label: "stick.mx" }],
   },
   {
+    name: "Apps móviles en Google Play",
+    context: company,
+    description:
+      "Aplicaciones móviles multiplataforma (iOS y Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
+    stack: ["Expo", "React Native"],
+    apps: [
+      { href: playStoreUrl, label: "Black Net" },
+      { href: "https://play.google.com/store/apps/details?id=com.fyttsanet.app", label: "FyttsaNet" },
+      { href: playStoreUrl, label: "BlackLink" },
+    ],
+  },
+  {
     name: "Facturador + Cotizador Microsip",
-    context: "Grupo Fyttsa",
+    context: company,
     description:
       "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos.",
     stack: ["Microsip"],
@@ -84,25 +130,11 @@ export const projects: readonly Project[] = [
     ],
   },
   {
-    name: "Apps Móviles con Expo",
-    context: "Grupo Fyttsa",
-    description:
-      "Aplicaciones móviles multiplataforma (iOS y Android) con Expo y React Native.",
-    stack: ["Expo", "React Native"],
-  },
-  {
     name: "Team Page & Sitio Web",
-    context: "Black Sheep Labs",
+    context: company,
     description: "Sitio web institucional del equipo de trabajo de la empresa.",
     stack: [],
     links: [{ href: "https://blck-sheep.com", label: "blck-sheep.com" }],
-  },
-  {
-    name: "Sistema de Inventarios 3D",
-    context: "AERIAL DEPOT · Edu. Dual 2025",
-    description:
-      "Aplicación web con Laravel, Vue.js y MySQL. Visualización 3D del almacén con Three.js para localización de productos.",
-    stack: ["Laravel", "Vue.js", "MySQL", "Three.js"],
   },
   {
     name: "Vacantes de Empleo",
@@ -110,14 +142,6 @@ export const projects: readonly Project[] = [
     description:
       "Gestión y publicación de vacantes para distintas sucursales de la empresa.",
     stack: [],
-  },
-  {
-    name: "BLACK SHEEP NET",
-    context: "Black Sheep Labs",
-    description:
-      "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
-    stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
-    links: [{ href: "https://black-net.mx", label: "black-net.mx" }],
   },
 ];
 
@@ -127,20 +151,24 @@ export type Role = {
   period?: string;
   summary?: string;
   href?: string;
+  highlights?: readonly string[];
 };
 
 export const roles: readonly Role[] = [
   {
     role: "Desarrollador full stack",
-    organization: "Grupo Fyttsa",
+    organization: company,
     period: "Noviembre 2025 – junio 2026",
+    href: "https://blck-sheep.com",
     summary:
       "Desarrollo de sistemas web y móviles multiempresa: LMS, PMS, facturador y cotizador integrados con ERP Microsip, aplicaciones móviles con Expo y sitio web institucional.",
-  },
-  {
-    role: "Desarrollador full stack",
-    organization: "Black Sheep Labs",
-    href: "https://blck-sheep.com",
+    highlights: [
+      "BLACK SHEEP NET en producción: Next.js, API en PHP sobre Firebird y Microsip, planeador de rutas con OSRM.",
+      "LMS y PMS multiempresa (skool.com.mx y stick.mx), en equipo con compañeros de Black Sheep Labs.",
+      "Facturador y cotizador integrados con el ERP Microsip.",
+      "Apps móviles con Expo publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
+      "Sitio web institucional y team page.",
+    ],
   },
 ];
 
@@ -151,11 +179,11 @@ export const skillGroups = [
   },
   {
     title: "Back end",
-    items: ["PHP", "Laravel", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
+    items: ["PHP", "Laravel", "Python", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
   },
   {
     title: "Móvil",
-    items: ["Expo", "React Native"],
+    items: ["Expo", "React Native", "Flutter"],
   },
   {
     title: "DevOps",
@@ -182,7 +210,7 @@ export const technologies = [...new Set(listedTechnologies)];
 
 export const stats = [
   { value: projects.length, label: "Desarrollos" },
-  { value: roles.length, label: "Roles de desarrollo" },
+  { value: projects.reduce((total, project) => total + (project.apps?.length ?? 0), 0), label: "Apps en Google Play" },
   { value: technologies.length, label: "Tecnologías" },
 ] as const;
 

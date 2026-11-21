@@ -3,6 +3,7 @@ import { DEPTH } from "./context";
 import type { SceneContext, Three, Updater } from "./context";
 import { addFishSchools } from "./fish";
 import { addJellyfish } from "./jellyfish";
+import { addLandmarks } from "./landmarks";
 import { addMantas } from "./manta";
 import { addRays } from "./rays";
 import { addSeabed } from "./seabed";
@@ -86,9 +87,13 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
   addTurtles(ctx);
   addSharks(ctx);
   addSquids(ctx);
+  const stations = addLandmarks(ctx);
 
   // Tamaño, scroll y puntero.
   let maxScroll = 1;
+  let baseFov = 60;
+  /** Parada de cada escenario: avance del scroll (0–1) y ancho del lanzamiento. */
+  const stops = stations.map((station) => ({ station, at: -1, width: 0.05 }));
   let smooth = 0;
   let lastY = window.scrollY;
   let velocity = 0;
@@ -102,9 +107,28 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     camera.aspect = aspect;
     const hfov = (78 * Math.PI) / 180;
     const vfov = (2 * Math.atan(Math.tan(hfov / 2) / aspect) * 180) / Math.PI;
-    camera.fov = Math.min(100, Math.max(50, vfov));
+    baseFov = Math.min(100, Math.max(50, vfov));
+    camera.fov = baseFov;
     camera.updateProjectionMatrix();
     maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    // El escenario de cada capítulo se coloca justo donde la cámara estará
+    // cuando el texto del capítulo quede fijo en pantalla.
+    for (const stop of stops) {
+      const element = document.querySelector<HTMLElement>(`[data-chapter="${stop.station.id}"]`);
+      if (!element) {
+        stop.at = -1;
+        stop.station.group.visible = false;
+        continue;
+      }
+      const rect = element.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const pinned = Math.max(0, rect.height - window.innerHeight);
+      stop.at = Math.min(1, (top + pinned * 0.55) / maxScroll);
+      stop.width = Math.max(0.02, (rect.height * 0.62) / maxScroll);
+      const { station } = stop;
+      station.group.visible = true;
+      station.group.position.y = station.onFloor ? ctx.floorY(station.x, station.z) : -stop.at * DEPTH - 1.6;
+    }
   };
   resize();
   const resizeObserver = new ResizeObserver(resize);
@@ -119,12 +143,15 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     window.addEventListener("pointermove", onPointer, { passive: true });
   }
 
-  const clock = new THREE.Clock();
+  let lastDive = -1;
+  const start = performance.now();
+  let previous = start;
   let raf = 0;
-  const frame = () => {
+  const frame = (now: number) => {
     raf = requestAnimationFrame(frame);
-    const dt = Math.min(clock.getDelta(), 0.05);
-    const elapsed = clock.elapsedTime;
+    const dt = Math.min(Math.max(0, now - previous) / 1000, 0.05);
+    previous = now;
+    const elapsed = (now - start) / 1000;
     time.value = elapsed;
 
     const y = window.scrollY;
@@ -146,9 +173,53 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
 
     pointer.x += (pointer.tx - pointer.x) * 0.05;
     pointer.y += (pointer.ty - pointer.y) * 0.05;
-    const pitch = -0.28 * Math.min(1, Math.max(0, (smooth - 0.86) / 0.14));
-    camera.position.set(pointer.x * 1.4 + Math.sin(elapsed * 0.2) * 0.5, -smooth * DEPTH + Math.sin(elapsed * 0.3) * 0.3 - pointer.y * 0.5, 0);
-    camera.rotation.set(pitch - pointer.y * 0.03, -pointer.x * 0.05, Math.max(-0.08, Math.min(0.08, -velocity * 0.02)));
+    // Lanzamiento hacia el escenario más cercano: la cámara avanza, se
+    // desvía hacia él y vuelve a la columna de agua al terminar el capítulo.
+    let dive = 0;
+    let target: (typeof stops)[number] | undefined;
+    for (const stop of stops) {
+      if (stop.at < 0) continue;
+      const u = (smooth - stop.at) / stop.width;
+      if (Math.abs(u) >= 1) continue;
+      const weight = (Math.cos(u * Math.PI) + 1) / 2;
+      if (weight > dive) {
+        dive = weight;
+        target = stop;
+      }
+    }
+    const ease = dive * dive * (3 - 2 * dive);
+    let diveX = 0;
+    let diveZ = 0;
+    let diveY = 0;
+    let yaw = 0;
+    let bank = 0;
+    if (target) {
+      const { station } = target;
+      const sy = station.group.position.y;
+      const baseY = -smooth * DEPTH;
+      diveX = station.x * (small ? 0.6 : 0.4) * ease;
+      diveZ = (station.z + station.stand) * ease;
+      diveY = station.onFloor ? (sy + 6 - baseY) * ease : 0;
+      yaw = -Math.atan2(station.x - diveX, -(station.z - diveZ)) * ease * (small ? 0.9 : 0.3);
+      bank = Math.sin(((smooth - target.at) / target.width) * Math.PI) * 0.06 * ease;
+    }
+    const floorDive = target?.station.onFloor === true ? 0.2 : 0;
+    const pitch = -0.28 * Math.min(1, Math.max(0, (smooth - 0.86) / 0.14)) * (1 - ease) - (0.12 + floorDive) * ease;
+    camera.position.set(
+      pointer.x * 1.4 + Math.sin(elapsed * 0.2) * 0.5 + diveX,
+      -smooth * DEPTH + Math.sin(elapsed * 0.3) * 0.3 - pointer.y * 0.5 + diveY,
+      diveZ,
+    );
+    camera.rotation.set(pitch - pointer.y * 0.03, yaw - pointer.x * 0.05, Math.max(-0.08, Math.min(0.08, -velocity * 0.02)) + bank);
+    const fov = baseFov * (1 - 0.1 * ease);
+    if (Math.abs(camera.fov - fov) > 0.01) {
+      camera.fov = fov;
+      camera.updateProjectionMatrix();
+    }
+    if (Math.abs(ease - lastDive) > 0.004) {
+      lastDive = ease;
+      document.documentElement.style.setProperty("--ab-dive", ease.toFixed(3));
+    }
 
     for (const update of updaters) {
       update(elapsed, dt, smooth);
@@ -165,6 +236,7 @@ export function startScene(THREE: Three, canvas: HTMLCanvasElement): () => void 
     for (const item of disposables) {
       item.dispose();
     }
+    document.documentElement.style.removeProperty("--ab-dive");
     renderer.dispose();
     renderer.forceContextLoss();
   };

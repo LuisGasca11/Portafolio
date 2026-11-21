@@ -12,10 +12,9 @@ import { Experience } from "@/components/abismo/sections/experience";
 import { Hero } from "@/components/abismo/sections/hero";
 import { Projects } from "@/components/abismo/sections/projects";
 import { Skills } from "@/components/abismo/sections/skills";
-import { DepthGauge } from "@/components/abismo/ui/depth-gauge";
 import { Header } from "@/components/abismo/ui/header";
+import { Route } from "@/components/abismo/ui/route";
 import { TechBubbles } from "@/components/abismo/ui/tech-bubbles";
-import { Thermocline } from "@/components/abismo/ui/thermocline";
 import { site } from "@/lib/content";
 import "./abismo.css";
 
@@ -55,16 +54,15 @@ export function Abismo() {
       <div className="ab-dark" data-dark aria-hidden="true" />
       {reduced ? null : <AbismoScene onStatus={onStatus} />}
       {reduced ? null : <TechBubbles />}
+      <div className="ab-vignette" aria-hidden="true" />
       <div className="ab-flash" aria-hidden="true" />
 
-      <DepthGauge />
+      <Route />
       <Header />
 
       <Hero glOn={glOn} />
       <About glOn={glOn} />
-      <Thermocline label="200 m · límite de la luz solar" />
       <Projects />
-      <Thermocline label="1,000 m · fin de la zona crepuscular" />
       <Experience />
       <Skills />
       <Education />

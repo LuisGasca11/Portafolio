@@ -70,7 +70,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                     href={href}
                     className="font-semibold text-accent underline decoration-white/20 underline-offset-4 hover:decoration-accent"
                   >
-                    {href.replace(/^https:\/\//, "")}
+                    {href.includes("play.google.com") ? "Google Play" : href.replace(/^https:\/\//, "")}
                   </ExternalLink>
                 </li>
               ))}

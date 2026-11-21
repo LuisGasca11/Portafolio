@@ -1,14 +1,29 @@
 /** Profundidad total que recorre la página, en metros. */
 export const maxDepth = 1200;
 
-export const navLinks = [
-  { href: "#sobre-mi", label: "Sobre mí" },
-  { href: "#desarrollos", label: "Desarrollos" },
-  { href: "#experiencia", label: "Experiencia" },
-  { href: "#habilidades", label: "Habilidades" },
-  { href: "#educacion", label: "Educación" },
-  { href: "#contacto", label: "Contacto" },
+/**
+ * Capítulos del descenso, al estilo de un recorrido continuo: cada uno tiene
+ * su profundidad, su color de acento y un escenario 3D al que la cámara se
+ * lanza mientras el texto del capítulo queda fijo en pantalla.
+ */
+export const chapters = [
+  { id: "inicio", label: "Superficie", meters: 0, accent: "#bff6ff" },
+  { id: "sobre-mi", label: "Sobre mí", meters: 40, accent: "#ffb38a" },
+  { id: "desarrollos", label: "Desarrollos", meters: 180, accent: "#7ee8ff" },
+  { id: "experiencia", label: "Experiencia", meters: 520, accent: "#ffd27a" },
+  { id: "habilidades", label: "Habilidades", meters: 880, accent: "#d79bff" },
+  { id: "educacion", label: "Educación", meters: 1040, accent: "#5dffc9" },
+  { id: "contacto", label: "Contacto", meters: 1200, accent: "#ff7ed8" },
 ] as const;
+
+export type ChapterId = (typeof chapters)[number]["id"];
+
+export function chapterOf(id: ChapterId) {
+  const index = chapters.findIndex((chapter) => chapter.id === id);
+  return { ...chapters[index]!, index, total: chapters.length };
+}
+
+export const navLinks = chapters.slice(1).map((chapter) => ({ href: `#${chapter.id}`, label: chapter.label }));
 
 /** Zona oceánica real según la profundidad. */
 export function zoneOf(meters: number): string {
@@ -44,6 +59,8 @@ export const techBubbles = [
   { name: "Cloudflare", left: "85%", size: 3.4, duration: 22, delay: 12, dx: -16, compact: false },
   { name: "Vue.js", left: "92%", size: 4.2, duration: 20, delay: 7, dx: -12, compact: true },
   { name: "Netlify", left: "57%", size: 3.2, duration: 26, delay: 15.5, dx: 12, compact: false },
+  { name: "Flutter", left: "27%", size: 3.6, duration: 21, delay: 17, dx: -14, compact: true },
+  { name: "Python", left: "46%", size: 3.4, duration: 23, delay: 19.5, dx: 16, compact: false },
 ] as const;
 
 /** Cardumen SVG del respaldo sin WebGL. */

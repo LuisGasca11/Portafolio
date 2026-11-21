@@ -1,13 +1,13 @@
 import { Fish, Turtle } from "@/components/abismo/art/creatures";
 import { fallbackSchool } from "@/components/abismo/data";
-import { SectionHeading } from "@/components/abismo/ui/section-heading";
+import { Chapter } from "@/components/abismo/ui/chapter";
 import { site, stats } from "@/lib/content";
 
 export function About({ glOn }: { glOn: boolean }) {
   const aboutWords = site.about.split(" ");
 
   return (
-    <section id="sobre-mi" aria-labelledby="sobre-mi-titulo" className="relative px-5 py-28 sm:py-36">
+    <section id="sobre-mi" aria-labelledby="sobre-mi-titulo" className="relative px-5 pb-28 sm:pb-36">
       {glOn ? null : (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <div data-school="0.7" className="absolute left-0" style={{ top: "80%" }}>
@@ -20,9 +20,15 @@ export function About({ glOn }: { glOn: boolean }) {
           ))}
         </div>
       )}
+      <Chapter
+        id="sobre-mi"
+        headingId="sobre-mi-titulo"
+        title="Sobre mí"
+        body={`${site.focus}. ${site.location}.`}
+        tags={[site.shortTitle, "Full stack", "Móvil"]}
+      />
       <div className="relative mx-auto max-w-4xl">
-        <SectionHeading id="sobre-mi-titulo" meters={40} title="Sobre mí" size="md" />
-        <p data-about className="ab-display mt-8 text-[1.75rem] leading-snug font-light text-balance sm:text-5xl sm:leading-[1.15]">
+        <p data-about className="ab-display text-[1.75rem] leading-snug font-light text-balance sm:text-5xl sm:leading-[1.15]">
           {aboutWords.map((word, index) => (
             <span key={`${word}-${index}`} data-word className="inline-block pr-[0.28em]">
               {word}
