@@ -195,3 +195,27 @@ export function Waves({ className }: { className?: string }) {
     </div>
   );
 }
+
+export function Rov({ className, style }: ArtProps) {
+  const id = useId();
+  return (
+    <svg viewBox="0 0 90 150" className={className} style={style} aria-hidden="true" overflow="visible">
+      <defs>
+        <linearGradient id={`${id}-beam`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fff6c2" stopOpacity="0.8" />
+          <stop offset="1" stopColor="#fff6c2" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path className="ab-beam" d="M30 46 L-10 150 L100 150 L60 46Z" fill={`url(#${id}-beam)`} />
+      <rect x="14" y="10" width="62" height="14" rx="7" fill="#ff7a45" />
+      <rect x="16" y="22" width="58" height="26" rx="9" fill="#ffd54a" stroke="#b87600" strokeWidth="2" />
+      <circle cx="45" cy="35" r="8" fill="#7fe3ff" stroke="#b87600" strokeWidth="2" />
+      <circle cx="43" cy="33" r="2.4" fill="#fff" opacity="0.85" />
+      <circle cx="8" cy="36" r="7" fill="#3a4a55" />
+      <circle cx="82" cy="36" r="7" fill="#3a4a55" />
+      <circle cx="36" cy="48" r="4" fill="#fff6c2" />
+      <circle cx="54" cy="48" r="4" fill="#fff6c2" />
+      <path d="M45 24 V10" stroke="#b87600" strokeWidth="2" />
+    </svg>
+  );
+}

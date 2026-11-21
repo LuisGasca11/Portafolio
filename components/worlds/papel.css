@@ -75,9 +75,11 @@
 }
 
 .pp-chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   border-radius: 0.7rem 1.4rem 0.7rem 1.4rem;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 1rem 0.4rem 0.45rem;
   font-weight: 700;
   font-size: 0.9rem;
   color: #fff;

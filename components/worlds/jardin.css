@@ -75,9 +75,11 @@
 }
 
 .jd-leafchip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   border-radius: 0 999px 0 999px;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 1rem 0.35rem 0.4rem;
   font-size: 0.85rem;
   font-weight: 600;
   background: linear-gradient(135deg, #2f8a52, #5fbf6a);

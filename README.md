@@ -6,7 +6,7 @@ El contenido sale del CV y de la descripción de BLACK SHEEP NET. El sitio publi
 
 La portada es un «mundo con scroll» con tres mundos distintos y un menú fijo abajo para cambiar entre ellos (se recuerda la elección y también se puede enlazar con `?v=m1`, `?v=m2` o `?v=m3`):
 
-- **M1 Abismo**: un descenso al océano. La profundidad es la barra de progreso: del agua clara de la superficie al fondo marino, con peces, medusas, una ballena, un pez abisal y un submarino; las habilidades son organismos bioluminiscentes.
+- **M1 Abismo**: un descenso al océano en 3D (Three.js). La cámara baja con el scroll a través de nieve marina, cardúmenes, medusas y haces de luz hasta el fondo; la barra de profundidad y las zonas (de luz, crepuscular, de medianoche) siguen el avance. Hay un robot submarino que recorre la experiencia, y las habilidades son organismos bioluminiscentes. Tiene menú propio y medidor de profundidad en móvil, y si el dispositivo no tiene WebGL o se pide menos movimiento, usa el fondo CSS y las ilustraciones SVG.
 - **M2 Papel**: un mundo de papel picado mexicano. Capas de papel con parallax (volcanes y pueblo), los desarrollos como puestos de tianguis con toldo, etiquetas colgantes, un papalote que acompaña el scroll y una noche de ofrenda para el contacto.
 - **M3 Jardín**: una enredadera que crece conforme se baja por la página; cada desarrollo es una flor que se abre en su rama, las habilidades son un herbario y el contacto es un invernadero.
 
@@ -20,7 +20,11 @@ Los videos ambientales (`public/worlds/*.webm`, `*.mp4`) y sus pósters se gener
 node tools/render-loops/render.cjs all
 ```
 
-Las ilustraciones (peces, medusas, volcanes, flores, enredadera…) son SVG escritos a mano dentro de los componentes `*-art.tsx`.
+Las ilustraciones (peces, medusas, volcanes, flores, enredadera…) son SVG escritos a mano dentro de los componentes `*-art.tsx`. La escena 3D de Abismo (`abismo-3d.tsx`) se carga con `import()` solo en ese mundo.
+
+### Iconos de tecnologías
+
+Cada tecnología muestra su icono (`components/tech-icon.tsx`). Los datos salen de `lib/tech-icons.ts`, que se genera con `tools/gen-tech-icons.cjs` a partir de [simple-icons](https://simpleicons.org) (CC0); Java, SQL Server, Firebird y Microsip, que no están ahí, son glifos propios. Para añadir una tecnología, agrégala al script y vuelve a generarlo: `npm i --no-save simple-icons && node tools/gen-tech-icons.cjs`.
 
 ## Requisitos
 
