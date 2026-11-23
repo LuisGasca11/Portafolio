@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useT } from "@/components/shared/locale-provider";
 
 type ExternalLinkProps = {
   href: string;
@@ -7,10 +10,11 @@ type ExternalLinkProps = {
 };
 
 export function ExternalLink({ href, children, className }: ExternalLinkProps) {
+  const t = useT();
   return (
     <a href={href} className={className} target="_blank" rel="noopener noreferrer">
       {children}
-      <span className="sr-only"> (se abre en una pestaña nueva)</span>
+      <span className="sr-only"> {t("common.opensInNewTab")}</span>
     </a>
   );
 }

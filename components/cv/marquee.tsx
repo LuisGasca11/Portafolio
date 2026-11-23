@@ -1,6 +1,5 @@
-import { softSkills, technicalSkills } from "@/lib/cv";
-
-const technicalItems = technicalSkills.flatMap((group) => group.items);
+import { getCv } from "@/lib/cv";
+import type { Locale } from "@/lib/i18n";
 
 function MarqueeRow({ items }: { items: readonly string[] }) {
   return (
@@ -31,7 +30,9 @@ function Ticker({ items, reverse = false }: { items: readonly string[]; reverse?
   );
 }
 
-export function Marquee() {
+export function Marquee({ locale }: { locale: Locale }) {
+  const { technicalSkills, softSkills } = getCv(locale);
+  const technicalItems = technicalSkills.flatMap((group) => group.items);
   return (
     <div className="no-print overflow-hidden border-y border-line py-4" aria-hidden="true">
       <Ticker items={technicalItems} />

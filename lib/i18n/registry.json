@@ -1,0 +1,39 @@
+{
+  "source": "es",
+  "locales": [
+    {
+      "code": "es",
+      "tag": "es-MX",
+      "og": "es_MX",
+      "endonym": "Español",
+      "dir": "ltr",
+      "scripts": [
+        "Latin"
+      ],
+      "status": "live",
+      "reviewedBy": "Luis Aguilar",
+      "reviewedAt": "2026-11-23"
+    },
+    {
+      "code": "en",
+      "tag": "en-US",
+      "og": "en_US",
+      "endonym": "English",
+      "dir": "ltr",
+      "scripts": [
+        "Latin"
+      ],
+      "status": "beta",
+      "allowIdentical": [
+        "Front end",
+        "Back end",
+        "DevOps",
+        "ERP",
+        "BLACK SHEEP NET",
+        "Aerial Depot WMS",
+        "Ecatepec de Morelos",
+        "Google Play"
+      ]
+    }
+  ]
+}

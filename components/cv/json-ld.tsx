@@ -1,7 +1,10 @@
 import { siteUrl } from "@/lib/content";
-import { education, profile, technicalSkills } from "@/lib/cv";
+import { getCv } from "@/lib/cv";
+import { pathFor, tagOf } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
-export function JsonLd() {
+export function JsonLd({ locale }: { locale: Locale }) {
+  const { profile, education, technicalSkills } = getCv(locale);
   const data = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -9,12 +12,13 @@ export function JsonLd() {
     jobTitle: profile.title,
     email: profile.email,
     telephone: profile.phone,
+    inLanguage: tagOf(locale),
     address: {
       "@type": "PostalAddress",
       addressLocality: profile.location,
       addressCountry: "MX",
     },
-    url: `${siteUrl}/curriculum`,
+    url: `${siteUrl}${pathFor(locale, "/curriculum")}`,
     sameAs: [profile.github.href, profile.linkedin.href, siteUrl],
     alumniOf: education.map((item) => ({
       "@type": "EducationalOrganization",

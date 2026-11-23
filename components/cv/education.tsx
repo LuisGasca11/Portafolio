@@ -1,7 +1,11 @@
 import { SectionIntro } from "@/components/cv/section-intro";
-import { education } from "@/lib/cv";
+import { getCv } from "@/lib/cv";
+import { createT } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
-export function Education() {
+export function Education({ locale }: { locale: Locale }) {
+  const t = createT(locale);
+  const { education } = getCv(locale);
   return (
     <section
       id="educacion"
@@ -9,7 +13,7 @@ export function Education() {
       className="scroll-mt-24 border-b border-line px-5 py-24 sm:py-32 print:px-0 print:py-6"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionIntro index="05" id="educacion-titulo" title="Educación" />
+        <SectionIntro index="05" id="educacion-titulo" title={t("cv.sections.education")} />
         <ol className="mt-12 border-t border-line">
           {education.map((item) => (
             <li

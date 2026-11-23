@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { navLinks } from "@/components/abismo/data";
-import { cvUrl, site } from "@/lib/content";
-
-const desktopLinks = navLinks.filter((link) => link.href !== "#sobre-mi" && link.href !== "#educacion");
+import { LanguageSwitch } from "@/components/shared/language-switch";
+import { useContent, useLocale, useT } from "@/components/shared/locale-provider";
+import { cvPath, identity } from "@/lib/content";
+import { pathFor } from "@/lib/i18n";
 
 /**
  * Encabezado fijo: marca y navegación en escritorio; en móvil, la
@@ -13,6 +13,10 @@ const desktopLinks = navLinks.filter((link) => link.href !== "#sobre-mi" && link
  */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const t = useT();
+  const locale = useLocale();
+  const { navItems } = useContent();
+  const desktopLinks = navItems.filter((link) => link.href !== "#sobre-mi" && link.href !== "#educacion");
 
   useEffect(() => {
     if (!open) {
@@ -41,14 +45,15 @@ export function Header() {
     <>
       <header className="ab-header" data-header data-solid="false">
         <a href="#inicio" className="ab-display text-xl font-semibold tracking-tight">
-          {site.brand}
+          {identity.brand}
         </a>
-        <nav aria-label="Principal" className="hidden gap-6 text-sm font-medium text-cyan-50/90 md:flex">
+        <nav aria-label={t("common.mainNav")} className="hidden gap-6 text-sm font-medium text-cyan-50/90 md:flex">
           {desktopLinks.map((link) => (
             <a key={link.href} href={link.href} className="hover:text-white">
               {link.label}
             </a>
           ))}
+          <LanguageSwitch className="rounded-full border border-cyan-200/30 px-3 py-0.5 text-xs font-semibold hover:border-cyan-200" />
         </nav>
         <div className="flex items-center gap-3 md:hidden">
           <span aria-hidden="true" className="rounded-full border border-cyan-200/30 bg-black/30 px-3 py-1 text-xs font-semibold tabular-nums">
@@ -57,7 +62,7 @@ export function Header() {
           <button
             type="button"
             className="ab-menu-btn"
-            aria-label="Abrir menú"
+            aria-label={t("common.openMenu")}
             aria-expanded={open}
             aria-controls="ab-menu"
             onClick={() => {
@@ -72,11 +77,11 @@ export function Header() {
       </header>
 
       {open ? (
-        <div id="ab-menu" className="ab-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <div id="ab-menu" className="ab-menu" role="dialog" aria-modal="true" aria-label={t("common.menu")}>
           <button
             type="button"
             className="ab-menu-btn absolute top-3 right-5"
-            aria-label="Cerrar menú"
+            aria-label={t("common.closeMenu")}
             onClick={() => {
               setOpen(false);
             }}
@@ -85,7 +90,7 @@ export function Header() {
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
-          {navLinks.map((link, index) => (
+          {navItems.map((link, index) => (
             <a
               key={link.href}
               href={link.href}
@@ -98,9 +103,10 @@ export function Header() {
               {link.label}
             </a>
           ))}
-          <Link href={cvUrl} className="mt-4 text-sm font-semibold text-cyan-200 underline underline-offset-4">
-            Ver currículum
+          <Link href={pathFor(locale, cvPath)} className="mt-4 text-sm font-semibold text-cyan-200 underline underline-offset-4">
+            {t("common.viewCv")}
           </Link>
+          <LanguageSwitch className="mt-5 inline-flex w-fit rounded-full border border-cyan-200/40 px-4 py-2 text-sm font-semibold text-cyan-100" />
         </div>
       ) : null}
     </>

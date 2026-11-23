@@ -1,7 +1,7 @@
 import { Abismo } from "@/components/abismo/abismo";
 import { SmoothScroll } from "@/components/shared/smooth-scroll";
 
-export default function HomePage() {
+export function HomePage() {
   return (
     <SmoothScroll>
       <main id="contenido">

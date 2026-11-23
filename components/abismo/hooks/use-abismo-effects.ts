@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import type { RefObject } from "react";
 import { maxDepth, zoneOf } from "@/components/abismo/data";
+import { useLocale, useT } from "@/components/shared/locale-provider";
+import { tagOf } from "@/lib/i18n";
 import { gsap, ScrollTrigger, setupCommonMotion } from "@/components/abismo/hooks/motion";
 
 /**
@@ -12,6 +14,8 @@ import { gsap, ScrollTrigger, setupCommonMotion } from "@/components/abismo/hook
  * se mantienen el medidor y el fondo (no son movimiento).
  */
 export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: boolean, drawn: boolean) {
+  const t = useT();
+  const tag = tagOf(useLocale());
   useEffect(() => {
     const element = root.current;
     if (!element) {
@@ -42,9 +46,9 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
             const meters = Math.round((self.progress * maxDepth) / 10) * 10;
             if (gauge) gauge.style.top = `${self.progress * 100}%`;
             readouts.forEach((node) => {
-              node.textContent = `${meters.toLocaleString("es-MX")} m`;
+              node.textContent = `${meters.toLocaleString(tag)} m`;
             });
-            if (zoneText) zoneText.textContent = zoneOf(meters);
+            if (zoneText) zoneText.textContent = zoneOf(meters, t);
             element.style.setProperty("--p", self.progress.toFixed(3));
             if (header) header.dataset.solid = String(window.scrollY > 60);
           },
@@ -139,5 +143,5 @@ export function useAbismoEffects(root: RefObject<HTMLElement | null>, reduced: b
       window.removeEventListener("pointermove", onPointer);
       context.revert();
     };
-  }, [root, reduced, drawn]);
+  }, [root, reduced, drawn, t, tag]);
 }

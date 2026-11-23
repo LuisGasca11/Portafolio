@@ -1,0 +1,234 @@
+{
+  "site": {
+    "title": "Ingeniero en Tecnologías de la Información y la Comunicación",
+    "shortTitle": "Ingeniero en TIC",
+    "focus": "Desarrollo web full stack y móvil",
+    "location": "Ecatepec de Morelos, CDMX",
+    "about": "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y móvil. Aprendizaje rápido, trabajo en equipo y orientación a resultados.",
+    "aboutLong": "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y móvil. Aprendizaje rápido, trabajo en equipo y orientación a resultados. Disciplina forjada en el deporte aplicada a cada proyecto.",
+    "portfolioOf": "Portafolio de {name}"
+  },
+  "meta": {
+    "cvTitle": "{name} | Currículum",
+    "cvDescription": "Currículum de {name}, ingeniero en Tecnologías de la Información y la Comunicación. Desarrollo web full stack y móvil. Ecatepec de Morelos.",
+    "cvApplicationName": "Currículum de {name}",
+    "keywords": {
+      "role": "ingeniero en TIC",
+      "devRole": "desarrollador full stack",
+      "cv": "currículum",
+      "city": "Ecatepec de Morelos"
+    }
+  },
+  "common": {
+    "skipToContent": "Saltar al contenido",
+    "mainNav": "Principal",
+    "sectionsNav": "Secciones",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "close": "Cerrar",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
+    "copyright": "© 2026 {name}",
+    "switchLanguage": "Cambiar el idioma a {language}",
+    "contact": "Contacto",
+    "cv": "Currículum",
+    "viewCv": "Ver currículum",
+    "downloadCv": "Descargar CV (PDF)",
+    "downloadCvOther": "Descargar versión en inglés",
+    "profiles": "Perfiles"
+  },
+  "hero": {
+    "depth": "0 m · Superficie",
+    "cta": "Sumergirme en los desarrollos",
+    "scroll": "Desliza para descender"
+  },
+  "sea": {
+    "gauge": "PROF.",
+    "zoneLight": "Zona de luz",
+    "zoneTwilight": "Zona crepuscular",
+    "zoneMidnight": "Zona de medianoche",
+    "seabed": "Fondo marino",
+    "bioluminescence": "bioluminiscencia",
+    "limit200": "200 m · límite de la luz solar",
+    "limit1000": "1,000 m · fin de la zona crepuscular"
+  },
+  "about": {
+    "heading": "Sobre mí",
+    "stats": {
+      "projects": "Desarrollos",
+      "apps": "Apps en Google Play",
+      "technologies": "Tecnologías"
+    }
+  },
+  "projects": {
+    "heading": "Desarrollos",
+    "intro": "Lo que he construido, cada pieza detrás de su propia escotilla.",
+    "swipe": "Desliza para ver más",
+    "stackOf": "Stack de {name}",
+    "sitesOf": "Sitios en línea de {name}",
+    "appsOf": "Apps de {name} en Google Play",
+    "googlePlay": "Google Play",
+    "allApps": "Ver todas las apps de la empresa",
+    "team": "En colaboración con otros compañeros de Black Sheep Labs.",
+    "items": {
+      "blackNet": {
+        "name": "BLACK SHEEP NET",
+        "description": "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
+        "summary": "CRM de ventas de campo sincronizado con el ERP Microsip: planeador de ruta con mapa (OSRM), cotizaciones, pedidos y cobros. Web y app iOS/Android, multiempresa."
+      },
+      "aerial": {
+        "name": "Aerial Depot WMS",
+        "context": "AERIAL DEPOT · Educación Dual 2025",
+        "description": "Sistema de gestión de almacenes (WMS) con back end y front end separados: API en Laravel 12 con autenticación JWT, base de datos MySQL con migraciones y datos precargados, imágenes de productos procesadas con GD y una interfaz en Vue 3 que muestra el almacén en 3D con Three.js para localizar productos.",
+        "summary": "Sistema de gestión de almacenes (WMS): API en Laravel 12 con JWT, MySQL y una interfaz en Vue 3 con el almacén en 3D (Three.js) para localizar productos."
+      },
+      "lms": {
+        "name": "LMS Multiempresa",
+        "description": "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
+        "summary": "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones."
+      },
+      "pms": {
+        "name": "PMS Multiempresa",
+        "description": "Sistema de gestión de proyectos centralizado para múltiples empresas.",
+        "summary": "Sistema de gestión de proyectos centralizado para múltiples empresas."
+      },
+      "apps": {
+        "name": "Apps móviles en Google Play",
+        "description": "Aplicaciones móviles multiplataforma (iOS y Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
+        "summary": "Aplicaciones móviles multiplataforma (iOS/Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink."
+      },
+      "invoicing": {
+        "name": "Facturador + Cotizador Microsip",
+        "description": "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos.",
+        "summary": "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos."
+      },
+      "website": {
+        "name": "Team Page & Sitio Web",
+        "description": "Sitio web institucional del equipo de trabajo de la empresa.",
+        "summary": "Sitio web institucional del equipo de trabajo de la empresa."
+      },
+      "jobs": {
+        "name": "Vacantes de Empleo",
+        "description": "Gestión y publicación de vacantes para distintas sucursales de la empresa.",
+        "summary": "Gestión y publicación de vacantes para distintas sucursales de la empresa."
+      }
+    }
+  },
+  "experience": {
+    "heading": "Experiencia",
+    "role": "Desarrollador full stack",
+    "summary": "Desarrollo de sistemas web y móviles multiempresa: LMS, PMS, facturador y cotizador integrados con ERP Microsip, aplicaciones móviles con Expo y sitio web institucional.",
+    "cvSummary": "Desarrollo de sistemas web y móviles multiempresa: BLACK SHEEP NET, LMS y PMS (en colaboración con compañeros de Black Sheep Labs), facturador y cotizador integrados con ERP Microsip, apps móviles con Expo publicadas en Google Play (Black Net, FyttsaNet y BlackLink) y sitio web institucional.",
+    "highlights": {
+      "blackNet": "BLACK SHEEP NET en producción: Next.js, API en PHP sobre Firebird y Microsip, planeador de rutas con OSRM.",
+      "lmsPms": "LMS y PMS multiempresa (skool.com.mx y stick.mx), en equipo con compañeros de Black Sheep Labs.",
+      "invoicing": "Facturador y cotizador integrados con el ERP Microsip.",
+      "apps": "Apps móviles con Expo publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
+      "website": "Sitio web institucional y team page."
+    }
+  },
+  "skills": {
+    "heading": "Habilidades",
+    "groups": {
+      "frontend": "Front end",
+      "backend": "Back end",
+      "mobile": "Móvil",
+      "devops": "DevOps",
+      "erp": "ERP"
+    },
+    "microsipBasic": "Microsip (básico)"
+  },
+  "education": {
+    "heading": "Educación",
+    "items": {
+      "upvm": {
+        "title": "Ingeniería en TIC"
+      },
+      "cecytem": {
+        "title": "CECyTEM Plantel Ecatepec 1"
+      }
+    }
+  },
+  "contact": {
+    "heading": "Llegaste al fondo",
+    "text": "Aquí abajo hay silencio y buenas ideas. Si tienes un proyecto, escríbeme.",
+    "surface": "Volver a la superficie"
+  },
+  "form": {
+    "name": "Nombre",
+    "email": "Correo",
+    "message": "Mensaje",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@correo.com",
+    "messagePlaceholder": "Cuéntame de tu proyecto...",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando…",
+    "sentTitle": "¡Mensaje enviado!",
+    "sentText": "Gracias por escribir. Te respondo pronto a tu correo.",
+    "again": "Enviar otro mensaje",
+    "error": "Hubo un problema al enviar el mensaje. Inténtalo de nuevo o escríbeme directo a {email}.",
+    "honeypot": "No llenes este campo si eres humano:"
+  },
+  "cv": {
+    "eyebrow": "Currículum vitae",
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "skills": "Habilidades",
+      "education": "Educación",
+      "contact": "Contacto"
+    },
+    "sections": {
+      "about": "Sobre mí",
+      "experience": "Experiencia laboral",
+      "projects": "Proyectos",
+      "technical": "Habilidades técnicas",
+      "soft": "Habilidades blandas",
+      "languages": "Idiomas",
+      "education": "Educación",
+      "contact": "Contacto"
+    },
+    "online": "En línea:",
+    "techOf": "Tecnologías de {name}",
+    "sitesOf": "Sitios de {name}",
+    "present": "Actualidad",
+    "jobs": {
+      "trainer": {
+        "role": "Entrenador Deportivo",
+        "description": "Formación de niños de 4 a 15 años en disciplina deportiva, liderazgo y comunicación efectiva. Desarrollo de habilidades de mentoría y gestión de grupos."
+      },
+      "admin": {
+        "role": "Empleado Administrativo",
+        "description": "Administración del software de punto de venta SICAR, gestión de base de datos, ingresos y egresos del negocio."
+      },
+      "sales": {
+        "role": "Promotor de Ventas",
+        "description": "Desarrollo de habilidades de comunicación asertiva y construcción de relaciones con clientes."
+      }
+    },
+    "softSkills": {
+      "committed": "Comprometido",
+      "teamwork": "Trabajo en equipo",
+      "proactive": "Proactivo",
+      "communication": "Comunicación asertiva",
+      "leadership": "Liderazgo",
+      "problemSolving": "Resolución de problemas",
+      "responsible": "Responsable",
+      "adaptability": "Adaptabilidad",
+      "analytical": "Pensamiento analítico",
+      "timeManagement": "Gestión del tiempo",
+      "discipline": "Disciplina",
+      "creativity": "Creatividad"
+    },
+    "languageList": {
+      "english": "Inglés B2",
+      "spanish": "Español nativo"
+    }
+  },
+  "notFound": {
+    "heading": "Esta página no existe",
+    "text": "El enlace no corresponde a ninguna sección del portafolio.",
+    "home": "Volver al inicio"
+  }
+}

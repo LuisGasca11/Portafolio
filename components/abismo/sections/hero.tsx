@@ -4,10 +4,13 @@ import type { CSSProperties } from "react";
 import { Waves } from "@/components/abismo/art/flora";
 import { heroBubbles } from "@/components/abismo/data";
 import { AmbientVideo } from "@/components/abismo/ui/ambient-video";
-import { site } from "@/lib/content";
+import { useContent, useT } from "@/components/shared/locale-provider";
+import { identity } from "@/lib/content";
 
 export function Hero({ glOn }: { glOn: boolean }) {
-  const nameWords = site.name.split(" ");
+  const t = useT();
+  const { site } = useContent();
+  const nameWords = identity.name.split(" ");
 
   return (
     <section id="inicio" className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-5">
@@ -27,7 +30,7 @@ export function Hero({ glOn }: { glOn: boolean }) {
       ))}
       <div className="relative z-10 mx-auto w-full max-w-5xl pt-20 text-center">
         <p className="ab-depth" style={{ color: "#e6fcff" }} data-hero-fade>
-          — 0 m · Superficie
+          — {t("hero.depth")}
         </p>
         <h1 className="ab-display mt-5 text-[clamp(2.9rem,9vw,7.2rem)] leading-[0.98] font-light tracking-[-0.03em] text-balance">
           <span className="block overflow-hidden pb-[0.12em]">
@@ -46,28 +49,28 @@ export function Hero({ glOn }: { glOn: boolean }) {
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3" data-hero-fade>
           <a href="#desarrollos" className="ab-sonar inline-flex h-12 items-center rounded-full bg-white px-6 text-sm font-bold text-[#04304c]">
-            Sumergirme en los desarrollos
+            {t("hero.cta")}
           </a>
           <a href="#contacto" className="inline-flex h-12 items-center rounded-full border border-white/50 bg-white/10 px-6 text-sm font-semibold backdrop-blur-sm">
-            Contacto
+            {t("common.contact")}
           </a>
         </div>
-        <ul className="mt-6 flex items-center justify-center gap-3 text-sm font-semibold" data-hero-fade aria-label="Perfiles">
+        <ul className="mt-6 flex items-center justify-center gap-3 text-sm font-semibold" data-hero-fade aria-label={t("common.profiles")}>
           <li>
-            <ExternalLink href={site.githubUrl} className="inline-flex items-center gap-2 rounded-full bg-black/20 py-1 pr-3 pl-1 backdrop-blur-sm">
+            <ExternalLink href={identity.githubUrl} className="inline-flex items-center gap-2 rounded-full bg-black/20 py-1 pr-3 pl-1 backdrop-blur-sm">
               <TechIcon name="GitHub" size={1.7} />
               GitHub
             </ExternalLink>
           </li>
           <li>
-            <ExternalLink href={site.linkedinUrl} className="inline-flex items-center gap-2 rounded-full bg-black/20 py-1 pr-3 pl-1 backdrop-blur-sm">
+            <ExternalLink href={identity.linkedinUrl} className="inline-flex items-center gap-2 rounded-full bg-black/20 py-1 pr-3 pl-1 backdrop-blur-sm">
               <TechIcon name="LinkedIn" size={1.7} />
               LinkedIn
             </ExternalLink>
           </li>
         </ul>
         <p className="mt-12 text-[0.7rem] tracking-[0.3em] text-white/75 uppercase" data-hero-fade>
-          Desliza para descender
+          {t("hero.scroll")}
           <span aria-hidden="true" className="ab-bob mt-1 block text-xl leading-none">↓</span>
         </p>
       </div>

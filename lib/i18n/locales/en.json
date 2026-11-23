@@ -1,0 +1,234 @@
+{
+  "site": {
+    "title": "Information and Communication Technologies Engineer",
+    "shortTitle": "ICT Engineer",
+    "focus": "Full stack web and mobile development",
+    "location": "Ecatepec de Morelos, Mexico City",
+    "about": "ICT Engineer with proven experience in full stack web and mobile development. Quick learner, team player and results-oriented.",
+    "aboutLong": "ICT Engineer with proven experience in full stack web and mobile development. Quick learner, team player and results-oriented. Discipline built through sports, applied to every project.",
+    "portfolioOf": "{name}'s portfolio"
+  },
+  "meta": {
+    "cvTitle": "{name} | Résumé",
+    "cvDescription": "Résumé of {name}, Information and Communication Technologies engineer. Full stack web and mobile development. Ecatepec de Morelos, Mexico.",
+    "cvApplicationName": "Résumé of {name}",
+    "keywords": {
+      "role": "ICT engineer",
+      "devRole": "full stack developer",
+      "cv": "résumé",
+      "city": "Ecatepec de Morelos"
+    }
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "mainNav": "Main",
+    "sectionsNav": "Sections",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "close": "Close",
+    "opensInNewTab": "(opens in a new tab)",
+    "copyright": "© 2026 {name}",
+    "switchLanguage": "Switch language to {language}",
+    "contact": "Contact",
+    "cv": "Résumé",
+    "viewCv": "View résumé",
+    "downloadCv": "Download CV (PDF)",
+    "downloadCvOther": "Download the Spanish version",
+    "profiles": "Profiles"
+  },
+  "hero": {
+    "depth": "0 m · Surface",
+    "cta": "Dive into my work",
+    "scroll": "Scroll to descend"
+  },
+  "sea": {
+    "gauge": "DEPTH",
+    "zoneLight": "Sunlight zone",
+    "zoneTwilight": "Twilight zone",
+    "zoneMidnight": "Midnight zone",
+    "seabed": "Seabed",
+    "bioluminescence": "bioluminescence",
+    "limit200": "200 m · limit of sunlight",
+    "limit1000": "1,000 m · end of the twilight zone"
+  },
+  "about": {
+    "heading": "About me",
+    "stats": {
+      "projects": "Projects",
+      "apps": "Apps on Google Play",
+      "technologies": "Technologies"
+    }
+  },
+  "projects": {
+    "heading": "Projects",
+    "intro": "What I have built, each piece behind its own hatch.",
+    "swipe": "Swipe to see more",
+    "stackOf": "{name} stack",
+    "sitesOf": "{name} live sites",
+    "appsOf": "{name} apps on Google Play",
+    "googlePlay": "Google Play",
+    "allApps": "See all of the company's apps",
+    "team": "In collaboration with other teammates at Black Sheep Labs.",
+    "items": {
+      "blackNet": {
+        "name": "BLACK SHEEP NET",
+        "description": "Web monorepo with Next.js and a PHP API on top of Firebird and Microsip, in production. It includes a route planner built with Leaflet and OpenStreetMap, visit ordering with OSRM (exact Dijkstra up to 10 stops; nearest neighbor with 2-opt for longer routes), Google geocoding, orders scheduled through cron, and deployment on IIS and PM2.",
+        "summary": "Field sales CRM synced with the Microsip ERP: route planner with a map (OSRM), quotes, orders and payments. Web and iOS/Android app, multi-company."
+      },
+      "aerial": {
+        "name": "Aerial Depot WMS",
+        "context": "AERIAL DEPOT · Dual Education 2025",
+        "description": "Warehouse management system (WMS) with separate back end and front end: a Laravel 12 API with JWT authentication, a MySQL database with migrations and seed data, product images processed with GD, and a Vue 3 interface that shows the warehouse in 3D with Three.js to locate products.",
+        "summary": "Warehouse management system (WMS): Laravel 12 API with JWT, MySQL and a Vue 3 interface with the warehouse in 3D (Three.js) to locate products."
+      },
+      "lms": {
+        "name": "Multi-company LMS",
+        "description": "Multi-company learning management platform: management of courses, users and content for different organizations.",
+        "summary": "Multi-company learning management platform: management of courses, users and content for different organizations."
+      },
+      "pms": {
+        "name": "Multi-company PMS",
+        "description": "Centralized project management system for multiple companies.",
+        "summary": "Centralized project management system for multiple companies."
+      },
+      "apps": {
+        "name": "Mobile apps on Google Play",
+        "description": "Cross-platform (iOS and Android) mobile apps built with Expo and React Native, published on Google Play: Black Net, FyttsaNet and BlackLink.",
+        "summary": "Cross-platform (iOS/Android) mobile apps built with Expo and React Native, published on Google Play: Black Net, FyttsaNet and BlackLink."
+      },
+      "invoicing": {
+        "name": "Invoicing + Quoting for Microsip",
+        "description": "Electronic invoicing and quoting integrated with the Microsip ERP, with automatic data synchronization.",
+        "summary": "Electronic invoicing and quoting integrated with the Microsip ERP, with automatic data synchronization."
+      },
+      "website": {
+        "name": "Team Page & Website",
+        "description": "Corporate website for the company's team.",
+        "summary": "Corporate website for the company's team."
+      },
+      "jobs": {
+        "name": "Job Openings",
+        "description": "Management and publishing of job openings for the company's different branches.",
+        "summary": "Management and publishing of job openings for the company's different branches."
+      }
+    }
+  },
+  "experience": {
+    "heading": "Experience",
+    "role": "Full Stack Developer",
+    "summary": "Development of multi-company web and mobile systems: LMS, PMS, invoicing and quoting tools integrated with the Microsip ERP, mobile apps with Expo, and a corporate website.",
+    "cvSummary": "Development of multi-company web and mobile systems: BLACK SHEEP NET, LMS and PMS (in collaboration with Black Sheep Labs teammates), invoicing and quoting tools integrated with the Microsip ERP, Expo mobile apps published on Google Play (Black Net, FyttsaNet and BlackLink), and a corporate website.",
+    "highlights": {
+      "blackNet": "BLACK SHEEP NET in production: Next.js, a PHP API on top of Firebird and Microsip, and a route planner with OSRM.",
+      "lmsPms": "Multi-company LMS and PMS (skool.com.mx and stick.mx), together with Black Sheep Labs teammates.",
+      "invoicing": "Invoicing and quoting tools integrated with the Microsip ERP.",
+      "apps": "Expo mobile apps published on Google Play: Black Net, FyttsaNet and BlackLink.",
+      "website": "Corporate website and team page."
+    }
+  },
+  "skills": {
+    "heading": "Skills",
+    "groups": {
+      "frontend": "Front end",
+      "backend": "Back end",
+      "mobile": "Mobile",
+      "devops": "DevOps",
+      "erp": "ERP"
+    },
+    "microsipBasic": "Microsip (basic)"
+  },
+  "education": {
+    "heading": "Education",
+    "items": {
+      "upvm": {
+        "title": "B.Eng. in ICT"
+      },
+      "cecytem": {
+        "title": "CECyTEM Ecatepec 1 Campus"
+      }
+    }
+  },
+  "contact": {
+    "heading": "You reached the bottom",
+    "text": "Down here there is silence and good ideas. If you have a project, write to me.",
+    "surface": "Back to the surface"
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
+    "messagePlaceholder": "Tell me about your project...",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "sentTitle": "Message sent!",
+    "sentText": "Thanks for writing. I will reply to your email soon.",
+    "again": "Send another message",
+    "error": "There was a problem sending the message. Try again or write to me directly at {email}.",
+    "honeypot": "Do not fill in this field if you are human:"
+  },
+  "cv": {
+    "eyebrow": "Curriculum vitae",
+    "nav": {
+      "about": "About me",
+      "experience": "Experience",
+      "projects": "Projects",
+      "skills": "Skills",
+      "education": "Education",
+      "contact": "Contact"
+    },
+    "sections": {
+      "about": "About me",
+      "experience": "Work experience",
+      "projects": "Projects",
+      "technical": "Technical skills",
+      "soft": "Soft skills",
+      "languages": "Languages",
+      "education": "Education",
+      "contact": "Contact"
+    },
+    "online": "Live:",
+    "techOf": "{name} technologies",
+    "sitesOf": "{name} sites",
+    "present": "Present",
+    "jobs": {
+      "trainer": {
+        "role": "Sports Coach",
+        "description": "Training children aged 4 to 15 in sports discipline, leadership and effective communication. Developed mentoring and group management skills."
+      },
+      "admin": {
+        "role": "Administrative Employee",
+        "description": "Managed the SICAR point-of-sale software, database administration, and the business's income and expenses."
+      },
+      "sales": {
+        "role": "Sales Promoter",
+        "description": "Built assertive communication skills and customer relationships."
+      }
+    },
+    "softSkills": {
+      "committed": "Committed",
+      "teamwork": "Teamwork",
+      "proactive": "Proactive",
+      "communication": "Assertive communication",
+      "leadership": "Leadership",
+      "problemSolving": "Problem solving",
+      "responsible": "Responsible",
+      "adaptability": "Adaptability",
+      "analytical": "Analytical thinking",
+      "timeManagement": "Time management",
+      "discipline": "Discipline",
+      "creativity": "Creativity"
+    },
+    "languageList": {
+      "english": "English B2",
+      "spanish": "Spanish (native)"
+    }
+  },
+  "notFound": {
+    "heading": "This page does not exist",
+    "text": "The link does not match any section of the portfolio.",
+    "home": "Back to home"
+  }
+}

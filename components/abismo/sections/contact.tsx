@@ -6,7 +6,9 @@ import { Coral, Seaweed } from "@/components/abismo/art/flora";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
 import { ContactForm } from "@/components/abismo/ui/contact-form";
 import type { ContactFormClasses } from "@/components/abismo/ui/contact-form";
-import { cvUrl, site } from "@/lib/content";
+import { useContent, useLocale, useT } from "@/components/shared/locale-provider";
+import { cvPath, cvPdf, identity } from "@/lib/content";
+import { otherLocale, pathFor } from "@/lib/i18n";
 
 const formClasses: ContactFormClasses = {
   form: "grid gap-4",
@@ -24,57 +26,75 @@ const formClasses: ContactFormClasses = {
 };
 
 export function Contact({ glOn }: { glOn: boolean }) {
+  const t = useT();
+  const locale = useLocale();
+  const { site } = useContent();
+  const other = otherLocale(locale);
   return (
     <section id="contacto" aria-labelledby="contacto-titulo" className="relative overflow-hidden px-5 pt-28 pb-64 sm:pb-72">
       <div aria-hidden="true" data-sub className="pointer-events-none absolute top-24 left-0 hidden w-[min(34vw,330px)] lg:block">
         <Submarine className="ab-bob" />
       </div>
       <div className="relative mx-auto max-w-5xl">
-        <SectionHeading id="contacto-titulo" meters={1200} zone="Fondo marino" title="Llegaste al fondo" size="xl" />
-        <p className="mt-4 max-w-xl text-cyan-50/85">Aquí abajo hay silencio y buenas ideas. Si tienes un proyecto, escríbeme.</p>
+        <SectionHeading id="contacto-titulo" meters={1200} zone={t("sea.seabed")} title={t("contact.heading")} size="xl" />
+        <p className="mt-4 max-w-xl text-cyan-50/85">{t("contact.text")}</p>
         <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:pl-[22%]">
           <ul className="grid content-start gap-3 text-sm">
             <li>
-              <a href={`mailto:${site.email}`} className="text-lg font-semibold break-all underline decoration-cyan-200/50 underline-offset-4">
-                {site.email}
+              <a href={`mailto:${identity.email}`} className="text-lg font-semibold break-all underline decoration-cyan-200/50 underline-offset-4">
+                {identity.email}
               </a>
             </li>
             <li>
-              <a href={`tel:${site.phone.replace(/[^+\d]/g, "")}`} className="underline decoration-cyan-200/40 underline-offset-4">
-                {site.phone}
+              <a href={`tel:${identity.phone.replace(/[^+\d]/g, "")}`} className="underline decoration-cyan-200/40 underline-offset-4">
+                {identity.phone}
               </a>
             </li>
             <li>
-              <ExternalLink href={site.whatsappUrl} className="underline decoration-cyan-200/40 underline-offset-4">
+              <ExternalLink href={identity.whatsappUrl} className="underline decoration-cyan-200/40 underline-offset-4">
                 WhatsApp
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={site.githubUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
+              <ExternalLink href={identity.githubUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="GitHub" size={1.4} />
-                {site.githubLabel}
+                {identity.githubLabel}
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={site.linkedinUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
+              <ExternalLink href={identity.linkedinUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
                 <TechIcon name="LinkedIn" size={1.4} />
-                {site.linkedinLabel}
+                {identity.linkedinLabel}
               </ExternalLink>
             </li>
             <li>
-              <Link href={cvUrl} className="underline decoration-cyan-200/40 underline-offset-4">
-                Currículum
+              <Link href={pathFor(locale, cvPath)} className="underline decoration-cyan-200/40 underline-offset-4">
+                {t("common.cv")}
               </Link>
+            </li>
+            <li className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <a href={cvPdf[locale].href} download={cvPdf[locale].file} className="ab-store">
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
+                </svg>
+                <span>
+                  <small>PDF · {locale.toUpperCase()}</small>
+                  {t("common.downloadCv")}
+                </span>
+              </a>
+              <a href={cvPdf[other].href} download={cvPdf[other].file} lang={other} className="text-xs underline decoration-cyan-200/40 underline-offset-4">
+                {t("common.downloadCvOther")}
+              </a>
             </li>
             <li className="text-cyan-100/70">{site.location}</li>
             <li className="pt-2">
               <a href="#inicio" className="inline-flex h-10 items-center gap-2 rounded-full border border-cyan-200/40 px-4 text-sm font-semibold text-cyan-100">
-                <span aria-hidden="true">↑</span> Volver a la superficie
+                <span aria-hidden="true">↑</span> {t("contact.surface")}
               </a>
             </li>
           </ul>
           <div className="ab-glass rounded-3xl p-6 sm:p-8">
-            <ContactForm classes={formClasses} submitLabel="Enviar mensaje" />
+            <ContactForm classes={formClasses} />
           </div>
         </div>
       </div>

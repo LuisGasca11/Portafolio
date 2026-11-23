@@ -1,9 +1,11 @@
 import { ExternalLink } from "@/components/shared/external-link";
 import { Octopus, Rov, Whale } from "@/components/abismo/art/creatures";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
-import { roles } from "@/lib/content";
+import { useContent, useT } from "@/components/shared/locale-provider";
 
 export function Experience({ glOn }: { glOn: boolean }) {
+  const t = useT();
+  const { roles } = useContent();
   return (
     <section id="experiencia" aria-labelledby="experiencia-titulo" className="relative px-5 py-28">
       {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
@@ -20,7 +22,7 @@ export function Experience({ glOn }: { glOn: boolean }) {
         </>
       )}
       <div className="relative mx-auto max-w-4xl">
-        <SectionHeading id="experiencia-titulo" meters={520} title="Experiencia" />
+        <SectionHeading id="experiencia-titulo" meters={520} title={t("experience.heading")} />
         <div data-rov-track className="relative mt-12">
           <div aria-hidden="true" className="absolute top-0 bottom-0 left-[1.1rem] border-l border-dashed border-cyan-200/35 sm:left-[1.4rem]" />
           <div aria-hidden="true" data-rov className="absolute top-0 -left-[0.55rem] z-10 w-14 sm:left-0 sm:w-16">

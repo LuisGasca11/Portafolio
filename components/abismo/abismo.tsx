@@ -16,7 +16,8 @@ import { DepthGauge } from "@/components/abismo/ui/depth-gauge";
 import { Header } from "@/components/abismo/ui/header";
 import { TechBubbles } from "@/components/abismo/ui/tech-bubbles";
 import { Thermocline } from "@/components/abismo/ui/thermocline";
-import { site } from "@/lib/content";
+import { useT } from "@/components/shared/locale-provider";
+import { identity } from "@/lib/content";
 import "./abismo.css";
 
 /** Color del fondo del documento mientras la portada está montada (evita destellos negros). */
@@ -28,6 +29,7 @@ const seaColor = "#042a45";
  */
 export function Abismo() {
   const root = useRef<HTMLDivElement>(null);
+  const t = useT();
   const reduced = useReducedMotion();
   const [gl, setGl] = useState<SceneStatus | "pending">("pending");
   const onStatus = useCallback((status: SceneStatus) => {
@@ -64,15 +66,15 @@ export function Abismo() {
 
       <Hero glOn={glOn} />
       <About glOn={!drawn} />
-      <Thermocline label="200 m · límite de la luz solar" />
+      <Thermocline label={t("sea.limit200")} />
       <Projects glOn={!drawn} />
-      <Thermocline label="1,000 m · fin de la zona crepuscular" />
+      <Thermocline label={t("sea.limit1000")} />
       <Experience glOn={!drawn} />
       <Skills glOn={!drawn} />
       <Education glOn={!drawn} />
       <Contact glOn={!drawn} />
 
-      <p className="relative pb-24 text-center text-xs text-cyan-100/60">© 2026 {site.name}</p>
+      <p className="relative pb-24 text-center text-xs text-cyan-100/60">{t("common.copyright", { name: identity.name })}</p>
     </div>
   );
 }

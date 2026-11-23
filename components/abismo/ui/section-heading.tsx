@@ -1,4 +1,8 @@
+"use client";
+
 import { zoneOf } from "@/components/abismo/data";
+import { useLocale, useT } from "@/components/shared/locale-provider";
+import { tagOf } from "@/lib/i18n";
 
 type SectionHeadingProps = {
   /** Id del `<h2>` (la sección lo usa en `aria-labelledby`). */
@@ -19,10 +23,12 @@ const sizes = {
 
 /** Encabezado de sección: profundidad y zona, título e introducción. */
 export function SectionHeading({ id, meters, title, zone, intro, size = "lg" }: SectionHeadingProps) {
+  const t = useT();
+  const locale = useLocale();
   return (
     <>
       <p className="ab-depth" data-reveal>
-        — {meters.toLocaleString("es-MX")} m · {zone ?? zoneOf(meters)}
+        — {meters.toLocaleString(tagOf(locale))} m · {zone ?? zoneOf(meters, t)}
       </p>
       <h2 id={id} className={`ab-display mt-4 font-light tracking-tight ${sizes[size]}`}>
         {title}
