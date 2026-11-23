@@ -48,13 +48,13 @@ El sitio está en español (`/`, `/curriculum`) y en inglés (`/en`, `/en/curric
 
 ## Currículum en PDF
 
-El botón «Descargar CV (PDF)» (en `/curriculum` y en la sección de contacto del portafolio) baja el PDF del idioma de la página, y hay un enlace a la versión del otro idioma. Los PDF (`public/cv/CV_Luis_Aguilar_ES.pdf` y `_EN.pdf`) tienen el estilo de una hoja A4: etiquetas a la izquierda, acento morado y proyectos en dos columnas. Se generan con los mismos datos y textos del sitio, así que para actualizarlos basta con regenerarlos después de cambiar el contenido:
+El botón «Descargar CV (PDF)» (en `/curriculum` y en la sección de contacto del portafolio) baja el PDF del idioma de la página, y hay un enlace a la versión del otro idioma. Los PDF (`public/cv/CV_Luis_Aguilar_ES.pdf` y `_EN.pdf`) son una hoja A4 con la experiencia en línea de tiempo, los proyectos en tarjetas y acento verde azulado. Se generan con los mismos datos y textos del sitio, así que para actualizarlos basta con regenerarlos después de cambiar el contenido:
 
 ```bash
 npm run cv:pdf
 ```
 
-Requiere Playwright (Chromium), igual que el video ambiental. La plantilla está en `tools/render-cv/render.mjs`.
+Requiere Playwright (Chromium), igual que el video ambiental. La plantilla está en `tools/render-cv/styles/timeline.mjs` (se puede agregar otra en `styles/` y elegirla con `--style=nombre`).
 
 Los datos de la portada salen de `lib/content.ts` y el formulario de contacto conserva los campos de Netlify Forms.
 

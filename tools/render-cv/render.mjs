@@ -2,7 +2,7 @@
  * A4: etiquetas a la izquierda, acento morado y proyectos en dos columnas.
  * Usa los mismos datos y textos que el sitio (`lib/cv.ts` y `lib/i18n`).
  *
- * Uso: node tools/render-cv/render.mjs [--style=classic|sidebar] [--out=carpeta]
+ * Uso: node tools/render-cv/render.mjs [--style=timeline] [--out=carpeta]
  * Requiere Playwright (Chromium). Salida: public/cv/ */
 import { build } from "esbuild";
 import { createRequire } from "node:module";
@@ -28,7 +28,7 @@ await build({
 });
 const { getCv, cvPdf, createT, locales, tagOf } = await import(pathToFileURL(bundle).href);
 
-const style = process.argv.find((arg) => arg.startsWith("--style="))?.slice(8) ?? "classic";
+const style = process.argv.find((arg) => arg.startsWith("--style="))?.slice(8) ?? "timeline";
 const outArg = process.argv.find((arg) => arg.startsWith("--out="))?.slice(6);
 const { render } = await import(`./styles/${style}.mjs`);
 
