@@ -1,16 +1,19 @@
 import Link from "next/link";
-import { ExternalLink } from "@/components/cv/external-link";
+import { ExternalLink } from "@/components/shared/external-link";
 import { HeroCanvas } from "@/components/cv/hero-canvas";
-import { profile } from "@/lib/cv";
-
-const words = profile.name.split(" ");
-const firstLine = words.slice(0, 2).join(" ");
-const secondLead = words.slice(2, -1).join(" ");
-const lastWord = words.at(-1) ?? "";
+import { getCv } from "@/lib/cv";
+import { createT } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
 const linkClass = "underline decoration-white/25 underline-offset-4 hover:decoration-accent";
 
-export function Hero() {
+export function Hero({ locale }: { locale: Locale }) {
+  const t = createT(locale);
+  const { profile } = getCv(locale);
+  const words = profile.name.split(" ");
+  const firstLine = words.slice(0, 2).join(" ");
+  const secondLead = words.slice(2, -1).join(" ");
+  const lastWord = words.at(-1) ?? "";
   return (
     <section
       id="inicio"
@@ -21,7 +24,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,9,8,0.78)_0%,rgba(10,9,8,0.28)_42%,transparent_68%)]" />
       <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
         <p className="inline-flex rounded-full border border-white/15 bg-black/25 px-3 py-1 text-[0.7rem] font-medium tracking-[0.22em] text-white/85 uppercase backdrop-blur-sm">
-          Currículum vitae
+          {t("cv.eyebrow")}
         </p>
         <h1 className="mx-auto mt-6 max-w-5xl font-display text-[clamp(3.1rem,8.4vw,6.6rem)] leading-[0.92] tracking-[-0.045em] text-balance">
           <span className="block">{firstLine}</span>
@@ -33,13 +36,13 @@ export function Hero() {
         <p className="mt-3 text-sm text-muted sm:text-base">{profile.location}</p>
         <div className="no-print mt-8 flex flex-wrap items-center justify-center gap-3">
           <a href="#contacto" className="btn-accent inline-flex h-12 items-center rounded-full px-5 text-sm font-semibold">
-            Contacto
+            {t("cv.nav.contact")}
           </a>
           <a
             href="#proyectos"
             className="inline-flex h-12 items-center rounded-full border border-white/20 bg-black/20 px-5 text-sm font-semibold text-white backdrop-blur-sm hover:border-accent"
           >
-            Proyectos
+            {t("cv.nav.projects")}
           </a>
         </div>
         <ul className="mt-8 flex flex-col items-center gap-2 text-sm text-white/85 sm:flex-row sm:justify-center sm:gap-6">

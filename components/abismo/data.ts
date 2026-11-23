@@ -1,20 +1,13 @@
+import type { Translate } from "@/lib/i18n";
+
 /** Profundidad total que recorre la página, en metros. */
 export const maxDepth = 1200;
 
-export const navLinks = [
-  { href: "#sobre-mi", label: "Sobre mí" },
-  { href: "#desarrollos", label: "Desarrollos" },
-  { href: "#experiencia", label: "Experiencia" },
-  { href: "#habilidades", label: "Habilidades" },
-  { href: "#educacion", label: "Educación" },
-  { href: "#contacto", label: "Contacto" },
-] as const;
-
 /** Zona oceánica real según la profundidad. */
-export function zoneOf(meters: number): string {
-  if (meters < 200) return "Zona de luz";
-  if (meters < 1000) return "Zona crepuscular";
-  return "Zona de medianoche";
+export function zoneOf(meters: number, t: Translate): string {
+  if (meters < 200) return t("sea.zoneLight");
+  if (meters < 1000) return t("sea.zoneTwilight");
+  return t("sea.zoneMidnight");
 }
 
 /** Burbujas simples del hero. */

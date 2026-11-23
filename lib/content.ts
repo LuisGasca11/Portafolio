@@ -1,47 +1,20 @@
 /**
- * Contenido público del portafolio.
+ * Contenido público del portafolio, en todos los idiomas.
  * Fuente: CV de Luis Alberto Aguilar Gasca y la descripción de BLACK SHEEP NET.
  * No agregar datos que no estén en esas fuentes.
+ *
+ * Aquí viven los datos que no cambian con el idioma (enlaces, tecnologías,
+ * fechas, nombres propios). Los textos salen de `lib/i18n/locales/*.json`.
  */
+import { createT, formatMonth, pathFor, tagOf } from "@/lib/i18n";
+import type { Locale, MessageKey } from "@/lib/i18n";
 
 /** Dominio del portafolio. lgasca.dev aún no está comprado; mientras tanto el
  * sitio sigue publicado en Netlify como portgasca.netlify.app. */
 export const siteUrl = "https://lgasca.dev";
 
-/** Currículum en línea (ruta interna del portafolio). */
-export const cvUrl = "/curriculum";
-
-export const site = {
-  url: siteUrl,
-  name: "Luis Alberto Aguilar Gasca",
-  shortName: "Luis Gasca",
-  /** Marca del sitio: aparece en la pestaña del navegador y en el encabezado. */
-  brand: "lgasca",
-  title: "Ingeniero en Tecnologías de la Información y la Comunicación",
-  shortTitle: "Ingeniero en TIC",
-  focus: "Desarrollo web full stack y móvil",
-  location: "Ecatepec de Morelos, CDMX",
-  email: "luisgasca0245@hotmail.com",
-  phone: "+52 56 10840382",
-  whatsappUrl: "https://wa.me/525610840382",
-  githubUrl: "https://github.com/LuisGasca11",
-  githubLabel: "github.com/LuisGasca11",
-  linkedinUrl: "https://www.linkedin.com/in/luis-gasca-54a68834b",
-  linkedinLabel: "linkedin.com/in/luis-gasca-54a68834b",
-  about:
-    "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y móvil. Aprendizaje rápido, trabajo en equipo y orientación a resultados.",
-} as const;
-
-export const navItems = [
-  { href: "#sobre-mi", label: "Sobre mí" },
-  { href: "#desarrollos", label: "Desarrollos" },
-  { href: "#experiencia", label: "Experiencia" },
-  { href: "#habilidades", label: "Habilidades" },
-  { href: "#educacion", label: "Educación" },
-  { href: "#contacto", label: "Contacto" },
-] as const;
-
-export type NavItem = (typeof navItems)[number];
+/** Ruta interna del currículum (sin prefijo de idioma). */
+export const cvPath = "/curriculum";
 
 /** Black Sheep Labs y Grupo Fyttsa son la misma empresa: se muestra así. */
 export const company = "Black Sheep Labs “Grupo Fyttsa”";
@@ -49,68 +22,69 @@ export const company = "Black Sheep Labs “Grupo Fyttsa”";
 /** Página de desarrollador de la empresa en Google Play. */
 export const playStoreUrl = "https://play.google.com/store/apps/dev?id=9017111634471517533";
 
-export type Project = {
-  name: string;
-  context: string;
-  description: string;
+/** PDFs del currículum, uno por idioma (se generan con `tools/render-cv`). */
+export const cvPdf: Record<Locale, { href: string; file: string }> = {
+  es: { href: "/cv/CV_Luis_Aguilar_ES.pdf", file: "CV_Luis_Aguilar_ES.pdf" },
+  en: { href: "/cv/CV_Luis_Aguilar_EN.pdf", file: "CV_Luis_Aguilar_EN.pdf" },
+};
+
+export const identity = {
+  name: "Luis Alberto Aguilar Gasca",
+  shortName: "Luis Gasca",
+  /** Marca del sitio: aparece en la pestaña del navegador y en el encabezado. */
+  brand: "lgasca",
+  email: "luisgasca0245@hotmail.com",
+  phone: "+52 56 10840382",
+  whatsappUrl: "https://wa.me/525610840382",
+  githubUrl: "https://github.com/LuisGasca11",
+  githubLabel: "github.com/LuisGasca11",
+  linkedinUrl: "https://www.linkedin.com/in/luis-gasca-54a68834b",
+  linkedinLabel: "linkedin.com/in/luis-gasca-54a68834b",
+} as const;
+
+/** Inicio y fin (`2025-11` o `2022`). `ongoing` = sigue vigente («Actualidad»). */
+export type Period = { from: string; to?: string; ongoing?: boolean };
+
+export function formatPeriod(locale: Locale, period: Period, present: string): string {
+  const tag = tagOf(locale);
+  const part = (value: string) => (value.length === 4 ? value : formatMonth(tag, value));
+  if (period.ongoing === true) return `${part(period.from)} – ${present}`;
+  if (period.to !== undefined && period.to !== period.from) return `${part(period.from)} – ${part(period.to)}`;
+  return part(period.from);
+}
+
+export type ProjectId = "blackNet" | "aerial" | "lms" | "pms" | "apps" | "invoicing" | "website" | "jobs";
+
+export type ProjectLink = { href: string; label: string };
+
+type ProjectDef = {
+  id: ProjectId;
+  /** Contexto propio (si no, la empresa). */
+  context?: string | MessageKey;
   stack: readonly string[];
-  /** Nota de trabajo en equipo, si el desarrollo fue colaborativo. */
-  team?: string;
-  /** Sitios en línea del desarrollo. */
+  team?: boolean;
   links?: readonly ProjectLink[];
-  /** Aplicaciones publicadas en tiendas. */
   apps?: readonly ProjectLink[];
-  /** Destacado: ocupa más espacio en la cuadrícula. */
   featured?: boolean;
 };
 
-export type ProjectLink = {
-  href: string;
-  label: string;
-};
-
-const teamNote = "En colaboración con otros compañeros de Black Sheep Labs.";
-
-export const projects: readonly Project[] = [
+const projectDefs: readonly ProjectDef[] = [
   {
-    name: "BLACK SHEEP NET",
-    context: company,
-    description:
-      "Monorepo web con Next.js y una API en PHP sobre Firebird y Microsip, en producción. Incluye un planeador de ruta con Leaflet y OpenStreetMap, cálculo del orden de visitas con OSRM (Dijkstra exacto hasta 10 paradas; vecino cercano y 2-opt para rutas mayores), geocodificación con Google, pedidos programados mediante cron y despliegue con IIS y PM2.",
+    id: "blackNet",
     stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
     links: [{ href: "https://black-net.mx", label: "black-net.mx" }],
     featured: true,
   },
   {
-    name: "Aerial Depot WMS",
-    context: "AERIAL DEPOT · Educación Dual 2025",
-    description:
-      "Sistema de gestión de almacenes (WMS) con back end y front end separados: API en Laravel 12 con autenticación JWT, base de datos MySQL con migraciones y datos precargados, imágenes de productos procesadas con GD y una interfaz en Vue 3 que muestra el almacén en 3D con Three.js para localizar productos.",
+    id: "aerial",
+    context: "projects.items.aerial.context",
     stack: ["Laravel", "PHP", "Vue.js", "MySQL", "Three.js"],
     featured: true,
   },
+  { id: "lms", stack: [], team: true, links: [{ href: "https://skool.com.mx", label: "skool.com.mx" }] },
+  { id: "pms", stack: [], team: true, links: [{ href: "https://stick.mx", label: "stick.mx" }] },
   {
-    name: "LMS Multiempresa",
-    context: company,
-    description:
-      "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones.",
-    stack: [],
-    team: teamNote,
-    links: [{ href: "https://skool.com.mx", label: "skool.com.mx" }],
-  },
-  {
-    name: "PMS Multiempresa",
-    context: company,
-    description: "Sistema de gestión de proyectos centralizado para múltiples empresas.",
-    stack: [],
-    team: teamNote,
-    links: [{ href: "https://stick.mx", label: "stick.mx" }],
-  },
-  {
-    name: "Apps móviles en Google Play",
-    context: company,
-    description:
-      "Aplicaciones móviles multiplataforma (iOS y Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
+    id: "apps",
     stack: ["Expo", "React Native"],
     apps: [
       { href: playStoreUrl, label: "Black Net" },
@@ -119,147 +93,174 @@ export const projects: readonly Project[] = [
     ],
   },
   {
-    name: "Facturador + Cotizador Microsip",
-    context: company,
-    description:
-      "Facturación electrónica y cotizaciones integradas al ERP Microsip, con sincronización automática de datos.",
+    id: "invoicing",
     stack: ["Microsip"],
     links: [
       { href: "https://fyttsa.facturadorenlinea.mx", label: "fyttsa.facturadorenlinea.mx" },
       { href: "https://casatorres.facturadorenlinea.mx", label: "casatorres.facturadorenlinea.mx" },
     ],
   },
-  {
-    name: "Team Page & Sitio Web",
-    context: company,
-    description: "Sitio web institucional del equipo de trabajo de la empresa.",
-    stack: [],
-    links: [{ href: "https://blck-sheep.com", label: "blck-sheep.com" }],
-  },
-  {
-    name: "Vacantes de Empleo",
-    context: "Grupo Geisha Automotriz · 2025",
-    description:
-      "Gestión y publicación de vacantes para distintas sucursales de la empresa.",
-    stack: [],
-  },
+  { id: "website", stack: [], links: [{ href: "https://blck-sheep.com", label: "blck-sheep.com" }] },
+  { id: "jobs", context: "Grupo Geisha Automotriz · 2025", stack: [] },
 ];
+
+export type Project = {
+  id: ProjectId;
+  name: string;
+  context: string;
+  description: string;
+  /** Versión corta, para el currículum y el PDF. */
+  summary: string;
+  stack: readonly string[];
+  /** Nota de trabajo en equipo, si el desarrollo fue colaborativo. */
+  team?: string;
+  links?: readonly ProjectLink[];
+  apps?: readonly ProjectLink[];
+  featured?: boolean;
+};
 
 export type Role = {
   role: string;
   organization: string;
-  period?: string;
-  summary?: string;
-  href?: string;
-  highlights?: readonly string[];
+  period: string;
+  summary: string;
+  cvSummary: string;
+  href: string;
+  highlights: readonly string[];
 };
 
-export const roles: readonly Role[] = [
-  {
-    role: "Desarrollador full stack",
-    organization: company,
-    period: "Noviembre 2025 – junio 2026",
-    href: "https://blck-sheep.com",
-    summary:
-      "Desarrollo de sistemas web y móviles multiempresa: LMS, PMS, facturador y cotizador integrados con ERP Microsip, aplicaciones móviles con Expo y sitio web institucional.",
-    highlights: [
-      "BLACK SHEEP NET en producción: Next.js, API en PHP sobre Firebird y Microsip, planeador de rutas con OSRM.",
-      "LMS y PMS multiempresa (skool.com.mx y stick.mx), en equipo con compañeros de Black Sheep Labs.",
-      "Facturador y cotizador integrados con el ERP Microsip.",
-      "Apps móviles con Expo publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
-      "Sitio web institucional y team page.",
-    ],
-  },
-];
-
-export const skillGroups = [
-  {
-    title: "Front end",
-    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript", "Tailwind CSS"],
-  },
-  {
-    title: "Back end",
-    items: ["PHP", "Laravel", "Python", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
-  },
-  {
-    title: "Móvil",
-    items: ["Expo", "React Native", "Flutter"],
-  },
-  {
-    title: "DevOps",
-    items: ["Git", "GitHub", "Vercel", "Netlify", "Cloudflare", "PM2", "IIS"],
-  },
-  {
-    title: "ERP",
-    items: ["Microsip (básico)"],
-  },
-] as const;
-
 export type Study = {
+  id: "upvm" | "cecytem";
   period: string;
   title: string;
   institution?: string;
 };
 
-const listedTechnologies = [
-  ...skillGroups.flatMap((group) => [...group.items]),
-  ...projects.flatMap((project) => [...project.stack]),
-];
+const universities = { upvm: "Universidad Politécnica del Valle de México" } as const;
 
-export const technologies = [...new Set(listedTechnologies)];
+export function getContent(locale: Locale) {
+  const t = createT(locale);
 
-export const stats = [
-  { value: projects.length, label: "Desarrollos" },
-  { value: projects.reduce((total, project) => total + (project.apps?.length ?? 0), 0), label: "Apps en Google Play" },
-  { value: technologies.length, label: "Tecnologías" },
-] as const;
+  const site = {
+    url: siteUrl,
+    ...identity,
+    title: t("site.title"),
+    shortTitle: t("site.shortTitle"),
+    focus: t("site.focus"),
+    location: t("site.location"),
+    about: t("site.about"),
+  };
 
-export const studies: readonly Study[] = [
-  {
-    period: "2023 – 2026",
-    title: "Ingeniería en TIC",
-    institution: "Universidad Politécnica del Valle de México",
-  },
-  {
-    period: "2019 – 2022",
-    title: "CECyTEM Plantel Ecatepec 1",
-  },
-];
+  const projects: readonly Project[] = projectDefs.map((def) => {
+    const base = `projects.items.${def.id}` as const;
+    const context =
+      def.context === undefined ? company : def.context.startsWith("projects.") ? t(def.context as MessageKey) : def.context;
+    return {
+      id: def.id,
+      name: t(`${base}.name`),
+      context,
+      description: t(`${base}.description`),
+      summary: t(`${base}.summary`),
+      stack: def.stack,
+      team: def.team === true ? t("projects.team") : undefined,
+      links: def.links,
+      apps: def.apps,
+      featured: def.featured,
+    };
+  });
 
-export const personJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+  const roles: readonly Role[] = [
     {
-      "@type": "WebSite",
-      name: `Portafolio de ${site.name}`,
-      url: site.url,
-      inLanguage: "es-MX",
-      description: site.about,
-    },
-    {
-      "@type": "Person",
-      name: site.name,
-      jobTitle: site.title,
-      description: site.about,
-      email: site.email,
-      telephone: site.phone,
-      url: site.url,
-      homeLocation: {
-        "@type": "Place",
-        name: site.location,
-      },
-      sameAs: [site.githubUrl, site.linkedinUrl],
-      alumniOf: [
-        {
-          "@type": "CollegeOrUniversity",
-          name: "Universidad Politécnica del Valle de México",
-        },
-        {
-          "@type": "EducationalOrganization",
-          name: "CECyTEM Plantel Ecatepec 1",
-        },
+      role: t("experience.role"),
+      organization: company,
+      period: formatPeriod(locale, { from: "2025-11", to: "2026-06" }, t("cv.present")),
+      href: "https://blck-sheep.com",
+      summary: t("experience.summary"),
+      cvSummary: t("experience.cvSummary"),
+      highlights: [
+        t("experience.highlights.blackNet"),
+        t("experience.highlights.lmsPms"),
+        t("experience.highlights.invoicing"),
+        t("experience.highlights.apps"),
+        t("experience.highlights.website"),
       ],
-      knowsAbout: skillGroups.flatMap((group) => [...group.items]),
     },
-  ],
-};
+  ];
+
+  const skillGroups = [
+    {
+      title: t("skills.groups.frontend"),
+      items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript", "Tailwind CSS"],
+    },
+    {
+      title: t("skills.groups.backend"),
+      items: ["PHP", "Laravel", "Python", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
+    },
+    { title: t("skills.groups.mobile"), items: ["Expo", "React Native", "Flutter"] },
+    { title: t("skills.groups.devops"), items: ["Git", "GitHub", "Vercel", "Netlify", "Cloudflare", "PM2", "IIS"] },
+    { title: t("skills.groups.erp"), items: [t("skills.microsipBasic")] },
+  ] as const;
+
+  const studies: readonly Study[] = [
+    { id: "upvm", period: "2023 – 2026", title: t("education.items.upvm.title"), institution: universities.upvm },
+    { id: "cecytem", period: "2019 – 2022", title: t("education.items.cecytem.title") },
+  ];
+
+  const technologies = [
+    ...new Set([...skillGroups.flatMap((group) => [...group.items]), ...projects.flatMap((project) => [...project.stack])]),
+  ];
+
+  const stats = [
+    { id: "projects", value: projects.length, label: t("about.stats.projects") },
+    {
+      id: "apps",
+      value: projects.reduce((total, project) => total + (project.apps?.length ?? 0), 0),
+      label: t("about.stats.apps"),
+    },
+    { id: "technologies", value: technologies.length, label: t("about.stats.technologies") },
+  ] as const;
+
+  const navItems = [
+    { href: "#sobre-mi", label: t("about.heading") },
+    { href: "#desarrollos", label: t("projects.heading") },
+    { href: "#experiencia", label: t("experience.heading") },
+    { href: "#habilidades", label: t("skills.heading") },
+    { href: "#educacion", label: t("education.heading") },
+    { href: "#contacto", label: t("common.contact") },
+  ] as const;
+
+  const siteUrlFor = (path: string) => `${siteUrl}${pathFor(locale, path)}`;
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        name: t("site.portfolioOf", { name: identity.name }),
+        url: siteUrlFor("/"),
+        inLanguage: tagOf(locale),
+        description: site.about,
+      },
+      {
+        "@type": "Person",
+        name: identity.name,
+        jobTitle: site.title,
+        description: site.about,
+        email: identity.email,
+        telephone: identity.phone,
+        url: siteUrlFor("/"),
+        homeLocation: { "@type": "Place", name: site.location },
+        sameAs: [identity.githubUrl, identity.linkedinUrl],
+        alumniOf: [
+          { "@type": "CollegeOrUniversity", name: universities.upvm },
+          { "@type": "EducationalOrganization", name: studies[1]?.title ?? "" },
+        ],
+        knowsAbout: skillGroups.flatMap((group) => [...group.items]),
+      },
+    ],
+  };
+
+  return { site, projects, roles, skillGroups, studies, technologies, stats, navItems, personJsonLd };
+}
+
+export type Content = ReturnType<typeof getContent>;

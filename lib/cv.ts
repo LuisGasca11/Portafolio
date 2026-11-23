@@ -1,208 +1,127 @@
-export type EducationItem = {
-  period: string;
-  institution: string;
-  program?: string;
-};
+/**
+ * Datos del currículum (`/curriculum` y el PDF), en todos los idiomas.
+ * Los proyectos son los mismos del portafolio (`lib/content.ts`).
+ */
+import { cvPath, formatPeriod, getContent, identity } from "@/lib/content";
+import type { Content, Project, ProjectId } from "@/lib/content";
+import { createT, pathFor } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
-export type SkillGroup = {
-  label: string;
-  items: readonly string[];
-};
+export type { Project, ProjectId };
 
+export type EducationItem = { period: string; institution: string; program?: string };
+export type SkillGroup = { label: string; items: readonly string[] };
 export type ExperienceItem = {
   role: string;
   organization: string;
-  period?: string;
-  description?: string;
-  website?: {
-    href: string;
-    label: string;
-  };
-};
-
-export type Project = {
-  name: string;
-  organization: string;
+  period: string;
   description: string;
-  stack: readonly string[];
-  detail?: string;
-  /** Sitios en línea del desarrollo. */
-  hrefs?: readonly string[];
+  website?: { href: string; label: string };
+  /** Si va en el PDF de una página (el de Telmex se queda en la web). */
+  inPdf: boolean;
 };
 
-export const profile = {
-  name: "Luis Alberto Aguilar Gasca",
-  title: "Ingeniero en Tecnologías de la Información y la Comunicación",
-  email: "luisgasca0245@hotmail.com",
-  phone: "+52 56 10840382",
-  location: "Ecatepec de Morelos",
-  portfolio: {
-    href: "/",
-    label: "lgasca.dev",
-  },
-  github: {
-    href: "https://github.com/LuisGasca11",
-    label: "github.com/LuisGasca11",
-  },
-  linkedin: {
-    href: "https://www.linkedin.com/in/luis-gasca-54a68834b",
-    label: "linkedin.com/in/luis-gasca-54a68834b",
-  },
-} as const;
+export function getCv(locale: Locale) {
+  const t = createT(locale);
+  const content: Content = getContent(locale);
+  const present = t("cv.present");
 
-/** Navegación por secciones del currículum (ruta /curriculum). */
-export const cvNavItems = [
-  { href: "#sobre-mi", label: "Sobre mí" },
-  { href: "#experiencia", label: "Experiencia" },
-  { href: "#proyectos", label: "Proyectos" },
-  { href: "#habilidades", label: "Habilidades" },
-  { href: "#educacion", label: "Educación" },
-  { href: "#contacto", label: "Contacto" },
-] as const;
+  const profile = {
+    name: identity.name,
+    title: content.site.title,
+    email: identity.email,
+    phone: identity.phone,
+    location: content.site.location,
+    portfolio: { href: pathFor(locale, "/"), label: "portgasca.netlify.app" },
+    github: { href: identity.githubUrl, label: identity.githubLabel },
+    linkedin: { href: identity.linkedinUrl, label: identity.linkedinLabel },
+  } as const;
 
-export const about =
-  "Ingeniero en TIC con experiencia comprobada en desarrollo web full stack y mobile. Aprendizaje rápido, trabajo en equipo y orientación a resultados. Disciplina forjada en el deporte aplicada a cada proyecto.";
+  const navItems = [
+    { href: "#sobre-mi", label: t("cv.nav.about") },
+    { href: "#experiencia", label: t("cv.nav.experience") },
+    { href: "#proyectos", label: t("cv.nav.projects") },
+    { href: "#habilidades", label: t("cv.nav.skills") },
+    { href: "#educacion", label: t("cv.nav.education") },
+    { href: "#contacto", label: t("cv.nav.contact") },
+  ] as const;
 
-export const education: readonly EducationItem[] = [
-  {
-    period: "2019 – 2022",
-    institution: "CECyTEM Plantel Ecatepec 1",
-  },
-  {
-    period: "2023 – 2026",
-    program: "Ingeniería en TIC",
-    institution: "Universidad Politécnica del Valle de México",
-  },
-];
-
-export const technicalSkills: readonly SkillGroup[] = [
-  {
-    label: "Front end",
-    items: ["HTML", "CSS", "JavaScript", "Vue.js", "React.js", "Next.js", "TypeScript", "Tailwind CSS"],
-  },
-  {
-    label: "Back end",
-    items: ["PHP", "Laravel", "Python", "Java", "Node.js", "Express", "MySQL", "SQL Server", "Supabase"],
-  },
-  {
-    label: "Mobile",
-    items: ["Expo", "React Native", "Flutter"],
-  },
-  {
-    label: "DevOps",
-    items: ["Git", "GitHub", "Vercel", "Netlify", "Cloudflare", "PM2", "IIS"],
-  },
-  {
-    label: "ERP",
-    items: ["Microsip (básico)"],
-  },
-];
-
-export const softSkills: readonly string[] = [
-  "Comprometido",
-  "Trabajo en equipo",
-  "Proactivo",
-  "Comunicación asertiva",
-  "Liderazgo",
-  "Resolución de problemas",
-  "Responsable",
-];
-
-export const experience: readonly ExperienceItem[] = [
-  {
-    role: "Desarrollador Full Stack",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    period: "Nov 2025 – Jun 2026",
-    description:
-      "Desarrollo de sistemas web y móviles multiempresa: BLACK SHEEP NET, LMS y PMS (en colaboración con compañeros de Black Sheep Labs), facturador y cotizador integrados con ERP Microsip, apps móviles con Expo publicadas en Google Play (Black Net, FyttsaNet y BlackLink) y sitio web institucional.",
-    website: {
-      href: "https://blck-sheep.com",
-      label: "blck-sheep.com",
+  const education: readonly EducationItem[] = [
+    { period: "2019 – 2022", institution: t("education.items.cecytem.title") },
+    {
+      period: "2023 – 2026",
+      program: t("education.items.upvm.title"),
+      institution: content.studies[0]?.institution ?? "",
     },
-  },
-  {
-    role: "Entrenador Deportivo",
-    organization: "CECYTEM Tultitlán",
-    period: "2022 – Actualidad",
-    description:
-      "Formación de niños de 4 a 15 años en disciplina deportiva, liderazgo y comunicación efectiva. Desarrollo de habilidades de mentoría y gestión de grupos.",
-  },
-  {
-    role: "Empleado Administrativo",
-    organization: "Curiosidades Ale",
-    period: "2023",
-    description:
-      "Administración del software de punto de venta SICAR, gestión de base de datos, ingresos y egresos del negocio.",
-  },
-  {
-    role: "Promotor de Ventas",
-    organization: "Telmex",
-    period: "2018",
-    description:
-      "Desarrollo de habilidades de comunicación asertiva y construcción de relaciones con clientes.",
-  },
-];
+  ];
 
-export const projects: readonly Project[] = [
-  {
-    name: "LMS Multiempresa",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description:
-      "Plataforma de gestión de aprendizaje multiempresa: administración de cursos, usuarios y contenidos para distintas organizaciones. En colaboración con otros compañeros de Black Sheep Labs.",
-    stack: [],
-    hrefs: ["https://skool.com.mx"],
-  },
-  {
-    name: "PMS Multiempresa",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description: "Sistema de gestión de proyectos centralizado para múltiples empresas. En colaboración con otros compañeros de Black Sheep Labs.",
-    stack: [],
-    hrefs: ["https://stick.mx"],
-  },
-  {
-    name: "Facturador + Cotizador Microsip",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description:
-      "Facturación electrónica y cotizaciones integradas al ERP Microsip con sincronización automática de datos.",
-    stack: ["Microsip"],
-    hrefs: ["https://fyttsa.facturadorenlinea.mx", "https://casatorres.facturadorenlinea.mx"],
-  },
-  {
-    name: "Apps móviles en Google Play",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description:
-      "Aplicaciones móviles multiplataforma (iOS/Android) con Expo y React Native, publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
-    stack: ["Expo", "React Native"],
-    hrefs: ["https://play.google.com/store/apps/dev?id=9017111634471517533"],
-  },
-  {
-    name: "Team Page & Sitio Web",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description: "Sitio web institucional del equipo de trabajo de la empresa.",
-    stack: [],
-    hrefs: ["https://blck-sheep.com"],
-  },
-  {
-    name: "Aerial Depot WMS",
-    organization: "AERIAL DEPOT",
-    detail: "Edu. Dual 2025",
-    description:
-      "Sistema de gestión de almacenes (WMS): API en Laravel 12 con autenticación JWT, MySQL con migraciones y seeders, imágenes procesadas con GD y front end en Vue 3 con visualización 3D del almacén en Three.js.",
-    stack: ["Laravel", "PHP", "Vue.js", "MySQL", "Three.js"],
-  },
-  {
-    name: "Vacantes de Empleo",
-    organization: "Grupo Geisha Automotriz",
-    detail: "2025",
-    description: "Gestión y publicación de vacantes para distintas sucursales de la empresa.",
-    stack: [],
-  },
-  {
-    name: "BLACK SHEEP NET",
-    organization: "Black Sheep Labs “Grupo Fyttsa”",
-    description:
-      "Monorepo web con Next.js y API en PHP sobre Firebird y Microsip. Incluye un Planeador de Ruta con Leaflet, OpenStreetMap y OSRM: Dijkstra exacto hasta 10 paradas y vecino cercano con 2-opt para más paradas. Geocodificación con Google, pedidos programados por cron y despliegue en IIS con PM2.",
-    stack: ["Next.js", "TypeScript", "PHP", "Firebird", "Microsip", "Leaflet", "PM2"],
-    hrefs: ["https://black-net.mx"],
-  },
-];
+  const technicalSkills: readonly SkillGroup[] = content.skillGroups.map((group) => ({
+    label: group.title,
+    items: group.items,
+  }));
+
+  const softSkills = [
+    t("cv.softSkills.committed"),
+    t("cv.softSkills.teamwork"),
+    t("cv.softSkills.proactive"),
+    t("cv.softSkills.communication"),
+    t("cv.softSkills.leadership"),
+    t("cv.softSkills.problemSolving"),
+    t("cv.softSkills.responsible"),
+    t("cv.softSkills.adaptability"),
+    t("cv.softSkills.analytical"),
+    t("cv.softSkills.timeManagement"),
+    t("cv.softSkills.discipline"),
+    t("cv.softSkills.creativity"),
+  ];
+
+  const languages = [t("cv.languageList.english"), t("cv.languageList.spanish")];
+
+  const current = content.roles[0];
+  const experience: readonly ExperienceItem[] = [
+    {
+      role: current?.role ?? "",
+      organization: current?.organization ?? "",
+      period: formatPeriod(locale, { from: "2025-11", to: "2026-06" }, present),
+      description: current?.cvSummary ?? "",
+      website: { href: "https://blck-sheep.com", label: "blck-sheep.com" },
+      inPdf: true,
+    },
+    {
+      role: t("cv.jobs.trainer.role"),
+      organization: "CECYTEM Tultitlán",
+      period: formatPeriod(locale, { from: "2022", ongoing: true }, present),
+      description: t("cv.jobs.trainer.description"),
+      inPdf: true,
+    },
+    {
+      role: t("cv.jobs.admin.role"),
+      organization: "Curiosidades Ale",
+      period: formatPeriod(locale, { from: "2023" }, present),
+      description: t("cv.jobs.admin.description"),
+      inPdf: true,
+    },
+    {
+      role: t("cv.jobs.sales.role"),
+      organization: "Telmex",
+      period: formatPeriod(locale, { from: "2018" }, present),
+      description: t("cv.jobs.sales.description"),
+      inPdf: false,
+    },
+  ];
+
+  return {
+    profile,
+    navItems,
+    about: t("site.aboutLong"),
+    education,
+    technicalSkills,
+    softSkills,
+    languages,
+    experience,
+    projects: content.projects,
+    path: cvPath,
+  };
+}
+
+export type Cv = ReturnType<typeof getCv>;

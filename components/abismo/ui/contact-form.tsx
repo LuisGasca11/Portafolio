@@ -2,7 +2,8 @@
 
 import { useId, useState } from "react";
 import type { FormEvent } from "react";
-import { site } from "@/lib/content";
+import { useT } from "@/components/shared/locale-provider";
+import { identity } from "@/lib/content";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -21,10 +22,6 @@ export type ContactFormClasses = {
 
 type ContactFormProps = {
   classes: ContactFormClasses;
-  submitLabel?: string;
-  sendingLabel?: string;
-  sentTitle?: string;
-  labels?: { nombre: string; correo: string; mensaje: string };
 };
 
 /**
@@ -32,13 +29,8 @@ type ContactFormProps = {
  * nombre del formulario (`contacto`) no cambian para que Netlify Forms siga
  * recibiendo los mensajes sin importar la versión elegida.
  */
-export function ContactForm({
-  classes,
-  submitLabel = "Enviar mensaje",
-  sendingLabel = "Enviando…",
-  sentTitle = "¡Mensaje enviado!",
-  labels = { nombre: "Nombre", correo: "Correo", mensaje: "Mensaje" },
-}: ContactFormProps) {
+export function ContactForm({ classes }: ContactFormProps) {
+  const t = useT();
   const [status, setStatus] = useState<Status>("idle");
   const id = useId();
 
@@ -69,8 +61,8 @@ export function ContactForm({
   if (status === "sent") {
     return (
       <div className={classes.sent} role="status">
-        <p className={classes.sentTitle}>{sentTitle}</p>
-        <p className={classes.sentText}>Gracias por escribir. Te respondo pronto a tu correo.</p>
+        <p className={classes.sentTitle}>{t("form.sentTitle")}</p>
+        <p className={classes.sentText}>{t("form.sentText")}</p>
         <button
           type="button"
           onClick={() => {
@@ -78,7 +70,7 @@ export function ContactForm({
           }}
           className={classes.again}
         >
-          Enviar otro mensaje
+          {t("form.again")}
         </button>
       </div>
     );
@@ -96,12 +88,12 @@ export function ContactForm({
       <input type="hidden" name="form-name" value="contacto" />
       <p className="hidden">
         <label>
-          No llenes este campo si eres humano: <input name="bot-field" tabIndex={-1} autoComplete="off" />
+          {t("form.honeypot")} <input name="bot-field" tabIndex={-1} autoComplete="off" />
         </label>
       </p>
       <div className={classes.field}>
         <label htmlFor={`${id}-nombre`} className={classes.label}>
-          {labels.nombre}
+          {t("form.name")}
         </label>
         <input
           id={`${id}-nombre`}
@@ -109,13 +101,13 @@ export function ContactForm({
           type="text"
           required
           autoComplete="name"
-          placeholder="Tu nombre"
+          placeholder={t("form.namePlaceholder")}
           className={classes.input}
         />
       </div>
       <div className={classes.field}>
         <label htmlFor={`${id}-correo`} className={classes.label}>
-          {labels.correo}
+          {t("form.email")}
         </label>
         <input
           id={`${id}-correo`}
@@ -123,30 +115,30 @@ export function ContactForm({
           type="email"
           required
           autoComplete="email"
-          placeholder="tu@correo.com"
+          placeholder={t("form.emailPlaceholder")}
           className={classes.input}
         />
       </div>
       <div className={classes.field}>
         <label htmlFor={`${id}-mensaje`} className={classes.label}>
-          {labels.mensaje}
+          {t("form.message")}
         </label>
         <textarea
           id={`${id}-mensaje`}
           name="mensaje"
           required
           rows={5}
-          placeholder="Cuéntame de tu proyecto..."
+          placeholder={t("form.messagePlaceholder")}
           className={`${classes.input} resize-y`}
         />
       </div>
       {status === "error" ? (
         <p role="alert" className={classes.error}>
-          Hubo un problema al enviar el mensaje. Inténtalo de nuevo o escríbeme directo a {site.email}.
+          {t("form.error", { email: identity.email })}
         </p>
       ) : null}
       <button type="submit" disabled={status === "sending"} className={classes.button}>
-        {status === "sending" ? sendingLabel : submitLabel}
+        {status === "sending" ? t("form.sending") : t("form.submit")}
       </button>
     </form>
   );

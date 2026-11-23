@@ -1,11 +1,17 @@
 import Link from "next/link";
-import { ExternalLink } from "@/components/cv/external-link";
-import { PrintButton } from "@/components/cv/print-button";
-import { profile } from "@/lib/cv";
+import { DownloadButton } from "@/components/cv/download-button";
+import { ExternalLink } from "@/components/shared/external-link";
+import { cvPdf } from "@/lib/content";
+import { getCv } from "@/lib/cv";
+import { createT, otherLocale } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
 const linkClass = "underline decoration-white/25 underline-offset-4 hover:decoration-accent";
 
-export function Contact() {
+export function Contact({ locale }: { locale: Locale }) {
+  const t = createT(locale);
+  const other = otherLocale(locale);
+  const { profile } = getCv(locale);
   const phoneHref = profile.phone.replace(/[^+\d]/g, "");
   const whatsappHref = `https://wa.me/${phoneHref.replace("+", "")}`;
   return (
@@ -14,7 +20,7 @@ export function Contact() {
         <div className="mx-auto max-w-6xl" data-reveal>
           <p className="text-xs font-medium tracking-[0.22em] text-accent uppercase">06</p>
           <h2 id="contacto-titulo" className="mt-4 max-w-4xl font-display text-6xl tracking-[-0.04em] sm:text-8xl">
-            Contacto
+            {t("cv.sections.contact")}
           </h2>
           <p className="mt-6 max-w-xl text-lg text-white/80">{profile.title}</p>
           <p className="mt-3 text-sm text-muted">{profile.location}</p>
@@ -25,7 +31,18 @@ export function Contact() {
             >
               {profile.email}
             </a>
-            <PrintButton className="no-print inline-flex h-12 items-center rounded-full border border-white/20 px-5 text-sm font-semibold hover:border-accent" />
+            <DownloadButton
+              locale={locale}
+              className="no-print inline-flex h-12 items-center rounded-full border border-white/20 px-5 text-sm font-semibold hover:border-accent"
+            />
+            <a
+              href={cvPdf[other].href}
+              download={cvPdf[other].file}
+              lang={other}
+              className="no-print text-sm text-white/70 underline decoration-white/25 underline-offset-4 hover:decoration-accent"
+            >
+              {t("common.downloadCvOther")}
+            </a>
           </div>
           <ul className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-6">
             <li>

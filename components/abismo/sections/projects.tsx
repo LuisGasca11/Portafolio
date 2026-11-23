@@ -3,7 +3,8 @@ import { ExternalLink } from "@/components/shared/external-link";
 import { TechIcon } from "@/components/shared/tech-icon";
 import { Jellyfish } from "@/components/abismo/art/creatures";
 import { SectionHeading } from "@/components/abismo/ui/section-heading";
-import { playStoreUrl, projects } from "@/lib/content";
+import { useContent, useT } from "@/components/shared/locale-provider";
+import { playStoreUrl } from "@/lib/content";
 
 function onCardMove(event: PointerEvent<HTMLElement>) {
   if (event.pointerType !== "mouse") {
@@ -24,6 +25,8 @@ function onCardLeave(event: PointerEvent<HTMLElement>) {
 }
 
 export function Projects({ glOn }: { glOn: boolean }) {
+  const t = useT();
+  const { projects } = useContent();
   return (
     <section id="desarrollos" aria-labelledby="desarrollos-titulo" className="relative px-5 py-24">
       {/* Dibujos planos de animales: solo en el respaldo sin WebGL; con la escena 3D sobran. */}
@@ -38,10 +41,10 @@ export function Projects({ glOn }: { glOn: boolean }) {
         </>
       )}
       <div className="relative mx-auto max-w-6xl">
-        <SectionHeading id="desarrollos-titulo" meters={180} title="Desarrollos" />
-        <p className="mt-4 max-w-xl text-cyan-50/80">Lo que he construido, cada pieza detrás de su propia escotilla.</p>
+        <SectionHeading id="desarrollos-titulo" meters={180} title={t("projects.heading")} />
+        <p className="mt-4 max-w-xl text-cyan-50/80">{t("projects.intro")}</p>
         <p className="ab-reel-hint mt-10" aria-hidden="true">
-          Desliza para ver más <span>→</span>
+          {t("projects.swipe")} <span>→</span>
         </p>
         <ul className="ab-reel md:mt-14 md:grid md:grid-cols-2 md:gap-6">
           {projects.map((project, index) => (
@@ -72,7 +75,7 @@ export function Projects({ glOn }: { glOn: boolean }) {
                   </p>
                 ) : null}
                 {project.stack.length > 0 ? (
-                  <ul className="mt-5 flex flex-wrap gap-2" aria-label={`Stack de ${project.name}`}>
+                  <ul className="mt-5 flex flex-wrap gap-2" aria-label={t("projects.stackOf", { name: project.name })}>
                     {project.stack.map((tag) => (
                       <li key={tag} className="ab-chip">
                         <TechIcon name={tag} size={1.35} />
@@ -83,13 +86,13 @@ export function Projects({ glOn }: { glOn: boolean }) {
                 ) : null}
                 {project.apps !== undefined ? (
                   <div className="mt-6">
-                    <ul className="flex flex-wrap gap-2.5" aria-label={`Apps de ${project.name} en Google Play`}>
+                    <ul className="flex flex-wrap gap-2.5" aria-label={t("projects.appsOf", { name: project.name })}>
                       {project.apps.map((app) => (
                         <li key={app.label}>
                           <ExternalLink href={app.href} className="ab-store">
                             <TechIcon name="Google Play" size={1.3} />
                             <span>
-                              <small>Google Play</small>
+                              <small>{t("projects.googlePlay")}</small>
                               {app.label}
                             </span>
                           </ExternalLink>
@@ -97,13 +100,13 @@ export function Projects({ glOn }: { glOn: boolean }) {
                       ))}
                     </ul>
                     <ExternalLink href={playStoreUrl} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-200 underline underline-offset-4">
-                      Ver todas las apps de la empresa
+                      {t("projects.allApps")}
                       <span aria-hidden="true">↗</span>
                     </ExternalLink>
                   </div>
                 ) : null}
                 {project.links !== undefined ? (
-                  <ul className="mt-5 grid gap-2 text-sm" aria-label={`Sitios en línea de ${project.name}`}>
+                  <ul className="mt-5 grid gap-2 text-sm" aria-label={t("projects.sitesOf", { name: project.name })}>
                     {project.links.map((link) => (
                       <li key={link.href} className="flex items-center gap-2.5">
                         <span className="ab-ping" aria-hidden="true" />

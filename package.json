@@ -4,13 +4,16 @@
   "private": true,
   "description": "Portafolio estático de Luis Alberto Aguilar Gasca.",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run i18n:check",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "i18n:check": "node tools/i18n-gate.mjs --registry lib/i18n/registry.json --packs 'lib/i18n/locales/{locale}.json'",
+    "cv:pdf": "node tools/render-cv/render.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.14.0",
@@ -27,6 +30,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.187.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",

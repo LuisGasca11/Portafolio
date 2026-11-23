@@ -1,18 +1,21 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import { PrintButton } from "@/components/cv/print-button";
-import { cvNavItems } from "@/lib/cv";
-import { navItems, site } from "@/lib/content";
+import { DownloadButton } from "@/components/cv/download-button";
+import { LanguageSwitch } from "@/components/shared/language-switch";
+import { useLocale, useT } from "@/components/shared/locale-provider";
+import { identity } from "@/lib/content";
+import { getCv } from "@/lib/cv";
+import { pathFor } from "@/lib/i18n";
 
+/** Encabezado de `/curriculum`: marca, secciones, cambio de idioma y descarga del PDF. */
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuId = useId();
-  const pathname = usePathname();
-  const isCurriculum = pathname === "/curriculum";
-  const items = isCurriculum ? cvNavItems : navItems;
+  const t = useT();
+  const locale = useLocale();
+  const items = getCv(locale).navItems;
 
   useEffect(() => {
     function onScroll() {
@@ -50,10 +53,10 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <a href={isCurriculum ? "/" : "#inicio"} className="truncate font-display text-lg tracking-tight">
-          {site.brand}
+        <a href={pathFor(locale, "/")} className="truncate font-display text-lg tracking-tight">
+          {identity.brand}
         </a>
-        <nav aria-label="Secciones" className="hidden lg:block">
+        <nav aria-label={t("common.sectionsNav")} className="hidden lg:block">
           <ul className="flex items-center gap-5 text-sm text-white/70">
             {items.map((item) => (
               <li key={item.href}>
@@ -65,16 +68,11 @@ export function SiteHeader() {
           </ul>
         </nav>
         <div className="flex items-center gap-2">
-          {isCurriculum ? (
-            <PrintButton className="no-print hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex" />
-          ) : (
-            <a
-              href="#contacto"
-              className="hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex"
-            >
-              Contacto
-            </a>
-          )}
+          <LanguageSwitch className="hidden h-10 items-center rounded-full border border-line px-4 text-sm hover:border-accent sm:inline-flex" />
+          <DownloadButton
+            locale={locale}
+            className="no-print hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex"
+          />
           <button
             type="button"
             className="inline-flex h-10 items-center rounded-full border border-line px-4 text-sm lg:hidden"
@@ -84,7 +82,7 @@ export function SiteHeader() {
               setOpen((current) => !current);
             }}
           >
-            {open ? "Cerrar" : "Menú"}
+            {open ? t("common.close") : t("common.menu")}
           </button>
         </div>
       </div>
@@ -105,9 +103,13 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-          {isCurriculum ? (
-            <PrintButton className="no-print mt-3 inline-flex h-12 items-center rounded-full bg-white px-5 text-sm font-semibold text-black" />
-          ) : null}
+          <div className="mt-3 flex flex-wrap gap-3">
+            <DownloadButton
+              locale={locale}
+              className="no-print inline-flex h-12 items-center rounded-full bg-white px-5 text-sm font-semibold text-black"
+            />
+            <LanguageSwitch className="inline-flex h-12 items-center rounded-full border border-line px-5 text-sm" />
+          </div>
         </nav>
       ) : null}
     </header>

@@ -1,8 +1,12 @@
-import { ExternalLink } from "@/components/cv/external-link";
+import { ExternalLink } from "@/components/shared/external-link";
 import { SectionIntro } from "@/components/cv/section-intro";
-import { experience } from "@/lib/cv";
+import { getCv } from "@/lib/cv";
+import { createT } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 
-export function Experience() {
+export function Experience({ locale }: { locale: Locale }) {
+  const t = createT(locale);
+  const { experience } = getCv(locale);
   return (
     <section
       id="experiencia"
@@ -10,7 +14,7 @@ export function Experience() {
       className="scroll-mt-24 border-b border-line px-5 py-24 sm:py-32 print:px-0 print:py-6"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionIntro index="02" id="experiencia-titulo" title="Experiencia laboral" />
+        <SectionIntro index="02" id="experiencia-titulo" title={t("cv.sections.experience")} />
         <ol className="accent-line relative mt-12 border-l border-accent/50 pl-6">
           {experience.map((job) => (
             <li

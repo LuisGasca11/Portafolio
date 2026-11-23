@@ -18,7 +18,7 @@ Si el dispositivo no tiene WebGL o se pide menos movimiento, se usa el fondo CSS
 ### Estructura del código
 
 ```
-app/                      rutas (inicio y /curriculum) y layout raíz
+app/                      rutas: (es)/ en español (/ y /curriculum), en/ en inglés (/en y /en/curriculum), 404 global
 components/
   abismo/                 la portada
     abismo.tsx            composición de la página
@@ -30,10 +30,31 @@ components/
     data.ts               navegación, zonas oceánicas y configuración de las burbujas
   transition/             transición de vista con burbujas y animales (Framer Motion)
   cv/                     la ruta /curriculum (con su encabezado, pie y efectos)
-  shared/                 enlace externo, icono de tecnología, scroll suave
-lib/                      contenido (content.ts, cv.ts) y datos de iconos (tech-icons.ts)
-tools/                    generadores del video ambiental y de los iconos
+  shared/                 raíz por idioma, proveedor de idioma, selector de idioma, enlace externo, icono de tecnología, scroll suave
+  pages/                  páginas compartidas por los dos idiomas (inicio y currículum)
+lib/                      contenido (content.ts, cv.ts), idiomas (i18n/), SEO (seo.ts) y datos de iconos (tech-icons.ts)
+tools/                    generadores del video ambiental, de los iconos y de los PDF del CV; verificación de traducciones
 ```
+
+## Idiomas (español e inglés)
+
+El sitio está en español (`/`, `/curriculum`) y en inglés (`/en`, `/en/curriculum`). El idioma lo marca la URL: cada página tiene su propio `<html lang>`, título, descripción, datos estructurados y enlaces `hreflang`, y el mapa del sitio lista las dos versiones. Es una exportación estática, así que no hay redirección automática por el idioma del navegador: se cambia con el selector («English» / «Español») del encabezado y del menú. Si algún día se quiere, Netlify puede redirigir `/` a `/en` según el idioma del navegador con una regla `Language` en `netlify.toml`.
+
+- **Registro de idiomas:** `lib/i18n/registry.json` es la única lista (código, etiqueta BCP 47, nombre del idioma en sí mismo, estado y revisión). `lib/i18n/config.ts` deriva de él las rutas y etiquetas.
+- **Textos:** un paquete por idioma en `lib/i18n/locales/` (`es.json` es el fuente y `en.json`). Se piden con `t("clave")` (`lib/i18n/messages.ts`); las claves están tipadas, así que una clave inexistente no compila. No hay textos de respaldo en los componentes: si falta uno, el build falla.
+- **Datos y textos:** `lib/content.ts` y `lib/cv.ts` guardan lo que no cambia con el idioma (enlaces, tecnologías, nombres propios) y arman el contenido con los textos de cada idioma. Las fechas se formatean con `Intl` según el idioma.
+- **Verificación:** `npm run i18n:check` (corre solo antes de `npm run build`) falla si a un idioma le falta una clave, le sobra una, deja un valor vacío o idéntico al español sin estar en `allowIdentical`, o cambia los `{marcadores}`. Para añadir un texto: agrégalo en `es.json` y `en.json` y úsalo con `t()`. Para añadir un idioma: súmalo a `registry.json`, crea su paquete y regístralo en `lib/i18n/messages.ts`.
+- **Revisión:** el inglés está como `beta` en el registro hasta que una persona lo revise; al hacerlo, anota `reviewedBy`/`reviewedAt` y pásalo a `live`.
+
+## Currículum en PDF
+
+El botón «Descargar CV (PDF)» (en `/curriculum` y en la sección de contacto del portafolio) baja el PDF del idioma de la página, y hay un enlace a la versión del otro idioma. Los PDF (`public/cv/CV_Luis_Aguilar_ES.pdf` y `_EN.pdf`) tienen el estilo de una hoja A4: etiquetas a la izquierda, acento morado y proyectos en dos columnas. Se generan con los mismos datos y textos del sitio, así que para actualizarlos basta con regenerarlos después de cambiar el contenido:
+
+```bash
+npm run cv:pdf
+```
+
+Requiere Playwright (Chromium), igual que el video ambiental. La plantilla está en `tools/render-cv/render.mjs`.
 
 Los datos de la portada salen de `lib/content.ts` y el formulario de contacto conserva los campos de Netlify Forms.
 
@@ -55,7 +76,7 @@ Cada tecnología muestra su icono (`components/shared/tech-icon.tsx`). Los datos
 
 ## Requisitos
 
-- Node.js 20 o superior
+- Node.js 22 o superior
 - npm
 
 ## Desarrollo
@@ -79,7 +100,7 @@ En Netlify, `netlify.toml` fija el comando `npm run build` y el directorio de pu
 
 ## Currículum en línea
 
-El currículum vive como ruta interna del portafolio: `/curriculum` (`app/curriculum/page.tsx`, componentes en `components/cv/`, datos en `lib/cv.ts`). El enlace «Currículum» apunta a `cvUrl` en `lib/content.ts`.
+El currículum vive como ruta interna del portafolio: `/curriculum` y `/en/curriculum` (`components/pages/curriculum-page.tsx`, componentes en `components/cv/`, datos en `lib/cv.ts`). El enlace «Currículum» apunta a `cvPath` en `lib/content.ts`.
 
 ## Formulario de contacto
 
@@ -94,6 +115,8 @@ Para que los mensajes también lleguen por correo a luisgasca0245@hotmail.com ha
 | `npm run dev` | Servidor de desarrollo |
 | `npm run build` | Compilación y export estático |
 | `npm run lint` | ESLint |
+| `npm run i18n:check` | Verifica que los textos estén completos en todos los idiomas |
+| `npm run cv:pdf` | Regenera los PDF del currículum |
 
 ## Contacto publicado
 
@@ -101,4 +124,4 @@ Para que los mensajes también lleguen por correo a luisgasca0245@hotmail.com ha
 - Teléfono: +52 56 10840382
 - WhatsApp: https://wa.me/525610840382
 - GitHub: https://github.com/LuisGasca11
-- Currículum: `cvUrl` en `lib/content.ts`
+- Currículum: `cvPath` en `lib/content.ts` y PDF en `public/cv/`
