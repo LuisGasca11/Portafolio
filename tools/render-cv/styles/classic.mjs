@@ -36,9 +36,8 @@ const css = `
   .skill { display: grid; grid-template-columns: 54pt 1fr; margin-top: 2.2pt; color: #666; }
   .skill:first-child { margin-top: 0; }
   .skill b { color: #1d1d22; font-weight: 700; }
-  .inline { font-size: 7.8pt; color: #1d1d22; }
+  .inline { display: flex; flex-wrap: wrap; gap: 1pt 0; font-size: 7.8pt; color: #1d1d22; }
   .inline span { white-space: nowrap; }
-  .inline { word-spacing: 0; line-height: 1.55; }
   .inline span + span::before { content: "·"; margin: 0 5pt; color: #888; }
 `;
 

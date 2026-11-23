@@ -39,9 +39,10 @@ for (const locale of locales) {
   const page = await browser.newPage();
   await page.setContent(render({ locale, getCv, createT, tagOf }), { waitUntil: "load" });
   const overflow = await page.evaluate(() => document.body.scrollHeight - document.body.clientHeight);
+  const wide = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   const file = path.join(outDir, cvPdf[locale].file);
   await page.pdf({ path: file, format: "A4", printBackground: true, preferCSSPageSize: true });
-  console.log(`${locale}: ${path.relative(root, file)}${overflow > 0 ? `  ⚠ el contenido excede la página por ${overflow}px` : ""}`);
+  console.log(`${locale}: ${path.relative(root, file)}${overflow > 1 ? `  ⚠ excede el alto por ${overflow}px` : ""}${wide > 0 ? `  ⚠ excede el ancho por ${wide}px (la hoja se encogería)` : ""}`);
   await page.close();
 }
 await browser.close();
