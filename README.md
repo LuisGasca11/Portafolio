@@ -98,7 +98,7 @@ Para que los mensajes también lleguen por correo a luisgasca0245@hotmail.com ha
 ## Contacto publicado
 
 - Correo: luisgasca0245@hotmail.com
-- Teléfono: +52 26 10840382
-- WhatsApp: https://wa.me/522610840382
+- Teléfono: +52 56 10840382
+- WhatsApp: https://wa.me/525610840382
 - GitHub: https://github.com/LuisGasca11
 - Currículum: `cvUrl` en `lib/content.ts`
