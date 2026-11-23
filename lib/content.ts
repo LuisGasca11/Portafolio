@@ -133,7 +133,7 @@ export type Study = {
   id: "upvm" | "cecytem";
   period: string;
   title: string;
-  institution?: string;
+  institution: string;
 };
 
 const universities = { upvm: "Universidad Politécnica del Valle de México" } as const;
@@ -203,7 +203,7 @@ export function getContent(locale: Locale) {
 
   const studies: readonly Study[] = [
     { id: "upvm", period: "2023 – 2026", title: t("education.items.upvm.title"), institution: universities.upvm },
-    { id: "cecytem", period: "2019 – 2022", title: t("education.items.cecytem.title") },
+    { id: "cecytem", period: "2019 – 2022", title: t("education.items.cecytem.title"), institution: t("education.items.cecytem.institution") },
   ];
 
   const technologies = [
@@ -253,7 +253,7 @@ export function getContent(locale: Locale) {
         sameAs: [identity.githubUrl, identity.linkedinUrl],
         alumniOf: [
           { "@type": "CollegeOrUniversity", name: universities.upvm },
-          { "@type": "EducationalOrganization", name: studies[1]?.title ?? "" },
+          { "@type": "EducationalOrganization", name: studies[1]?.institution ?? "" },
         ],
         knowsAbout: skillGroups.flatMap((group) => [...group.items]),
       },

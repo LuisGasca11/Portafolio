@@ -55,7 +55,8 @@ export function Header() {
           ))}
           <LanguageSwitch className="rounded-full border border-cyan-200/30 px-3 py-0.5 text-xs font-semibold hover:border-cyan-200" />
         </nav>
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguageSwitch className="rounded-full border border-cyan-200/40 bg-black/30 px-3 py-1 text-xs font-semibold text-cyan-100" />
           <span aria-hidden="true" className="rounded-full border border-cyan-200/30 bg-black/30 px-3 py-1 text-xs font-semibold tabular-nums">
             <span data-gauge-text>0 m</span>
           </span>
@@ -106,7 +107,6 @@ export function Header() {
           <Link href={pathFor(locale, cvPath)} className="mt-4 text-sm font-semibold text-cyan-200 underline underline-offset-4">
             {t("common.viewCv")}
           </Link>
-          <LanguageSwitch className="mt-5 inline-flex w-fit rounded-full border border-cyan-200/40 px-4 py-2 text-sm font-semibold text-cyan-100" />
         </div>
       ) : null}
     </>

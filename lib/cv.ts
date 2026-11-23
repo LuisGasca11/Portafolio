@@ -46,14 +46,10 @@ export function getCv(locale: Locale) {
     { href: "#contacto", label: t("cv.nav.contact") },
   ] as const;
 
-  const education: readonly EducationItem[] = [
-    { period: "2019 – 2022", institution: t("education.items.cecytem.title") },
-    {
-      period: "2023 – 2026",
-      program: t("education.items.upvm.title"),
-      institution: content.studies[0]?.institution ?? "",
-    },
-  ];
+  // Del más antiguo al más reciente.
+  const education: readonly EducationItem[] = [...content.studies]
+    .reverse()
+    .map((study) => ({ period: study.period, program: study.title, institution: study.institution }));
 
   const technicalSkills: readonly SkillGroup[] = content.skillGroups.map((group) => ({
     label: group.title,

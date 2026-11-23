@@ -142,10 +142,11 @@
     "heading": "Education",
     "items": {
       "upvm": {
-        "title": "B.Eng. in ICT"
+        "title": "B.Eng. in Information and Communication Technologies"
       },
       "cecytem": {
-        "title": "CECyTEM Ecatepec 1 Campus"
+        "title": "Programmer",
+        "institution": "CECyTEM Ecatepec 1 Campus"
       }
     }
   },

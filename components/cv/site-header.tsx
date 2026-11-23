@@ -68,7 +68,7 @@ export function SiteHeader() {
           </ul>
         </nav>
         <div className="flex items-center gap-2">
-          <LanguageSwitch className="hidden h-10 items-center rounded-full border border-line px-4 text-sm hover:border-accent sm:inline-flex" />
+          <LanguageSwitch className="inline-flex h-10 items-center rounded-full border border-line px-3 text-sm hover:border-accent sm:px-4" />
           <DownloadButton
             locale={locale}
             className="no-print hidden h-10 items-center rounded-full bg-white px-4 text-sm font-medium text-black sm:inline-flex"
@@ -108,7 +108,6 @@ export function SiteHeader() {
               locale={locale}
               className="no-print inline-flex h-12 items-center rounded-full bg-white px-5 text-sm font-semibold text-black"
             />
-            <LanguageSwitch className="inline-flex h-12 items-center rounded-full border border-line px-5 text-sm" />
           </div>
         </nav>
       ) : null}
