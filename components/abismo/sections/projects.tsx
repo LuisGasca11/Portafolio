@@ -43,10 +43,7 @@ export function Projects({ glOn }: { glOn: boolean }) {
       <div className="relative mx-auto max-w-6xl">
         <SectionHeading id="desarrollos-titulo" meters={180} title={t("projects.heading")} />
         <p className="mt-4 max-w-xl text-cyan-50/80">{t("projects.intro")}</p>
-        <p className="ab-reel-hint mt-10" aria-hidden="true">
-          {t("projects.swipe")} <span>→</span>
-        </p>
-        <ul className="ab-reel md:mt-14 md:grid md:grid-cols-2 md:gap-6">
+        <ul className="mt-10 grid gap-6 md:mt-14 md:grid-cols-2">
           {projects.map((project, index) => (
             <li key={project.name} data-reveal className={project.featured === true ? "md:col-span-2" : undefined}>
               <article

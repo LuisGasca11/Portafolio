@@ -469,35 +469,7 @@
   box-shadow: 0 0 10px #ffd27a;
 }
 
-/* Desarrollos en móvil: carrusel que se desliza de lado. */
-.ab-reel-hint { display: none; }
+/* En pantallas táctiles las tarjetas no se inclinan con el puntero. */
 @media (max-width: 767px) {
-  .ab-reel {
-    display: flex;
-    gap: 0.9rem;
-    margin-inline: -1.25rem;
-    padding: 0.5rem 1.25rem 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1.25rem;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .ab-reel::-webkit-scrollbar { display: none; }
-  .ab-reel > li {
-    flex: 0 0 86%;
-    scroll-snap-align: start;
-  }
   .ab-card { transform: none; }
-  .ab-reel-hint {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(232, 251, 255, 0.65);
-  }
 }

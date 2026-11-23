@@ -8,8 +8,8 @@ import { SectionHeading } from "@/components/abismo/ui/section-heading";
 import { ContactForm } from "@/components/abismo/ui/contact-form";
 import type { ContactFormClasses } from "@/components/abismo/ui/contact-form";
 import { useContent, useLocale, useT } from "@/components/shared/locale-provider";
-import { cvPath, cvPdf, identity } from "@/lib/content";
-import { otherLocale, pathFor, translate } from "@/lib/i18n";
+import { cvPath, identity } from "@/lib/content";
+import { pathFor } from "@/lib/i18n";
 
 const formClasses: ContactFormClasses = {
   form: "grid gap-4",
@@ -30,7 +30,6 @@ export function Contact({ glOn }: { glOn: boolean }) {
   const t = useT();
   const locale = useLocale();
   const { site } = useContent();
-  const other = otherLocale(locale);
   return (
     <section id="contacto" aria-labelledby="contacto-titulo" className="relative overflow-hidden px-5 pt-28 pb-64 sm:pb-72">
       <div aria-hidden="true" data-sub className="pointer-events-none absolute top-24 left-0 hidden w-[min(34vw,330px)] lg:block">
@@ -81,20 +80,9 @@ export function Contact({ glOn }: { glOn: boolean }) {
                   {t("common.cv")}
                 </span>
               </Link>
-              {[locale, other].map((item) => (
-                <a key={item} href={cvPdf[item].href} download={cvPdf[item].file} lang={item} className="ab-store">
-                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
-                  </svg>
-                  <span>
-                    <small>PDF · {item.toUpperCase()}</small>
-                    {translate(item, "common.downloadCv")}
-                  </span>
-                </a>
-              ))}
             </li>
-            <li className="text-cyan-100/70">{site.location}</li>
-            <li className="pt-2">
+            <li className="w-full pt-1 text-cyan-100/70">{site.location}</li>
+            <li className="w-full pt-2">
               <a href="#inicio" className="inline-flex h-10 items-center gap-2 rounded-full border border-cyan-200/40 px-4 text-sm font-semibold text-cyan-100">
                 <span aria-hidden="true">↑</span> {t("contact.surface")}
               </a>
