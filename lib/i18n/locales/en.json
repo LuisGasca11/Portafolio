@@ -34,8 +34,8 @@
     "cv": "Résumé",
     "viewCv": "View résumé",
     "downloadCv": "Download CV (PDF)",
-    "downloadCvOther": "Download the Spanish version",
-    "profiles": "Profiles"
+    "profiles": "Profiles",
+    "cvWeb": "Online"
   },
   "hero": {
     "depth": "0 m · Surface",

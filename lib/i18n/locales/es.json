@@ -34,8 +34,8 @@
     "cv": "Currículum",
     "viewCv": "Ver currículum",
     "downloadCv": "Descargar CV (PDF)",
-    "downloadCvOther": "Descargar versión en inglés",
-    "profiles": "Perfiles"
+    "profiles": "Perfiles",
+    "cvWeb": "En línea"
   },
   "hero": {
     "depth": "0 m · Superficie",
