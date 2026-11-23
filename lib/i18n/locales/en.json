@@ -63,7 +63,6 @@
   "projects": {
     "heading": "Projects",
     "intro": "What I have built, each piece behind its own hatch.",
-    "swipe": "Swipe to see more",
     "stackOf": "{name} stack",
     "sitesOf": "{name} live sites",
     "appsOf": "{name} apps on Google Play",
