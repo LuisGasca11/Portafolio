@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ContactIcon } from "@/components/shared/contact-icon";
 import { ExternalLink } from "@/components/shared/external-link";
 import { TechIcon } from "@/components/shared/tech-icon";
 import { Crab, Starfish, Submarine } from "@/components/abismo/art/creatures";
@@ -39,32 +40,35 @@ export function Contact({ glOn }: { glOn: boolean }) {
         <SectionHeading id="contacto-titulo" meters={1200} zone={t("sea.seabed")} title={t("contact.heading")} size="xl" />
         <p className="mt-4 max-w-xl text-cyan-50/85">{t("contact.text")}</p>
         <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:pl-[22%]">
-          <ul className="grid content-start gap-3 text-sm">
-            <li>
-              <a href={`mailto:${identity.email}`} className="text-lg font-semibold break-all underline decoration-cyan-200/50 underline-offset-4">
-                {identity.email}
+          <ul className="flex flex-wrap content-start gap-2.5 text-sm">
+            <li className="w-full">
+              <a href={`mailto:${identity.email}`} className="ab-contact ab-contact-main">
+                <ContactIcon kind="mail" />
+                <span className="break-all">{identity.email}</span>
               </a>
             </li>
             <li>
-              <a href={`tel:${identity.phone.replace(/[^+\d]/g, "")}`} className="underline decoration-cyan-200/40 underline-offset-4">
+              <a href={`tel:${identity.phone.replace(/[^+\d]/g, "")}`} className="ab-contact">
+                <ContactIcon kind="phone" />
                 {identity.phone}
               </a>
             </li>
             <li>
-              <ExternalLink href={identity.whatsappUrl} className="underline decoration-cyan-200/40 underline-offset-4">
+              <ExternalLink href={identity.whatsappUrl} className="ab-contact">
+                <TechIcon name="WhatsApp" size={1.7} />
                 WhatsApp
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={identity.githubUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
-                <TechIcon name="GitHub" size={1.4} />
-                {identity.githubLabel}
+              <ExternalLink href={identity.githubUrl} className="ab-contact">
+                <TechIcon name="GitHub" size={1.7} />
+                <span className="break-all">{identity.githubLabel}</span>
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={identity.linkedinUrl} className="inline-flex items-center gap-2 underline decoration-cyan-200/40 underline-offset-4">
-                <TechIcon name="LinkedIn" size={1.4} />
-                {identity.linkedinLabel}
+              <ExternalLink href={identity.linkedinUrl} className="ab-contact">
+                <TechIcon name="LinkedIn" size={1.7} />
+                <span className="break-all">{identity.linkedinLabel}</span>
               </ExternalLink>
             </li>
             <li className="flex flex-wrap gap-2.5 pt-1" aria-label={t("common.cv")}>

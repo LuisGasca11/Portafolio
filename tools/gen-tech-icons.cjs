@@ -13,7 +13,7 @@ const brand = {
   git: si.siGit, github: si.siGithub, "tailwind css": si.siTailwindcss, leaflet: si.siLeaflet,
   pm2: si.siPm2, "three.js": si.siThreedotjs, "node.js": si.siNodedotjs, express: si.siExpress,
   vercel: si.siVercel, netlify: si.siNetlify, supabase: si.siSupabase, cloudflare: si.siCloudflare,
-  flutter: si.siFlutter, python: si.siPython, "google play": si.siGoogleplay,
+  flutter: si.siFlutter, whatsapp: si.siWhatsapp, python: si.siPython, "google play": si.siGoogleplay,
 };
 
 const custom = {

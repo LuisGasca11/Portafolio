@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { DownloadButton } from "@/components/cv/download-button";
+import { ContactIcon } from "@/components/shared/contact-icon";
 import { ExternalLink } from "@/components/shared/external-link";
+import { TechIcon } from "@/components/shared/tech-icon";
 import { getCv } from "@/lib/cv";
 import { createT, otherLocale } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 
-const linkClass = "underline decoration-white/25 underline-offset-4 hover:decoration-accent";
+/** Botón de contacto: píldora con ícono, sin subrayado. */
+const chip =
+  "inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/20 bg-white/5 py-1 pr-4 pl-1.5 font-semibold text-white transition hover:-translate-y-0.5 hover:border-accent hover:bg-white/10";
 
 export function Contact({ locale }: { locale: Locale }) {
   const t = createT(locale);
@@ -38,29 +42,34 @@ export function Contact({ locale }: { locale: Locale }) {
               />
             ))}
           </div>
-          <ul className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-6">
+          <ul className="mt-6 flex flex-wrap gap-2.5 text-sm">
             <li>
-              <a href={`tel:${phoneHref}`} className={linkClass}>
+              <a href={`tel:${phoneHref}`} className={chip}>
+                <ContactIcon kind="phone" />
                 {profile.phone}
               </a>
             </li>
             <li>
-              <ExternalLink href={whatsappHref} className={linkClass}>
+              <ExternalLink href={whatsappHref} className={chip}>
+                <TechIcon name="WhatsApp" size={1.7} />
                 WhatsApp
               </ExternalLink>
             </li>
             <li>
-              <Link href={profile.portfolio.href} className={linkClass}>
+              <Link href={profile.portfolio.href} className={chip}>
+                <ContactIcon kind="web" />
                 {profile.portfolio.label}
               </Link>
             </li>
             <li>
-              <ExternalLink href={profile.github.href} className={linkClass}>
+              <ExternalLink href={profile.github.href} className={chip}>
+                <TechIcon name="GitHub" size={1.7} />
                 {profile.github.label}
               </ExternalLink>
             </li>
             <li>
-              <ExternalLink href={profile.linkedin.href} className={linkClass}>
+              <ExternalLink href={profile.linkedin.href} className={chip}>
+                <TechIcon name="LinkedIn" size={1.7} />
                 LinkedIn
               </ExternalLink>
             </li>
