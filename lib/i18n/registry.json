@@ -23,7 +23,7 @@
       "scripts": [
         "Latin"
       ],
-      "status": "beta",
+      "status": "live",
       "allowIdentical": [
         "Front end",
         "Back end",
@@ -33,7 +33,9 @@
         "Aerial Depot WMS",
         "Ecatepec de Morelos",
         "Google Play"
-      ]
+      ],
+      "reviewedBy": "Luis Aguilar",
+      "reviewedAt": "2026-11-23"
     }
   ]
 }

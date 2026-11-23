@@ -224,7 +224,7 @@ export function BubbleTransition({ children }: { children: ReactNode }) {
         return;
       }
       const anchor = event.target instanceof Element ? event.target.closest("a") : null;
-      if (!anchor || (anchor.target !== "" && anchor.target !== "_self") || anchor.hasAttribute("download")) {
+      if (!anchor || (anchor.target !== "" && anchor.target !== "_self") || anchor.hasAttribute("download") || anchor.hasAttribute("data-no-transition")) {
         return;
       }
       const url = new URL(anchor.href, window.location.href);

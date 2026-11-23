@@ -142,10 +142,11 @@
     "heading": "Educación",
     "items": {
       "upvm": {
-        "title": "Ingeniería en TIC"
+        "title": "Ingeniería en Tecnologías de la Información y la Comunicación"
       },
       "cecytem": {
-        "title": "CECyTEM Plantel Ecatepec 1"
+        "title": "Programador",
+        "institution": "CECyTEM Plantel Ecatepec 1"
       }
     }
   },
