@@ -11,7 +11,7 @@ type DownloadButtonProps = {
 export function DownloadButton({ locale, className }: DownloadButtonProps) {
   const t = createT(locale);
   return (
-    <a href={cvPdf[locale].href} download={cvPdf[locale].file} className={className}>
+    <a href={cvPdf[locale].href} download={cvPdf[locale].file} lang={locale} className={className}>
       {t("common.downloadCv")}
     </a>
   );

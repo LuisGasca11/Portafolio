@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { DownloadButton } from "@/components/cv/download-button";
 import { ExternalLink } from "@/components/shared/external-link";
-import { cvPdf } from "@/lib/content";
 import { getCv } from "@/lib/cv";
 import { createT, otherLocale } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
@@ -31,18 +30,13 @@ export function Contact({ locale }: { locale: Locale }) {
             >
               {profile.email}
             </a>
-            <DownloadButton
-              locale={locale}
-              className="no-print inline-flex h-12 items-center rounded-full border border-white/20 px-5 text-sm font-semibold hover:border-accent"
-            />
-            <a
-              href={cvPdf[other].href}
-              download={cvPdf[other].file}
-              lang={other}
-              className="no-print text-sm text-white/70 underline decoration-white/25 underline-offset-4 hover:decoration-accent"
-            >
-              {t("common.downloadCvOther")}
-            </a>
+            {[locale, other].map((item) => (
+              <DownloadButton
+                key={item}
+                locale={item}
+                className="no-print inline-flex h-12 items-center rounded-full border border-white/20 px-5 text-sm font-semibold hover:border-accent"
+              />
+            ))}
           </div>
           <ul className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-6">
             <li>

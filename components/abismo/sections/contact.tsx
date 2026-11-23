@@ -8,7 +8,7 @@ import { ContactForm } from "@/components/abismo/ui/contact-form";
 import type { ContactFormClasses } from "@/components/abismo/ui/contact-form";
 import { useContent, useLocale, useT } from "@/components/shared/locale-provider";
 import { cvPath, cvPdf, identity } from "@/lib/content";
-import { otherLocale, pathFor } from "@/lib/i18n";
+import { otherLocale, pathFor, translate } from "@/lib/i18n";
 
 const formClasses: ContactFormClasses = {
   form: "grid gap-4",
@@ -67,24 +67,27 @@ export function Contact({ glOn }: { glOn: boolean }) {
                 {identity.linkedinLabel}
               </ExternalLink>
             </li>
-            <li>
-              <Link href={pathFor(locale, cvPath)} className="underline decoration-cyan-200/40 underline-offset-4">
-                {t("common.cv")}
-              </Link>
-            </li>
-            <li className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <a href={cvPdf[locale].href} download={cvPdf[locale].file} className="ab-store">
+            <li className="flex flex-wrap gap-2.5 pt-1" aria-label={t("common.cv")}>
+              <Link href={pathFor(locale, cvPath)} className="ab-store">
                 <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
+                  <path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5" />
                 </svg>
                 <span>
-                  <small>PDF · {locale.toUpperCase()}</small>
-                  {t("common.downloadCv")}
+                  <small>{t("common.cvWeb")}</small>
+                  {t("common.cv")}
                 </span>
-              </a>
-              <a href={cvPdf[other].href} download={cvPdf[other].file} lang={other} className="text-xs underline decoration-cyan-200/40 underline-offset-4">
-                {t("common.downloadCvOther")}
-              </a>
+              </Link>
+              {[locale, other].map((item) => (
+                <a key={item} href={cvPdf[item].href} download={cvPdf[item].file} lang={item} className="ab-store">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
+                  </svg>
+                  <span>
+                    <small>PDF · {item.toUpperCase()}</small>
+                    {translate(item, "common.downloadCv")}
+                  </span>
+                </a>
+              ))}
             </li>
             <li className="text-cyan-100/70">{site.location}</li>
             <li className="pt-2">
