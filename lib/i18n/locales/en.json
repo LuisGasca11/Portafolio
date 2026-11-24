@@ -124,6 +124,11 @@
       "invoicing": "Invoicing and quoting tools integrated with the Microsip ERP.",
       "apps": "Expo mobile apps published on Google Play: Black Net, FyttsaNet and BlackLink.",
       "website": "Corporate website and team page."
+    },
+    "aerial": {
+      "role": "WMS Developer",
+      "period": "Temporary project · 1 year",
+      "summary": "Development of an in-house WMS (warehouse management system) for the company's warehouse, as a one-year temporary project. Laravel, Vue 3, MySQL and 3D warehouse visualization with Three.js."
     }
   },
   "skills": {

@@ -73,7 +73,7 @@ export function getCv(locale: Locale) {
 
   const languages = [t("cv.languageList.english"), t("cv.languageList.spanish")];
 
-  const current = content.roles[0];
+  const [current, aerial] = content.roles;
   const experience: readonly ExperienceItem[] = [
     {
       role: current?.role ?? "",
@@ -81,6 +81,13 @@ export function getCv(locale: Locale) {
       period: formatPeriod(locale, { from: "2025-11", to: "2026-06" }, present),
       description: current?.cvSummary ?? "",
       website: { href: "https://blck-sheep.com", label: "blck-sheep.com" },
+      inPdf: true,
+    },
+    {
+      role: aerial?.role ?? "",
+      organization: aerial?.organization ?? "",
+      period: aerial?.period ?? "",
+      description: aerial?.cvSummary ?? "",
       inPdf: true,
     },
     {

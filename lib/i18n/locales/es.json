@@ -124,6 +124,11 @@
       "invoicing": "Facturador y cotizador integrados con el ERP Microsip.",
       "apps": "Apps móviles con Expo publicadas en Google Play: Black Net, FyttsaNet y BlackLink.",
       "website": "Sitio web institucional y team page."
+    },
+    "aerial": {
+      "role": "Desarrollador de WMS",
+      "period": "Proyecto temporal · 1 año",
+      "summary": "Desarrollo de un WMS (sistema de gestión de almacén) in-house para el almacén de la empresa, en un proyecto temporal de un año. Laravel, Vue 3, MySQL y visualización 3D del almacén con Three.js."
     }
   },
   "skills": {

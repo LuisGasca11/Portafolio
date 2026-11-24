@@ -125,8 +125,8 @@ export type Role = {
   period: string;
   summary: string;
   cvSummary: string;
-  href: string;
-  highlights: readonly string[];
+  href?: string;
+  highlights?: readonly string[];
 };
 
 export type Study = {
@@ -184,6 +184,13 @@ export function getContent(locale: Locale) {
         t("experience.highlights.apps"),
         t("experience.highlights.website"),
       ],
+    },
+    {
+      role: t("experience.aerial.role"),
+      organization: "AERIAL DEPOT",
+      period: t("experience.aerial.period"),
+      summary: t("experience.aerial.summary"),
+      cvSummary: t("experience.aerial.summary"),
     },
   ];
 
